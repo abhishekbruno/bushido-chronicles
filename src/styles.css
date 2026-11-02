@@ -100,77 +100,6 @@ svg {
 }
 
 /* --------------------------------------------------------------------------
-   Custom Minimal Cursor
-   -------------------------------------------------------------------------- */
-.custom-cursor-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 10000;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.custom-cursor-container.visible {
-  opacity: 1;
-}
-
-.cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 7px;
-  height: 7px;
-  margin-top: -3.5px;
-  margin-left: -3.5px;
-  background-color: var(--color-crimson);
-  border-radius: 50%;
-  pointer-events: none;
-  transition: transform 0.05s linear, width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
-}
-
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  margin-top: -18px;
-  margin-left: -18px;
-  border: 1.5px solid var(--color-ink);
-  border-radius: 50%;
-  pointer-events: none;
-  transition: width 0.25s var(--ease-cinematic), height 0.25s var(--ease-cinematic), border-color 0.25s ease, transform 0.06s linear;
-  opacity: 0.75;
-}
-
-.cursor-dot.hovered {
-  width: 12px;
-  height: 12px;
-  margin-top: -6px;
-  margin-left: -6px;
-  background-color: var(--color-crimson);
-}
-
-.cursor-ring.hovered {
-  width: 58px;
-  height: 58px;
-  margin-top: -29px;
-  margin-left: -29px;
-  border-color: var(--color-crimson);
-  border-width: 2px;
-  opacity: 0.95;
-}
-
-.cursor-dot.clicked {
-  transform: scale(0.6);
-  background-color: var(--color-ink);
-}
-
-/* --------------------------------------------------------------------------
    Cinematic Preloader
    -------------------------------------------------------------------------- */
 .cinematic-preloader {
@@ -5130,892 +5059,6 @@ svg {
 }
 
 /* --------------------------------------------------------------------------
-   SECTION 06: FINAL CINEMATIC CTA — A LEGACY THAT NEVER FADES
-   Living Japanese Samurai Poster reconstructed from reference poster art
-   -------------------------------------------------------------------------- */
-.section-cta {
-  position: relative;
-  padding-top: clamp(2.5rem, 5vw, 5rem);
-  padding-bottom: 3rem;
-  background-color: var(--color-parchment);
-  overflow: hidden;
-}
-
-/* 1. Master Poster Card Outer Stage */
-.final-legacy-poster-stage {
-  position: relative;
-  max-width: 1400px;
-  margin: 0 auto 5rem auto;
-  padding: 0 1.5rem;
-  z-index: 2;
-}
-
-/* 2. Signature Framed Manga/Editorial Card */
-.legacy-poster-card {
-  position: relative;
-  background-color: #F8F2E2;
-  border-radius: 12px;
-  border: 1px solid rgba(226, 215, 186, 0.85);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
-  overflow: hidden;
-  min-height: 720px;
-}
-
-/* Delicate Inset Border Stroke */
-.poster-inner-frame-stroke {
-  position: absolute;
-  inset: 16px;
-  border: 1.5px solid rgba(16, 18, 22, 0.35);
-  border-radius: 8px;
-  pointer-events: none;
-  z-index: 12;
-}
-
-/* Atmospheric Overlays inside Poster */
-.legacy-atmosphere-root {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.legacy-parchment-vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(200, 185, 155, 0.25) 100%);
-  mix-blend-mode: multiply;
-}
-
-.legacy-rain-streaks-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.7;
-}
-
-.legacy-mist-ribbon {
-  position: absolute;
-  bottom: 12%;
-  left: -20%;
-  width: 140%;
-  height: 120px;
-  background: radial-gradient(ellipse at 50% 50%, rgba(247, 242, 227, 0.45) 0%, transparent 75%);
-  filter: blur(20px);
-  pointer-events: none;
-}
-
-.legacy-mist-ribbon.ribbon-2 {
-  bottom: 4%;
-  height: 90px;
-  opacity: 0.6;
-}
-
-/* Faint Outlined Kanji Watermark in Right Background */
-.legacy-watermark-kanji {
-  position: absolute;
-  right: 2.5rem;
-  top: 22%;
-  font-family: var(--font-jp);
-  font-size: clamp(8rem, 16vw, 19rem);
-  font-weight: 900;
-  color: rgba(14, 15, 18, 0.035);
-  -webkit-text-stroke: 1.5px rgba(14, 15, 18, 0.09);
-  pointer-events: none;
-  z-index: 2;
-  user-select: none;
-}
-
-/* 3. Main Poster Editorial Grid */
-.legacy-poster-editorial-grid {
-  display: grid;
-  grid-template-columns: 52% 48%;
-  min-height: 700px;
-  align-items: center;
-  position: relative;
-  z-index: 3;
-  padding: 4rem 4rem 5.5rem 4rem;
-}
-
-/* Left Column: Typography & Actions */
-.legacy-text-zone {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  z-index: 4;
-}
-
-.legacy-editorial-column {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  z-index: 4;
-  max-width: 580px;
-}
-
-.legacy-eyebrow-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-}
-
-.eyebrow-crimson-bar {
-  width: 32px;
-  height: 2px;
-  background-color: var(--color-crimson);
-}
-
-.eyebrow-text {
-  font-family: var(--font-body);
-  font-size: clamp(0.72rem, 0.88vw, 0.82rem);
-  font-weight: 700;
-  letter-spacing: 0.26em;
-  color: var(--color-charcoal);
-  text-transform: uppercase;
-}
-
-.eyebrow-kanji {
-  font-family: var(--font-jp);
-  font-size: 0.95rem;
-  color: var(--color-crimson);
-  font-weight: 900;
-}
-
-/* Primary Massive Japanese Headline (Reference Image Archetype) */
-.legacy-jp-headline {
-  font-family: var(--font-jp, 'Noto Serif JP', serif);
-  font-size: clamp(2.8rem, 4.8vw, 5.2rem);
-  font-weight: 900;
-  line-height: 1.08;
-  letter-spacing: 0.06em;
-  color: #141518;
-  margin: 0 0 0.85rem 0;
-}
-
-.legacy-jp-headline .jp-head-line {
-  display: block;
-}
-
-/* Secondary Bold Condensed English Headline */
-.legacy-en-headline {
-  font-family: var(--font-heading);
-  font-size: clamp(1.4rem, 2.2vw, 2.4rem);
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  color: #1C1E22;
-  margin: 0 0 1.25rem 0;
-  line-height: 1.15;
-}
-
-.legacy-en-headline .en-head-dot {
-  color: var(--color-crimson);
-}
-
-.legacy-editorial-desc {
-  font-family: var(--font-body);
-  font-size: clamp(0.92rem, 1.1vw, 1.05rem);
-  line-height: 1.7;
-  color: #383734;
-  margin-bottom: 2.25rem;
-  max-width: 520px;
-}
-
-/* Buttons Group */
-.legacy-actions-group {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-  margin-bottom: 2.5rem;
-}
-
-.btn-legacy-primary {
-  position: relative;
-  background-color: #0A0A0A;
-  color: #F7F2E3;
-  border: 1.5px solid #0A0A0A;
-  border-radius: 9999px;
-  padding: 0.95rem 2.2rem;
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: 0.86rem;
-  letter-spacing: 0.16em;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
-}
-
-.btn-legacy-primary:hover {
-  background-color: var(--color-crimson);
-  border-color: var(--color-crimson);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(217, 4, 22, 0.3);
-}
-
-.btn-legacy-primary .btn-arrow {
-  font-size: 1.1rem;
-  transition: transform 0.3s ease;
-}
-
-.btn-legacy-primary:hover .btn-arrow {
-  transform: translate(3px, -3px);
-}
-
-.btn-legacy-secondary {
-  background: transparent;
-  color: #0A0A0A;
-  border: 1.5px solid rgba(10, 10, 10, 0.4);
-  border-radius: 9999px;
-  padding: 0.95rem 2rem;
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: 0.86rem;
-  letter-spacing: 0.14em;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-legacy-secondary:hover {
-  border-color: #0A0A0A;
-  background-color: rgba(10, 10, 10, 0.05);
-  transform: translateY(-2px);
-}
-
-.btn-legacy-secondary .btn-kanji {
-  font-family: var(--font-jp);
-  color: var(--color-crimson);
-  font-weight: 900;
-  font-size: 0.95rem;
-}
-
-/* Interactive Hankō Seal Station */
-.legacy-hanko-station {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  background-color: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(6px);
-  padding: 0.85rem 1.4rem;
-  border: 1px solid var(--color-parchment-border);
-  border-radius: 6px;
-}
-
-.hanko-seal-box {
-  width: 50px;
-  height: 50px;
-  background-color: transparent;
-  border: 2px dashed var(--color-crimson);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hanko-seal-box.is-stamped {
-  background-color: var(--color-crimson);
-  border-style: solid;
-  transform: rotate(-6deg) scale(1.06);
-  box-shadow: 0 4px 16px rgba(217, 4, 22, 0.35);
-}
-
-.hanko-seal-frame {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--font-jp);
-  font-size: 0.85rem;
-  font-weight: 900;
-  line-height: 1;
-  color: var(--color-crimson);
-}
-
-.hanko-seal-box.is-stamped .hanko-seal-frame {
-  color: #FFFFFF;
-}
-
-.hanko-station-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.hanko-station-title {
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: #121316;
-  margin-bottom: 0.2rem;
-}
-
-.hanko-station-meta {
-  font-size: 0.7rem;
-  color: #686560;
-  letter-spacing: 0.08em;
-}
-
-/* Right Column: Visual Artwork Stage (Samurai, Sun & Grass) */
-.legacy-artwork-stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 640px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: 3;
-}
-
-.legacy-figure-sun-combo {
-  position: relative;
-  width: 100%;
-  max-width: 560px;
-  height: 660px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.poster-crimson-sun {
-  position: absolute;
-  top: 12%;
-  right: 14%;
-  width: 76%;
-  max-width: 440px;
-  aspect-ratio: 1 / 1;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.legacy-crimson-sun-root svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.poster-samurai-warrior {
-  position: absolute;
-  right: 12%;
-  bottom: 0%;
-  width: 66%;
-  max-width: 390px;
-  aspect-ratio: 620 / 860;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.legacy-samurai-root svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-  filter: drop-shadow(0 14px 35px rgba(0, 0, 0, 0.22));
-}
-
-.poster-foreground-grass {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 190px;
-  z-index: 8;
-  pointer-events: none;
-}
-
-.legacy-animated-grass-root svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-}
-
-/* 4. Poster Card Bottom Bar */
-.poster-card-bottom-bar {
-  position: absolute;
-  left: 3.5rem;
-  right: 3.5rem;
-  bottom: 1.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 14;
-  pointer-events: none;
-}
-
-.poster-pagination-dots {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.poster-pagination-dots .page-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: rgba(10, 10, 10, 0.22);
-  transition: background-color 0.3s ease;
-}
-
-.poster-pagination-dots .active-dot {
-  background-color: var(--color-crimson);
-  transform: scale(1.15);
-}
-
-.poster-bottom-caption {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.8rem;
-  color: rgba(14, 15, 18, 0.6);
-  font-weight: 600;
-}
-
-.poster-bottom-caption .caption-jp {
-  font-family: var(--font-jp);
-}
-
-.poster-bottom-caption .caption-divider {
-  color: var(--color-crimson);
-  font-weight: bold;
-}
-
-.poster-bottom-caption .caption-en {
-  font-family: var(--font-body);
-  letter-spacing: 0.16em;
-  font-size: 0.72rem;
-}
-
-/* Poster Top Editorial Navigation (Image 3 Archetype) */
-.poster-top-editorial-nav {
-  position: absolute;
-  top: 1.75rem;
-  left: 3.5rem;
-  right: 3.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 12;
-}
-
-.poster-nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.poster-brand-icon {
-  width: 26px;
-  height: 26px;
-  background: #C72C35;
-  color: #FFF;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-jp);
-  font-weight: 900;
-  font-size: 0.85rem;
-}
-
-.poster-brand-title {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 1.05rem;
-  letter-spacing: 0.12em;
-  color: #121316;
-}
-
-.poster-nav-links {
-  display: flex;
-  align-items: center;
-  gap: 2.2rem;
-}
-
-.poster-nav-link {
-  font-family: var(--font-body);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: #3A3632;
-  text-decoration: none;
-  transition: color 0.25s ease;
-}
-
-.poster-nav-link:hover {
-  color: #C72C35;
-}
-
-.poster-order-pill {
-  background: #111215;
-  color: #F7F2E3;
-  border: 1.5px solid #111215;
-  border-radius: 9999px;
-  padding: 0.55rem 1.4rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.poster-order-pill:hover {
-  background: #C72C35;
-  border-color: #C72C35;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(199, 44, 53, 0.3);
-}
-
-/* Dual Pill Action Buttons (Image 3 Archetype) */
-.poster-action-buttons-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.poster-btn-primary {
-  background: #111215;
-  color: #FFFFFF;
-  border: 1.5px solid #111215;
-  border-radius: 9999px;
-  padding: 0.85rem 2.2rem;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  transition: all 0.3s ease;
-}
-
-.poster-btn-primary:hover {
-  background: #C72C35;
-  border-color: #C72C35;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(199, 44, 53, 0.32);
-}
-
-.poster-btn-secondary {
-  background: transparent;
-  color: #121316;
-  border: 1.5px solid rgba(18, 19, 22, 0.5);
-  border-radius: 9999px;
-  padding: 0.85rem 2rem;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.poster-btn-secondary:hover {
-  background: rgba(18, 19, 22, 0.06);
-  border-color: #121316;
-  transform: translateY(-2px);
-}
-
-/* 5. Scroll Entrance Transitions */
-.final-legacy-poster-stage:not(.is-revealed) .poster-crimson-sun {
-  transform: scale(0.95);
-  opacity: 0.85;
-}
-
-.final-legacy-poster-stage.is-revealed .poster-crimson-sun {
-  transform: scale(1);
-  opacity: 1;
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
-}
-
-.final-legacy-poster-stage:not(.is-revealed) .poster-samurai-warrior {
-  transform: translateY(15px);
-  opacity: 0.9;
-}
-
-.final-legacy-poster-stage.is-revealed .poster-samurai-warrior {
-  transform: translateY(0);
-  opacity: 1;
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
-}
-
-.final-legacy-poster-stage:not(.is-revealed) .poster-foreground-grass {
-  transform: translateY(30px);
-  opacity: 0;
-}
-
-.final-legacy-poster-stage.is-revealed .poster-foreground-grass {
-  transform: translateY(0);
-  opacity: 1;
-  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.35s, opacity 1.2s ease 0.35s;
-}
-
-.final-legacy-poster-stage:not(.is-revealed) .legacy-jp-headline {
-  transform: translateX(-15px);
-  opacity: 0.9;
-}
-
-.final-legacy-poster-stage.is-revealed .legacy-jp-headline {
-  transform: translateX(0);
-  opacity: 1;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-}
-
-/* Responsive Poster Layout Rules */
-@media (max-width: 1024px) {
-  .poster-top-editorial-nav {
-    left: 2.5rem;
-    right: 2.5rem;
-  }
-
-  .legacy-poster-editorial-grid {
-    grid-template-columns: 1fr;
-    padding: 3.5rem 2.5rem 4rem 2.5rem;
-    gap: 3rem;
-  }
-
-  .legacy-editorial-column {
-    max-width: 100%;
-    align-items: center;
-    text-align: center;
-  }
-
-  .legacy-editorial-desc {
-    max-width: 600px;
-  }
-
-  .legacy-actions-group {
-    justify-content: center;
-  }
-
-  .poster-action-buttons-row {
-    justify-content: center;
-  }
-
-  .legacy-artwork-stage {
-    min-height: 480px;
-  }
-
-  .poster-crimson-sun {
-    right: 50%;
-    transform: translateX(50%);
-    width: 380px;
-  }
-
-  .poster-samurai-warrior {
-    right: 50%;
-    transform: translateX(50%);
-    width: 300px;
-  }
-}
-
-@media (max-width: 768px) {
-  .poster-top-editorial-nav {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    padding: 1.5rem 1.5rem 0.25rem 1.5rem;
-  }
-
-  .poster-nav-links {
-    display: none;
-  }
-
-  .legacy-poster-editorial-grid {
-    padding: 1rem 1.5rem 4rem 1.5rem;
-  }
-
-  .poster-inner-frame-stroke {
-    inset: 10px;
-  }
-
-  .poster-card-bottom-bar {
-    left: 1.5rem;
-    right: 1.5rem;
-    bottom: 1.25rem;
-  }
-
-  .legacy-jp-headline {
-    font-size: clamp(2.2rem, 9vw, 3.2rem);
-  }
-
-  .legacy-en-headline {
-    font-size: clamp(1.2rem, 5vw, 1.6rem);
-  }
-
-  .legacy-artwork-stage {
-    min-height: 380px;
-  }
-
-  .poster-crimson-sun {
-    width: 290px;
-  }
-
-  .poster-samurai-warrior {
-    width: 230px;
-  }
-
-  .poster-foreground-grass {
-    height: 120px;
-  }
-}
-
-/* Luxury Editorial Footer */
-.editorial-footer {
-  width: 100%;
-  text-align: left;
-}
-
-.footer-top-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr 1fr;
-  gap: 3.5rem;
-  padding-bottom: 4rem;
-  border-bottom: 1px solid var(--color-parchment-border);
-  margin-bottom: 2.5rem;
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-bottom: 1.25rem;
-}
-
-.footer-logo-insignia {
-  width: 32px;
-  height: 32px;
-  background-color: var(--color-crimson);
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-parchment);
-  font-family: var(--font-jp);
-  font-weight: 900;
-  font-size: 1.1rem;
-}
-
-.footer-logo-text {
-  font-family: var(--font-headline);
-  font-size: 1.6rem;
-  letter-spacing: 0.08em;
-  color: var(--color-ink);
-}
-
-.footer-brand-desc {
-  max-width: 360px;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: var(--color-muted);
-  margin-bottom: 1.5rem;
-}
-
-.footer-year-badge {
-  display: inline-block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--color-charcoal);
-  padding: 0.25rem 0.6rem;
-  background-color: rgba(10, 10, 10, 0.05);
-  border-radius: 2px;
-}
-
-.footer-col-title {
-  font-family: var(--font-title);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--color-ink);
-  margin-bottom: 1.5rem;
-}
-
-.footer-links-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  font-size: 0.84rem;
-  color: var(--color-charcoal);
-}
-
-.footer-links-list a:hover {
-  color: var(--color-crimson);
-}
-
-.back-to-top-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 1.5rem;
-  border: 1px solid var(--color-parchment-border);
-  background-color: var(--color-parchment-deep);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.back-to-top-btn:hover {
-  background-color: var(--color-ink);
-  color: var(--color-parchment);
-  border-color: var(--color-ink);
-}
-
-.top-arrow-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1.5px solid currentColor;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.top-btn-text {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-}
-
-.top-btn-kanji {
-  font-family: var(--font-jp);
-  font-size: 0.95rem;
-  color: var(--color-crimson);
-}
-
-.footer-bottom-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--color-muted);
-  letter-spacing: 0.12em;
-}
-
-.footer-creeds {
-  font-family: var(--font-jp);
-  font-size: 0.9rem;
-  color: var(--color-crimson);
-  letter-spacing: 0.3em;
-}
-
-/* --------------------------------------------------------------------------
    RESPONSIVE DESIGN BREAKPOINTS
    -------------------------------------------------------------------------- */
 @media (max-width: 1280px) {
@@ -8614,4 +7657,206 @@ svg {
   .spirit-landscape-svg .archive-petal-drift,
   .legacy-poster-art .legacy-poster-halo,
   .legacy-poster-art .legacy-poster-mist { animation:none !important; }
+}
+
+/* ==========================================================================
+   BUSHIDO CHRONICLES — FINAL CHAPTER & ARCHIVAL FOOTER (2026 REDESIGN)
+   Isolated styles: no unexpected overrides of the other chapters.
+   ========================================================================== */
+html { scroll-padding-top: 88px; }
+#cta, #monument { scroll-margin-top: 88px; }
+.bc-closing-section {
+  padding: clamp(84px, 9vw, 145px) 0 0;
+  overflow: clip;
+  background: #f1e9d6;
+  isolation: isolate;
+  position: relative;
+}
+.bc-closing-section::before {
+  content: ""; position: absolute; inset: 0 0 auto; height: 310px; pointer-events: none;
+  background: linear-gradient(180deg, #f8f2e5, #f1e9d6); opacity: .93;
+}
+.bc-legacy {
+  position: relative; z-index: 1; width: 100%;
+  padding: 0 clamp(24px, 5.2vw, 100px);
+}
+.bc-legacy-inner {
+  width: 100%; max-width: 1530px; margin: 0 auto;
+  display: grid; grid-template-columns: minmax(0, .83fr) minmax(0, 1.17fr);
+  align-items: center; gap: clamp(30px, 4.6vw, 84px); min-height: min(850px, 90vh);
+}
+.bc-legacy-copy { padding: 40px 0 56px; min-width: 0; position: relative; z-index: 2; }
+.bc-kicker { display: flex; align-items: center; gap: 12px; color: #8e3435; font-family: var(--font-body); font-weight: 750; font-size: clamp(10px, .75vw, 12px); letter-spacing: .21em; text-transform: uppercase; margin-bottom: clamp(30px, 4.8vw, 65px); }
+.bc-kicker-line { background: #b92832; width: 35px; height: 2px; flex: 0 0 35px; }
+.bc-kicker-index { margin-left: auto; color: #867666; font-size: 10px; letter-spacing: .16em; }
+.bc-legacy-ideogram {
+  font-family: var(--font-jp), 'Noto Serif CJK JP', serif;
+  color: #191a18; font-weight: 900; letter-spacing: .08em;
+  font-size: clamp(40px, 4.15vw, 76px); line-height: 1.28;
+  margin: 0 0 24px; word-break: keep-all; overflow-wrap: normal;
+}
+.bc-legacy-title { font-family: var(--font-heading); font-weight: 900; color: #252420; font-size: clamp(32px, 2.7vw, 54px); line-height: 1.15; letter-spacing: .018em; margin: 0 0 23px; }
+.bc-legacy-title span { color: #bb2730; }
+.bc-legacy-description { font-family: var(--font-body); color: #645b51; font-size: clamp(14px, 1.01vw, 17px); line-height: 1.85; max-width: 545px; margin: 0 0 36px; }
+.bc-legacy-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.bc-btn { display: inline-flex; justify-content: center; align-items: center; gap: 12px; min-height: 54px; padding: 14px 23px; font-size: 11px; font-weight: 800; letter-spacing: .105em; border: 1px solid #242722; border-radius: 2px; font-family: var(--font-body); text-decoration: none; line-height: 1.4; transition: background-color .25s, color .25s, border-color .25s, transform .25s; }
+.bc-btn:hover { transform: translateY(-2px); }
+.bc-btn-primary { color: #faf4e7; background: #20231f; }
+.bc-btn-primary:hover { background: #9b2830; border-color: #9b2830; }
+.bc-btn-outline { color: #2b2c27; background: transparent; border-color: rgba(37, 40, 34, .36); }
+.bc-btn-outline:hover { background: #e7dcc7; border-color: #443b35; }
+.bc-btn:focus-visible, .bc-footer a:focus-visible { outline: 2px solid #b92732; outline-offset: 4px; }
+.bc-legacy-signature { margin-top: clamp(42px, 5vw, 70px); padding-top: 18px; border-top: 1px solid #d0c1aa; display: flex; gap: 14px; align-items: center; max-width: 460px; }
+.bc-seal { display: grid; place-items: center; border: 1px solid #b42e33; color: #b42e33; font-family: var(--font-jp); font-size: 14px; font-weight: 800; line-height: 1.1; width: 44px; height: 45px; transform: rotate(-5deg); }
+.bc-legacy-signature strong { font-size: 10px; display: block; letter-spacing: .17em; color: #3b3a33; }
+.bc-legacy-signature small { font-family: var(--font-jp); display: block; color: #90816e; margin-top: 5px; font-size: 11px; }
+.bc-legacy-visual { min-width: 0; width: 100%; position: relative; align-self: stretch; display: flex; flex-direction: column; justify-content: center; padding-top: 5px; pointer-events: none; }
+.bc-ronin-art { width: 100%; height: auto; max-height: min(810px, 82vh); display: block; filter: drop-shadow(0 25px 30px rgba(75, 56, 42, .09)); overflow: visible; }
+.bc-art-caption { display: flex; justify-content: space-between; gap: 16px; font-family: var(--font-body); font-size: clamp(9px,.63vw,11px); letter-spacing: .14em; color: #857563; border-top: 1px solid #cdbfa8; padding: 13px 5px 0; }
+.bc-art-caption span:first-child { font-family: var(--font-jp); }
+.bc-legacy-endline { max-width: 1530px; margin: clamp(8px, 2.5vw, 42px) auto 0; display: flex; align-items: center; gap: 18px; text-transform: uppercase; color: #877564; font-size: 11px; letter-spacing: .18em; padding: 10px 0 clamp(54px, 5vw, 86px); }
+.bc-legacy-endline span:first-child { font-family: var(--font-jp); font-size: 18px; color: #b13739; letter-spacing: .15em; }
+.bc-legacy-endline i { height: 1px; flex: 1; background: #c9baa3; }
+.bc-legacy-copy > * { opacity: 1; }
+.bc-legacy.bc-visible .bc-legacy-copy > * { animation: bc-text-enter .8s cubic-bezier(.2,.7,.2,1) both; }
+.bc-legacy.bc-visible .bc-legacy-copy > :nth-child(2) { animation-delay: .1s; }
+.bc-legacy.bc-visible .bc-legacy-copy > :nth-child(3) { animation-delay: .16s; }
+.bc-legacy.bc-visible .bc-legacy-copy > :nth-child(4) { animation-delay: .23s; }
+.bc-legacy.bc-visible .bc-legacy-copy > :nth-child(5) { animation-delay: .31s; }
+.bc-legacy.bc-visible .bc-legacy-copy > :nth-child(6) { animation-delay: .39s; }
+.bc-sun-layer { transform-origin: 424px 260px; animation: bc-sun-breathe 11s ease-in-out infinite alternate; }
+.bc-mist-layer { animation: bc-mist-sway 15s ease-in-out infinite alternate; }
+.bc-robe-loose { transform-origin: 395px 550px; animation: bc-robe-wind 7s ease-in-out infinite alternate; }
+.bc-reed-stem { animation: bc-reed-move var(--reed-duration) ease-in-out var(--reed-delay) infinite alternate; }
+@keyframes bc-text-enter { from { opacity: 0; transform: translateY(21px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bc-sun-breathe { from { opacity: .91; transform: scale(.993); } to { opacity: 1; transform: scale(1.01); } }
+@keyframes bc-mist-sway { from { transform: translateX(-16px); opacity: .75; } to { transform: translateX(15px); opacity: 1; } }
+@keyframes bc-robe-wind { from { transform: rotate(-1deg); } to { transform: rotate(1.4deg); } }
+@keyframes bc-reed-move { from { transform: rotate(-2.2deg); } to { transform: rotate(2.4deg); } }
+
+/* The footer is a separate archival page, not a floating set of cards. */
+.bc-footer { position: relative; width: 100%; background: #201f1b; color: #f2e8d6; overflow: hidden; }
+.bc-footer::before { content: ""; position: absolute; inset: 0; pointer-events:none; opacity:.085; background-image: repeating-linear-gradient(92deg,transparent 0 82px, rgba(255,255,255,.18) 83px, transparent 84px); }
+.bc-footer-ornament { padding: 30px clamp(24px, 5vw, 100px) 0; max-width: 1650px; margin: auto; display: flex; gap: 15px; align-items: center; position: relative; }
+.bc-footer-ornament span { color: #bd6665; font-family: var(--font-jp); font-size: 25px; }
+.bc-footer-ornament i { height: 1px; background: rgba(226,204,178,.22); flex: 1; }
+.bc-footer-grid { position: relative; max-width: 1560px; margin: 0 auto; padding: clamp(44px, 5vw, 84px) clamp(24px, 5vw, 88px) clamp(55px, 6vw, 100px); display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.05fr) minmax(0, 1.25fr) minmax(0, .95fr); gap: clamp(32px, 3.1vw, 64px); }
+.bc-footer-grid > * { min-width: 0; }
+.bc-footer-brandline { display: flex; gap: 16px; align-items: center; font-family: var(--font-headline); font-size: clamp(26px, 2.1vw, 35px); line-height: 1.08; letter-spacing: .025em; }
+.bc-footer-hanko { width: 49px; height: 50px; flex: 0 0 49px; display: grid; place-items: center; background: #b62f39; color: #f6e9d4; font-family: var(--font-jp); font-size: 28px; }
+.bc-footer-brand .bc-footer-jp { font-family: var(--font-jp); font-size: 16px; color: #cda58c; margin: 21px 0 16px; }
+.bc-footer-brand > p:not(.bc-footer-jp) { max-width: 365px; line-height: 1.85; font-size: 13px; color: #c0b4a1; }
+.bc-footer-note { display: block; margin-top: 30px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.14); color: #ad9f8a; letter-spacing: .11em; font-size: 9px; }
+.bc-footer-grid h3 { margin: 4px 0 27px; font-size: 12px; font-weight: 800; letter-spacing: .15em; color: #f0e4d0; font-family: var(--font-body); }
+.bc-footer-grid h3 span { font-size: 12px; font-weight: 500; margin-left: 5px; color: #bb6f63; font-family: var(--font-jp); letter-spacing: 0; }
+.bc-footer-links ul, .bc-footer-references ul { display: flex; flex-direction: column; gap: 14px; }
+.bc-footer-links a, .bc-footer-references a { color: #c0b6a6; display: inline-flex; gap: 7px; align-items: center; font-size: 13px; line-height: 1.55; transition: color .23s, transform .23s; text-decoration: none; }
+.bc-footer-links a:hover, .bc-footer-references a:hover { color: #faf1df; transform: translateX(3px); }
+.bc-footer-references a svg { opacity: .6; flex: 0 0 auto; }
+.bc-footer-references p { font-size: 11px; line-height: 1.7; color: #9e9180; margin-top: 25px; }
+.bc-footer-top { width: 100%; min-height: 173px; padding: 20px; border: 1px solid rgba(221,202,176,.35); display: flex; flex-direction: column; align-items: flex-start; gap: 12px; transition: border-color .23s, background-color .23s; }
+.bc-footer-top:hover { background: rgba(255,255,255,.055); border-color: #c85a58; }
+.bc-footer-top-icon { border: 1px solid rgba(239,222,200,.6); width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; }
+.bc-footer-top strong { font-size: 12px; line-height: 1.4; letter-spacing: .13em; }
+.bc-footer-top small { font-size: 13px; color: #bc8078; font-family: var(--font-jp); }
+.bc-footer-bottom { position: relative; max-width: 1560px; margin: 0 auto; padding: 26px clamp(24px, 5vw, 88px) 32px; border-top: 1px solid rgba(232,212,184,.2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; font-family: var(--font-body); font-size: 10px; letter-spacing: .13em; color: #aa9b85; }
+.bc-footer-bottom span:last-child { color: #bd7770; }
+
+@media (max-width: 1160px) {
+  .bc-legacy-inner { grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); gap: 20px; }
+  .bc-legacy-ideogram { font-size: clamp(36px, 4.2vw, 58px); }
+  .bc-footer-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 60px; }
+}
+@media (max-width: 760px) {
+  .bc-closing-section { padding-top: 70px; }
+  .bc-legacy { padding: 0 20px; }
+  .bc-legacy-inner { display: flex; flex-direction: column; gap: 10px; min-height: auto; }
+  .bc-legacy-copy { width: 100%; padding: 25px 0 0; }
+  .bc-kicker { margin-bottom: 24px; }
+  .bc-legacy-ideogram { font-size: clamp(32px, 8.5vw, 53px); margin-bottom: 14px; }
+  .bc-legacy-title { font-size: clamp(30px, 7.7vw, 46px); }
+  .bc-legacy-description { font-size: 14px; margin-bottom: 25px; }
+  .bc-legacy-actions { gap: 10px; }
+  .bc-btn { padding: 13px 16px; font-size: 10px; min-height: 49px; }
+  .bc-legacy-signature { margin-top: 32px; }
+  .bc-legacy-visual { padding: 0; max-width: 540px; width: 100%; align-self: center; }
+  .bc-ronin-art { max-height: none; }
+  .bc-art-caption { font-size: 8px; }
+  .bc-legacy-endline { padding: 28px 0 52px; font-size: 9px; }
+  .bc-footer-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 45px 26px; padding-top: 40px; }
+  .bc-footer-brandline { font-size: 26px; }
+  .bc-footer-bottom { justify-content: flex-start; }
+}
+@media (max-width: 520px) {
+  .bc-legacy-actions { display: grid; grid-template-columns: 1fr; }
+  .bc-btn { width: 100%; }
+  .bc-footer-grid { grid-template-columns: 1fr; gap: 38px; }
+  .bc-footer-top { min-height: auto; flex-direction: row; align-items: center; flex-wrap: wrap; }
+  .bc-footer-top small { margin-left: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bc-legacy-copy > *, .bc-sun-layer, .bc-mist-layer, .bc-robe-loose, .bc-reed-stem { animation: none !important; transform: none !important; }
+  .bc-legacy .bc-legacy-copy > * { opacity: 1 !important; }
+}
+
+/* ==========================================================================
+   THE GUARDIANS OF HISTORY — SCROLL-REVEALED MONUMENT CHAPTER
+   ========================================================================== */
+.bc-monument-section { position: relative; background: linear-gradient(165deg,#eee4d0 0%,#f6efdf 48%,#e8deca 100%); padding: clamp(95px, 9vw, 154px) 0 clamp(70px, 8vw, 120px); isolation: isolate; overflow: clip; }
+.bc-monument-section::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity:.12; background-image: repeating-linear-gradient(0deg,transparent 0 58px,rgba(118,91,60,.07) 59px,transparent 60px); }
+.bc-monument-intro { max-width: 1640px; margin: 0 auto; padding: 0 clamp(20px, 4.8vw, 90px); display: grid; grid-template-columns: minmax(0,.78fr) minmax(0,1.22fr); align-items: center; min-height: clamp(640px, 80vh, 830px); position:relative; gap: clamp(22px, 3vw, 55px); }
+.bc-monument-copy { min-width:0; position:relative; z-index:2; padding: 30px 0; }
+.bc-monument-eyebrow { font-family:var(--font-body); font-size: 11px; letter-spacing:.2em; font-weight:800; color:#9d3a3f; margin-bottom: 44px; }
+.bc-monument-eyebrow span {font-family:var(--font-jp); padding-left: 14px; color:#806c56; }
+.bc-monument-jp { font-family:var(--font-jp); font-weight:900; letter-spacing:.08em; font-size:clamp(54px, 5.7vw, 99px); line-height:1.15; margin:0 0 22px; color:#262622; white-space:nowrap; }
+.bc-monument-copy h2 { font-family:var(--font-heading); font-size:clamp(32px, 3vw, 58px); letter-spacing:.015em; line-height:1.13; color:#2e302b; margin:0; }
+.bc-monument-copy h2 em {font-style:normal; color:#b33a3e; }
+.bc-monument-line { width:70px; height:2px; background:#a43d40; margin: 32px 0 25px; }
+.bc-monument-copy > p:not(.bc-monument-eyebrow):not(.bc-monument-jp) { color:#6f665b; line-height:1.84; max-width: 515px; font-size:clamp(14px,1vw,17px); }
+.bc-monument-metadata { display:flex; flex-wrap:wrap; gap:8px 20px; margin:30px 0; font-family:var(--font-body); color:#897866; font-size:10px; font-weight:750; letter-spacing:.12em; }
+.bc-monument-actions { display:flex; flex-wrap:wrap; align-items:center; gap:18px 22px; }
+.bc-monument-action { display:inline-flex; align-items:center; gap:12px; background:#292a25; border:1px solid #292a25; padding:14px 17px; min-height:50px; color:#f8efdc; font-size:10px; font-weight:800; letter-spacing:.12em; transition:background .2s,transform .2s; }
+.bc-monument-action:hover { background:#9c3b41; transform:translateY(-2px); }
+.bc-monument-source { font-size:10px; color:#695e53; display:inline-flex; gap:5px; align-items:center; font-weight:800; letter-spacing:.07em; }
+.bc-monument-source:hover { color:#a83b41; }
+.bc-monument-art-container { min-width:0; max-width:100%; position:relative; pointer-events:none; }
+.bc-monument-svg { display:block; width:100%; height:auto; overflow:hidden; filter:drop-shadow(0 22px 25px rgba(63,55,38,.055)); }
+.bc-monument-art-caption { color:#877e72; font-size:10px; text-align:right; line-height:1.6; font-style:italic; max-width:550px; margin:5px 1% 0 auto; }
+.bc-garden-tree { transform-origin:100px 540px; animation: bc-tree-trunk 10s ease-in-out infinite alternate; }
+.bc-garden-flower-sway { transform-origin:190px 300px; animation:bc-tree-blossom 7.6s ease-in-out infinite alternate; }
+.bc-monument-petal { transform-box:fill-box; transform-origin:center; animation:bc-petal-fall var(--petal-duration) linear var(--petal-delay) infinite; }
+@keyframes bc-tree-trunk {from { transform:rotate(-.25deg);}to{transform:rotate(.35deg);} }
+@keyframes bc-tree-blossom {from { transform:rotate(-1.4deg); }to {transform:rotate(1.8deg);} }
+@keyframes bc-petal-fall {0%{opacity:0; translate:0 -5px; rotate:0deg;}8%{opacity:.8;}65%{opacity:.65;}100%{opacity:0;translate:70px 295px; rotate:170deg;} }
+.bc-monument-archive-mount { max-width:1460px; padding:0 clamp(20px,4.8vw,90px); margin:clamp(35px,6vw,85px) auto 0; position:relative; }
+.bc-monument-archive-title { border-top:1px solid #bcae96; padding:24px 0; display:flex; justify-content:space-between; gap:25px; align-items:baseline; }
+.bc-monument-archive-title>span {color:#9a4646; font-size:11px; font-weight:800; letter-spacing:.18em; }
+.bc-monument-archive-title h3 {font-family:var(--font-heading); font-size:clamp(22px,2.4vw,43px); letter-spacing:.06em; color:#2a2926; text-align:right; }
+.bc-monument-archive-title h3 span {font-family:var(--font-jp); font-size:.7em; color:#a34544; }
+#monument-record { scroll-margin-top: 98px; }
+@media (max-width:1280px) {
+  .nav-links-list { gap: clamp(.75rem,1.35vw,2.2rem); }
+  .nav-link-item { font-size:.7rem; letter-spacing:.1em; }
+  .bc-monument-jp { font-size:clamp(45px,5vw,72px); }
+}
+@media (max-width: 1030px) {
+  .navbar-desktop-nav { display:none; }
+  .mobile-menu-toggle { display:block; }
+  .bc-monument-intro { grid-template-columns:1fr; gap:8px; min-height:auto; }
+  .bc-monument-copy { padding:10px 0 15px; }
+  .bc-monument-eyebrow { margin-bottom:25px; }
+  .bc-monument-art-container { max-width:900px; margin:0 auto; }
+}
+@media (max-width: 700px) {
+  .bc-monument-section { padding-top: 85px; }
+  .bc-monument-jp {white-space:normal; font-size:clamp(43px,10vw,64px);}
+  .bc-monument-copy h2 {font-size:clamp(29px,7vw,43px);}
+  .bc-monument-intro { padding:0 20px; }
+  .bc-monument-archive-title {flex-direction:column; gap:8px; }
+  .bc-monument-archive-title h3 {text-align:left;}
+  .bc-monument-art-caption { text-align:left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bc-garden-tree,.bc-garden-flower-sway,.bc-monument-petal {animation:none !important;}
+  .bc-monument-petal {display:none;}
 }

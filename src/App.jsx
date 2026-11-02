@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Preloader from './components/Preloader';
-import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import SamuraiScene from './components/SamuraiScene';
 import ScrollTransitions from './components/ScrollTransitions';
@@ -11,7 +10,7 @@ import SectionBlade from './components/SectionBlade';
 import KatanaForgingCinematic from './components/KatanaForgingCinematic';
 import SectionSpirit from './components/SectionSpirit';
 import SectionCTA from './components/SectionCTA';
-import GlobalParticleSystem from './components/GlobalParticleSystem';
+import SectionMonument from './components/SectionMonument';
 import './styles.css';
 
 export default function App() {
@@ -34,8 +33,6 @@ export default function App() {
   if (onlySection) {
     return (
       <div className="samurai-app-root">
-        {/* Global Atmospheric Particle Layer (Falling Japanese Maple Leaves & Ink Flecks) */}
-        <GlobalParticleSystem />
         <ScrollTransitions />
         <Navbar />
         <main className="main-content-flow" style={{ paddingTop: '70px' }}>
@@ -48,6 +45,7 @@ export default function App() {
           {onlySection === 'blade' && <SectionBlade />}
           {onlySection === 'forge' && <KatanaForgingCinematic />}
           {onlySection === 'spirit' && <SectionSpirit />}
+          {onlySection === 'monument' && <SectionMonument />}
           {onlySection === 'cta' && <SectionCTA onExploreLegacy={() => {}} />}
         </main>
       </div>
@@ -77,14 +75,8 @@ export default function App() {
 
   return (
     <div className="samurai-app-root">
-      {/* 0. Global Atmospheric Particle System (Momiji Falling Leaves, Ink Flecks & Floating Debris) */}
-      <GlobalParticleSystem />
-
       {/* 1. Cinematic Entrance Preloader with Sumi-e Brush Reveal */}
       <Preloader onComplete={() => setPreloaderDone(true)} />
-
-      {/* 2. Custom Minimal Desktop Cursor with Magnetic Attraction */}
-      <CustomCursor />
 
       {/* 3. GSAP ScrollTrigger Storytelling Transitions */}
       <ScrollTransitions />
@@ -114,7 +106,10 @@ export default function App() {
         {/* SECTION 05: The Spirit of Japan (Sacred Zen Landscapes & Haiku) */}
         <SectionSpirit />
 
-        {/* SECTION 06: Final Cinematic CTA & Luxury Editorial Footer */}
+        {/* SECTION 06: Dedicated monumental historical archive */}
+        <SectionMonument />
+
+        {/* SECTION 07: Final Cinematic CTA & Luxury Editorial Footer */}
         <SectionCTA onExploreLegacy={handleExploreLegacy} />
       </main>
     </div>

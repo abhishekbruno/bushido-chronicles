@@ -1,107 +1,55 @@
 import React from 'react';
-import { ArrowUp } from 'lucide-react';
-import { sound } from '../utils/soundEngine';
+import { ArrowUp, ArrowUpRight } from 'lucide-react';
 import FinalLegacyScene from './FinalLegacyScene';
 
-/**
- * SectionCTA (A LEGACY THAT NEVER FADES - Living Japanese Samurai Poster)
- * -----------------------------------------------------------------------------
- * Cinematic final section of the website.
- * Features:
- *  - Full-width living Japanese Samurai poster composition
- *  - Massive Japanese display typography: 色褪せぬ武士の魂
- *  - Standing Samurai silhouette before a glowing crimson sun
- *  - Independently animated wind-swaying grass, robes, and sageo cords
- *  - Framing Japanese maple branches and luxury editorial footer
- */
-export default function SectionCTA({ onExploreLegacy }) {
-  const scrollToTop = () => {
-    sound.playSwordSlash();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+const archiveLinks = [
+  ['The Way of the Samurai', '#hero'],
+  ['The Samurai Legacy', '#legacy'],
+  ['The Code of Bushido', '#bushido'],
+  ['Legendary Warriors', '#warriors'],
+  ['The Art of the Blade', '#blade'],
+  ['The Spirit of Japan', '#spirit'],
+  ['The Guardians of History', '#monument'],
+  ['A Legacy That Never Fades', '#cta'],
+];
+const scholarlySources = [
+  ['Go Rin No Sho — Miyamoto Musashi', 'https://en.wikipedia.org/wiki/The_Book_of_Five_Rings'],
+  ['Hagakure — Yamamoto Tsunetomo', 'https://miscredirect-prod.cc.columbia.edu/ps/japan/hakagure_wilson_version.pdf'],
+  ['Bushido: The Soul of Japan — Inazō Nitobe', 'https://www.gutenberg.org/ebooks/12096'],
+  ['Tokyo National Museum', 'https://www.tnm.jp/?lang=en'],
+  ['Imperial Palace Outer Garden', 'https://www.env.go.jp/garden/kokyogaien/english/statue_of_kusunoki_masashige.html'],
+];
+export default function SectionCTA() {
+  const exploreArchives = () => {
+    document.getElementById('legacy')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
-  const handleDiscoverCode = () => {
-    const bushidoEl = document.getElementById('bushido');
-    if (bushidoEl) {
-      bushidoEl.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <section className="section-cta" id="cta">
-      {/* Dramatic Framing Japanese Maple Branches */}
-
-      {/* Living Japanese Samurai Poster Stage */}
-      <FinalLegacyScene
-        onExploreLegacy={onExploreLegacy}
-        onDiscoverCode={handleDiscoverCode}
-      />
-
-      {/* LUXURY EDITORIAL FOOTER */}
-      <footer className="editorial-footer">
-        <div className="footer-top-grid">
-          {/* Brand Column */}
-          <div className="footer-brand-col">
-            <div className="footer-logo">
-              <span className="footer-logo-insignia">武</span>
-              <span className="footer-logo-text">SAMURAI<span className="logo-dot">.</span></span>
-            </div>
-            <p className="footer-brand-desc">
-              An immersive digital museum and philosophical archive celebrating the art,
-              culture, and eternal code of feudal Japanese warriors.
-            </p>
-            <div className="footer-year-badge">REIWA ERA · 令和八年 · 2026</div>
+    <section id="cta" className="section-cta bc-closing-section">
+      <FinalLegacyScene onExploreLegacy={exploreArchives}/>
+      <footer className="bc-footer" aria-label="Bushido Chronicles footer">
+        <div className="bc-footer-ornament" aria-hidden="true"><span>終</span><i/></div>
+        <div className="bc-footer-grid">
+          <div className="bc-footer-brand">
+            <div className="bc-footer-brandline"><span className="bc-footer-hanko" aria-hidden="true">武</span><span>BUSHIDO<br/>CHRONICLES</span></div>
+            <p className="bc-footer-jp" lang="ja">武士道の記録</p>
+            <p>An interactive digital archive exploring the history, philosophy, craftsmanship, and enduring legacy of Japan's Samurai.</p>
+            <span className="bc-footer-note">AN INDEPENDENT CULTURAL STORYTELLING PROJECT</span>
           </div>
-
-          {/* Navigation Links Column */}
-          <div className="footer-nav-col">
-            <h4 className="footer-col-title">ARCHIVES</h4>
-            <ul className="footer-links-list">
-              <li><a href="#hero" className="interactive">The Hero's Awakening</a></li>
-              <li><a href="#legacy" className="interactive">The Samurai Legacy</a></li>
-              <li><a href="#bushido" className="interactive">The Code of Bushido</a></li>
-              <li><a href="#warriors" className="interactive">Legendary Warriors</a></li>
-              <li><a href="#blade" className="interactive">The Art of the Blade</a></li>
-              <li><a href="#spirit" className="interactive">The Spirit of Japan</a></li>
-            </ul>
+          <nav className="bc-footer-links" aria-label="Explore the archive">
+            <h3>EXPLORE <span>目次</span></h3>
+            <ul>{archiveLinks.map(([title, href]) => <li key={href}><a href={href}>{title}</a></li>)}</ul>
+          </nav>
+          <div className="bc-footer-references">
+            <h3>ARCHIVAL REFERENCES <span>資料</span></h3>
+            <ul>{scholarlySources.map(([title, href]) => <li key={title}><a href={href} target="_blank" rel="noopener noreferrer">{title}<ArrowUpRight size={13} aria-hidden="true"/></a></li>)}</ul>
+            <p>Sources are provided for further reading; interpretive artwork is original and is not a museum artifact.</p>
           </div>
-
-          {/* Historical Sources Column */}
-          <div className="footer-sources-col">
-            <h4 className="footer-col-title">SCHOLARLY SOURCES</h4>
-            <ul className="footer-links-list">
-              <li><span>Go Rin No Sho — Miyamoto Musashi (1645)</span></li>
-              <li><span>Hagakure: The Book of the Samurai (1716)</span></li>
-              <li><span>Bushido: The Soul of Japan — Inazo Nitobe (1899)</span></li>
-              <li><span>Kyoto National Museum Feudal Archives</span></li>
-              <li><span>Tokyo National Museum Sword Collection</span></li>
-            </ul>
-          </div>
-
-          {/* Back To Top Column */}
-          <div className="footer-action-col">
-            <button
-              className="back-to-top-btn interactive"
-              onClick={scrollToTop}
-              aria-label="Return to top of page"
-            >
-              <div className="top-arrow-circle">
-                <ArrowUp size={20} />
-              </div>
-              <span className="top-btn-text">RETURN TO HEAVEN</span>
-              <span className="top-btn-kanji">頂点へ</span>
-            </button>
+          <div className="bc-footer-return">
+            <h3>THE JOURNEY CONTINUES <span>始まりへ</span></h3>
+            <a className="bc-footer-top" href="#hero"><span className="bc-footer-top-icon"><ArrowUp size={23} aria-hidden="true"/></span><strong>RETURN TO THE<br/>BEGINNING</strong><small>始まりへ</small></a>
           </div>
         </div>
-
-        <div className="footer-bottom-bar">
-          <div className="footer-copyright">
-            © 2026 THE WAY OF THE SAMURAI. DESIGNED WITH PRECISION & HONOR. ALL RIGHTS RESERVED.
-          </div>
-          <div className="footer-creeds">
-            <span>義 · 勇 · 仁 · 礼 · 誠 · 名誉 · 忠義</span>
-          </div>
-        </div>
+        <div className="bc-footer-bottom"><span>© {new Date().getFullYear()} BUSHIDO CHRONICLES</span><span>CRAFTED IN THE SPIRIT OF JAPAN</span><span lang="ja">武士道 · THE WAY OF THE WARRIOR</span></div>
       </footer>
     </section>
   );

@@ -35,6 +35,7 @@ export default function Navbar({ activeSection, onNavigate }) {
     { label: 'WARRIORS', href: '#warriors', kanji: '武' },
     { label: 'THE BLADE', href: '#blade', kanji: '刀' },
     { label: 'SPIRIT', href: '#spirit', kanji: '魂' },
+    { label: 'MONUMENT', href: '#monument', kanji: '碑' },
   ];
 
   const handleLinkClick = (e, href) => {
