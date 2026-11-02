@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+.env
+.env.*
+!.env.example
+screenshot*.png
+screenshot_*.png
+test-*.png
+dom-dump.html
+heading-test-legacy.png
+scripts/
+
