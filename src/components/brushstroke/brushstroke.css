@@ -667,6 +667,268 @@
 }
 
 /* --------------------------------------------------------------------------
+   10. TYPE E: INK MANUSCRIPT PANEL (.ink-manuscript-panel)
+   Paper-Folding Japanese Archival Manuscript Container
+   -------------------------------------------------------------------------- */
+.ink-manuscript-perspective-stage {
+  perspective: 1200px;
+  width: 100%;
+}
+
+.ink-manuscript-panel {
+  position: relative;
+  background: #FCF8F1;
+  border: 1px solid #D8CBB6;
+  border-radius: 3px;
+  padding: clamp(1.8rem, 3.2vw, 2.75rem);
+  box-shadow: 
+    inset 0 0 45px rgba(214, 200, 175, 0.22),
+    0 8px 26px rgba(28, 25, 20, 0.05);
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+
+/* Moving crease shadow during paper unfolding */
+.manuscript-fold-crease-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(30, 26, 20, 0.35) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+}
+
+/* Washi surface fibers */
+.manuscript-washi-surface {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 80%),
+    repeating-linear-gradient(45deg, rgba(80, 70, 50, 0.02) 0px, rgba(80, 70, 50, 0.02) 1px, transparent 1px, transparent 6px);
+  z-index: 1;
+}
+
+/* Perimeter sumi-e brush borders */
+.manuscript-brush-borders {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.brush-edge-top {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 10px;
+}
+
+.brush-edge-bottom {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 10px;
+}
+
+.brush-edge-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 6px;
+  height: 100%;
+}
+
+.brush-edge-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -1px;
+  width: 6px;
+  height: 100%;
+}
+
+/* Corner brass brackets */
+.manuscript-bracket-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #B38A22;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.manuscript-bracket-corner.top-left {
+  top: 8px;
+  left: 8px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.manuscript-bracket-corner.top-right {
+  top: 8px;
+  right: 8px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.manuscript-bracket-corner.bottom-left {
+  bottom: 8px;
+  left: 8px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.manuscript-bracket-corner.bottom-right {
+  bottom: 8px;
+  right: 8px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* Inner reading content */
+.manuscript-inner-content {
+  position: relative;
+  z-index: 4;
+}
+
+/* Header row with seal & label */
+.manuscript-header-zone {
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid #E8DCBE;
+  padding-bottom: 1rem;
+}
+
+.manuscript-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.5rem;
+}
+
+.manuscript-cinnabar-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.78rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(197, 40, 47, 0.35);
+  flex-shrink: 0;
+}
+
+.manuscript-section-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  color: #706657;
+  font-weight: 700;
+}
+
+.manuscript-header-gold-seam {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #D4AF37 0%, transparent 80%);
+  opacity: 0.6;
+}
+
+.manuscript-card-heading {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #17181A;
+  margin: 0.35rem 0 0.2rem;
+  line-height: 1.25;
+}
+
+.manuscript-card-subheading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #6A6052;
+}
+
+/* Callout quote */
+.manuscript-quote-callout {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #F3EBDD;
+  border: 1px solid #E3D6C1;
+  border-left: 3px solid #C5282F;
+  padding: 0.95rem 1.25rem;
+  margin-bottom: 1.35rem;
+  border-radius: 0 3px 3px 0;
+}
+
+.accent-charcoal .manuscript-quote-callout {
+  border-left-color: #24262A;
+}
+
+.quote-brush-leading-bar {
+  display: none;
+}
+
+.quote-body-flex {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.quote-cinnabar-glyph {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  line-height: 0;
+  color: #C5282F;
+  opacity: 0.6;
+}
+
+.accent-charcoal .quote-cinnabar-glyph {
+  color: #40444C;
+}
+
+.quote-callout-text {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #1D1E20;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Book paragraph typography */
+.manuscript-body-text-flow p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.08rem, 1.28vw, 1.22rem);
+  line-height: 1.76;
+  color: #2E2B26;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.01em;
+}
+
+.manuscript-body-text-flow p:last-child {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
    7. ACCESSIBILITY & PREFERS-REDUCED-MOTION OVERRIDES
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
@@ -675,14 +937,21 @@
   .brush-frame-bottom,
   .crimson-brush-bg,
   .ink-brush-heading-bg,
-  .ink-brush-panel-bg {
+  .ink-brush-panel-bg,
+  .ink-manuscript-panel,
+  .manuscript-fold-crease-shadow,
+  .manuscript-brush-borders {
     clip-path: inset(0 0 0 0) !important;
+    transform: none !important;
+    opacity: 1 !important;
     transition: none !important;
   }
 
   .ink-brush-banner-content,
   .washi-brush-panel-content,
   .ink-brush-panel-content,
+  .ink-manuscript-panel,
+  .manuscript-inner-content,
   .ink-panel-statement,
   .ink-panel-divider-rule,
   .ink-panel-desc-wrapper,
