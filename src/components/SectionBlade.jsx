@@ -1,37 +1,57 @@
-import React from 'react';
-import KatanaForgingCinematic from './KatanaForgingCinematic';
-import AnimatedChapterHeading from './AnimatedChapterHeading';
+import React, { useRef } from 'react';
+import VerticalBladeIntro from './VerticalBladeIntro';
+import HistoricalBladeGallery from './HistoricalBladeGallery';
 
+/**
+ * SectionBlade (The History of the Blade — 日本刀の歴史)
+ * -----------------------------------------------------------------------------
+ * Fully integrated museum exhibition replacing the obsolete forging sequence.
+ *
+ * Structure:
+ *  1. Cinematic Scroll Introduction (VerticalBladeIntro):
+ *     - Textured dark parchment background
+ *     - Ink-brush reveal of Japanese title: 鋼に刻まれた歴史
+ *     - Manuscript unfolding of: THE HISTORY OF THE BLADE / A LEGACY FORGED IN STEEL.
+ *     - Detailed Japanese Katana emerges vertically under atmospheric museum spotlight
+ *     - Specular highlight travels along polished steel from kissaki to habaki
+ *     - Historical era metadata & curated collection counter
+ *
+ *  2. Scroll-Driven Historical Sword Gallery (HistoricalBladeGallery):
+ *     - 5 documented Japanese sword exhibits (Mikazuki, Dōjigiri, Heshikiri, Wakizashi, Tantō)
+ *     - Parameterized, physically scaled 2.5D SVG geometry (8.1 SVG units/cm)
+ *     - Saya (scabbard) and steel toggles
+ *     - Measurement guideline projections (nagasa and sori)
+ *     - Enlarge view detail zoom with clear calibration labeling
+ *     - Curated archival notes with direct museum collection links
+ *     - Both scroll-driven exhibit transitions and interactive click/keyboard selection
+ */
 export default function SectionBlade() {
+  const galleryAnchorRef = useRef(null);
+
+  const handleScrollToGallery = () => {
+    if (galleryAnchorRef.current) {
+      galleryAnchorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
-    <section id="blade" className="section-blade">
-      {/* Restrained Outer Edge Maple Silhouette */}
+    <section id="blade" className="section-blade section-blade-museum">
+      {/* Background Japanese Manuscript Ink Seam */}
+      <div className="blade-manuscript-seam-top" aria-hidden="true" />
 
-      <div className="section-container">
-        {/* Section Monument Editorial Header */}
-        <div className="blade-title-row">
-          <div>
-            <AnimatedChapterHeading
-              chapter="blade"
-              sectionLabel="SECTION IV · THE ART OF THE BLADE"
-              primaryText="THE ART OF"
-              accentText="THE BLADE."
-              breakLine={true}
-              className="blade-heading"
-            />
-          </div>
-          <p className="blade-intro-desc">
-            A katana is not merely manufactured—it is awakened through fire, water, and discipline.
-            Scroll downward to witness the master swordsmith guide raw Tamahagane bloom steel through
-            hammering, shaping, and water quenching into a razor-honed masterpiece.
-          </p>
-        </div>
+      <div className="section-container blade-museum-container">
+        {/* 1. Cinematic Scroll Introduction with Vertical Blade Emergence */}
+        <VerticalBladeIntro onScrollToExhibits={handleScrollToGallery} />
+
+        {/* Anchor point for smooth scrolling into the exhibition gallery */}
+        <div ref={galleryAnchorRef} id="gallery-anchor" className="museum-gallery-scroll-anchor" />
+
+        {/* 2. Interactive Curated Historical Blade Gallery (01—05) */}
+        <HistoricalBladeGallery />
       </div>
 
-      {/* Continuous Scroll-Driven Sword Forging Cinematic & Master Katana Anatomy */}
-      <div id="forge" className="forging-cinematic-mount">
-        <KatanaForgingCinematic />
-      </div>
+      {/* Bottom Subtle Transition Seam into Spirit Chapter */}
+      <div className="blade-manuscript-seam-bottom" aria-hidden="true" />
     </section>
   );
 }

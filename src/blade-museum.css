@@ -1,0 +1,1148 @@
+/* --------------------------------------------------------------------------
+   SECTION 04: THE HISTORY OF THE BLADE (日本刀の歴史)
+   Curated Museum Exhibition & Vertical Sword Cinematic
+   -------------------------------------------------------------------------- */
+
+.section-blade-museum {
+  position: relative;
+  background-color: #111615;
+  color: #F6EDDD;
+  padding: clamp(80px, 8vw, 140px) 0 clamp(90px, 9vw, 160px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.section-blade-museum::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image: repeating-linear-gradient(
+    34deg,
+    transparent 0,
+    transparent 10px,
+    #B6AB95 10.5px,
+    transparent 11px
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+}
+
+.blade-manuscript-seam-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.blade-museum-container {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3.5vw, 48px);
+}
+
+.museum-gallery-scroll-anchor {
+  height: 1px;
+  width: 100%;
+  margin: clamp(2rem, 4vw, 4rem) 0;
+  scroll-margin-top: 80px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   1. CINEMATIC VERTICAL BLADE INTRO (VerticalBladeIntro)
+   -------------------------------------------------------------------------- */
+.blade-intro-showcase-stage {
+  position: relative;
+  padding: clamp(30px, 4vw, 60px) 0 clamp(40px, 5vw, 80px);
+  border-bottom: 1px solid rgba(206, 180, 144, 0.22);
+}
+
+.blade-intro-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.blade-intro-light-beam {
+  position: absolute;
+  top: -120px;
+  right: 18%;
+  width: 480px;
+  height: 140%;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(246, 230, 201, 0.16) 0%,
+    rgba(212, 167, 106, 0.05) 50%,
+    transparent 78%
+  );
+  filter: blur(35px);
+  pointer-events: none;
+}
+
+.blade-intro-radial-halo {
+  position: absolute;
+  top: 30%;
+  right: 20%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(197, 40, 47, 0.08) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.blade-intro-ink-wash-texture {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(0deg, rgba(7, 10, 10, 0.6) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.blade-intro-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: clamp(36px, 5.5vw, 84px);
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.blade-intro-text-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.blade-intro-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #D6B790;
+  text-transform: uppercase;
+}
+
+.blade-intro-chapter-badge {
+  color: var(--color-crimson, #C5282F);
+  font-family: var(--font-jp, serif);
+  font-weight: 700;
+}
+
+.blade-intro-eyebrow-divider {
+  width: 28px;
+  height: 1px;
+  background: rgba(214, 183, 144, 0.35);
+}
+
+.blade-intro-eyebrow-en {
+  color: #A99E8E;
+}
+
+.blade-intro-jp-title {
+  font-family: var(--font-jp, serif);
+  font-size: clamp(2.2rem, 3.8vw, 3.8rem);
+  font-weight: 900;
+  color: #F7EEDB;
+  letter-spacing: 0.18em;
+  line-height: 1.15;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+}
+
+.blade-intro-headline {
+  font-family: var(--font-headline, sans-serif);
+  font-size: clamp(2.6rem, 5.2vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  color: #F7EDDE;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.headline-crimson-accent {
+  color: var(--color-crimson, #C5282F);
+}
+
+.blade-intro-subtitle {
+  font-family: var(--font-title, serif);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #D7AB80;
+  text-transform: uppercase;
+}
+
+.blade-intro-narrative {
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  line-height: 1.85;
+  color: #D4C5AF;
+  max-width: 580px;
+  margin: 0;
+}
+
+.blade-intro-metadata-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(206, 180, 144, 0.22);
+  border-bottom: 1px solid rgba(206, 180, 144, 0.22);
+}
+
+.blade-intro-meta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.meta-card-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #B4A38B;
+  text-transform: uppercase;
+}
+
+.meta-card-val {
+  font-family: var(--font-title, serif);
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  color: #F8EFE3;
+  font-weight: 700;
+}
+
+.meta-card-sub {
+  font-size: 0.68rem;
+  color: #9C8E7C;
+  line-height: 1.4;
+}
+
+.blade-intro-action-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.blade-intro-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.6rem;
+  background: linear-gradient(135deg, rgba(197, 40, 47, 0.92), rgba(135, 18, 24, 0.96));
+  border: 1px solid rgba(230, 90, 95, 0.45);
+  color: #FFFFFF;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  box-shadow: 0 10px 28px rgba(197, 40, 47, 0.35);
+  cursor: pointer;
+  transition: all 0.28s ease;
+}
+
+.blade-intro-explore-btn:hover {
+  background: linear-gradient(135deg, rgba(220, 50, 57, 1), rgba(160, 24, 30, 1));
+  box-shadow: 0 14px 34px rgba(197, 40, 47, 0.5);
+  transform: translateY(-2px);
+}
+
+.blade-intro-prompt-note {
+  font-size: 0.72rem;
+  color: #9C907F;
+  letter-spacing: 0.08em;
+}
+
+.blade-intro-sword-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.blade-intro-sword-pedestal {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: radial-gradient(ellipse at 50% 35%, rgba(35, 42, 40, 0.85), rgba(15, 18, 17, 0.95));
+  border: 1px solid rgba(206, 180, 144, 0.3);
+  padding: 2.2rem 1.6rem 1.6rem;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55), inset 0 0 50px rgba(0, 0, 0, 0.65);
+  border-radius: 3px;
+}
+
+.sword-pedestal-glow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 320px;
+  background: radial-gradient(ellipse, rgba(235, 214, 180, 0.14), transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+}
+
+.blade-vertical-svg-host {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.blade-vertical-svg {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.65));
+}
+
+.blade-vertical-specular {
+  pointer-events: none;
+}
+
+.sword-pedestal-caption {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(206, 180, 144, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+  z-index: 2;
+}
+
+.pedestal-kicker {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: var(--color-crimson, #C5282F);
+  text-transform: uppercase;
+}
+
+.pedestal-title {
+  font-family: var(--font-title, serif);
+  font-size: 0.88rem;
+  color: #F5EADB;
+  letter-spacing: 0.1em;
+}
+
+.pedestal-sub {
+  font-size: 0.68rem;
+  color: #9C8E7C;
+}
+
+/* --------------------------------------------------------------------------
+   2. HISTORICAL BLADE GALLERY (HistoricalBladeGallery)
+   -------------------------------------------------------------------------- */
+.museum-gallery-shell {
+  border: 1px solid rgba(206, 180, 144, 0.38);
+  background: linear-gradient(130deg, #1E2422, #151A19 48%, #202423);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.3), 0 0 0 7px rgba(220, 195, 157, 0.025);
+  position: relative;
+  isolation: isolate;
+  border-radius: 2px;
+}
+
+.museum-gallery-shell::before {
+  content: '';
+  inset: 10px;
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid rgba(207, 181, 142, 0.14);
+  z-index: 0;
+}
+
+.museum-gallery-kicker,
+.museum-gallery-bottomline {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 13px clamp(18px, 2.8vw, 42px);
+  font-size: 0.66rem;
+  letter-spacing: 0.17em;
+  font-weight: 700;
+  color: #D1B790;
+  border-bottom: 1px solid rgba(203, 176, 138, 0.22);
+  position: relative;
+  z-index: 1;
+}
+
+.museum-gallery-bottomline {
+  border-top: 1px solid rgba(203, 176, 138, 0.22);
+  border-bottom: none;
+  color: #A89E8C;
+}
+
+.museum-gallery-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left Rail: 5 Sword Selection Navigation */
+.museum-collection-rail {
+  padding: 24px 0 18px;
+  background: rgba(7, 10, 10, 0.42);
+  border-right: 1px solid rgba(209, 182, 142, 0.22);
+  min-width: 0;
+}
+
+.museum-rail-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #D6B790;
+  margin: 0 23px 17px;
+}
+
+.museum-collection-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 22px;
+  gap: 12px;
+  align-items: start;
+  text-align: left;
+  border: 0;
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid rgba(204, 191, 167, 0.11);
+  color: #D5C9B7;
+  background: transparent;
+  cursor: pointer;
+  padding: 17px 14px 15px 20px;
+  transition: border-color 0.28s ease, background 0.28s ease, color 0.28s ease;
+}
+
+.museum-collection-item:hover,
+.museum-collection-item:focus-visible {
+  background: rgba(219, 178, 123, 0.08);
+  outline: none;
+}
+
+.museum-collection-item.is-active {
+  background: linear-gradient(100deg, rgba(197, 40, 47, 0.22), rgba(197, 40, 47, 0.02));
+  border-left-color: var(--color-crimson, #C5282F);
+  color: #FFF3DC;
+}
+
+.museum-collection-number {
+  color: #BE9C71;
+  font-family: var(--font-title, serif);
+  font-size: 1rem;
+}
+
+.museum-collection-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.museum-collection-name {
+  font-family: var(--font-title, serif);
+  font-size: clamp(1.04rem, 1.2vw, 1.3rem);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.museum-collection-type {
+  font-size: 0.54rem;
+  letter-spacing: 0.09em;
+  color: #A6A194;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.museum-collection-jp {
+  writing-mode: vertical-rl;
+  font-family: var(--font-jp, serif);
+  color: #B7A68D;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+.blade-collection-mini {
+  width: 90%;
+  max-width: 156px;
+  height: 35px;
+  margin-top: 2px;
+  opacity: 0.68;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.museum-collection-item.is-active .blade-collection-mini {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+.museum-rail-footnote {
+  padding: 20px 24px 0;
+  color: #8F8A7F;
+  font-size: 0.69rem;
+  line-height: 1.65;
+}
+
+/* Right Column: Main Exhibition Display Stage */
+.museum-gallery-display {
+  padding: clamp(24px, 3.2vw, 52px);
+  min-width: 0;
+  position: relative;
+}
+
+.museum-display-topline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #BCA88D;
+}
+
+.museum-red-mark {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-crimson, #C5282F);
+  margin-right: 8px;
+}
+
+.museum-display-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin: 28px 0 22px;
+}
+
+.museum-display-category {
+  display: block;
+  color: #CF9E78;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: 0.68rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.museum-display-name {
+  font-family: var(--font-title, serif);
+  font-size: clamp(2.4rem, 4.4vw, 4.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-weight: 600;
+  color: #F3EADB;
+  margin: 0 0 7px;
+}
+
+.museum-display-japanese {
+  font-family: var(--font-jp, serif);
+  font-size: clamp(1rem, 1.3vw, 1.45rem);
+  color: #D2AD8C;
+}
+
+.museum-display-period {
+  color: #988E7D;
+  text-align: right;
+  max-width: 240px;
+  line-height: 1.6;
+  font-size: 0.74rem;
+}
+
+/* 2.5D Interactive Sword Exhibit Stage */
+.museum-blade-stage {
+  min-height: 260px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(ellipse at 42% 30%, #3A4140 0%, #292E2C 43%, #171C1C 77%, #0D1213 100%);
+  border: 1px solid rgba(205, 181, 145, 0.26);
+  perspective: 1300px;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.museum-blade-stage::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  border: 1px solid rgba(201, 176, 145, 0.16);
+  z-index: 1;
+}
+
+.museum-blade-stage-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 55% 35%, rgba(249, 224, 189, 0.06), transparent 55%);
+  animation: museumLightFloat 9s ease-in-out infinite;
+}
+
+.museum-blade-art-transform {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  transform: rotateX(var(--gallery-tilt-x, 0deg)) rotateY(var(--gallery-tilt-y, 0deg)) scale(var(--blade-art-zoom, 1));
+  transition: transform 0.5s ease-out;
+}
+
+.museum-blade-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 20px 18px rgba(0, 0, 0, 0.45));
+}
+
+.museum-blade-artifact {
+  transform-origin: 600px 220px;
+  animation: museumSwordBreath 8.4s ease-in-out infinite;
+}
+
+.museum-blade-specular {
+  animation: museumSwordGlint 6s ease-in-out infinite;
+}
+
+.museum-blade-stage-seal {
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  font-family: var(--font-jp, serif);
+  font-size: clamp(2.8rem, 4vw, 4.8rem);
+  font-weight: 900;
+  color: rgba(197, 40, 47, 0.22);
+  z-index: 1;
+}
+
+.museum-blade-stage-bottom {
+  position: absolute;
+  z-index: 3;
+  left: clamp(10px, 2vw, 28px);
+  right: clamp(10px, 2vw, 28px);
+  bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: #A49684;
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  pointer-events: none;
+}
+
+.museum-blade-measurement text {
+  font-family: var(--font-body, sans-serif);
+}
+
+/* Toolstrip Controls */
+.museum-gallery-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 26px;
+}
+
+.museum-gallery-tools > button,
+.museum-gallery-arrows button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(214, 194, 165, 0.28);
+  background: rgba(238, 224, 199, 0.04);
+  color: #E4D8C8;
+  padding: 11px 14px;
+  font-weight: 700;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  min-height: 40px;
+  cursor: pointer;
+  transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+  border-radius: 2px;
+}
+
+.museum-gallery-tools button:hover,
+.museum-gallery-tools button:focus-visible {
+  background: rgba(206, 169, 127, 0.14);
+  border-color: #C1A783;
+  transform: translateY(-1px);
+}
+
+.museum-gallery-tools button[aria-pressed="true"] {
+  color: #F4CDA0;
+  border-color: #A68862;
+  background: rgba(206, 169, 127, 0.18);
+}
+
+.museum-gallery-arrows {
+  display: flex;
+  margin-left: auto;
+  gap: 8px;
+}
+
+.museum-gallery-arrows button {
+  width: 42px;
+  padding: 0;
+}
+
+/* Scroll-Triggered Manuscript Narrative Panel */
+.museum-gallery-narrative {
+  padding: 28px 30px;
+  border: 1px solid rgba(206, 180, 144, 0.22);
+  background: linear-gradient(145deg, #2B2C27, #222622);
+  border-radius: 2px;
+}
+
+.museum-specimen-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  border-bottom: 1px solid rgba(207, 182, 147, 0.22);
+  padding-bottom: 24px;
+}
+
+.museum-specimen-ledger > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.museum-specimen-ledger span {
+  color: #B4A38B;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.museum-specimen-ledger strong {
+  font-family: var(--font-title, serif);
+  font-weight: 600;
+  color: #FBF0DD;
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  line-height: 1.1;
+  margin: 9px 0 4px;
+}
+
+.museum-specimen-ledger strong small {
+  font-family: var(--font-body, sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.museum-specimen-ledger .museum-specimen-maker {
+  font-family: var(--font-title, serif);
+  font-size: clamp(1.2rem, 1.6vw, 1.9rem);
+  line-height: 1.25;
+}
+
+.museum-specimen-ledger em {
+  color: #B3AA9B;
+  font-size: 0.69rem;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.museum-specimen-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.museum-specimen-copy p {
+  color: #D7CCBC;
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+
+.museum-specimen-copy .museum-specimen-disclaimer {
+  color: #ADA18D;
+  font-size: 0.75rem;
+}
+
+/* Curator Notes Modal Panel */
+.museum-sources-panel {
+  margin-top: 16px;
+  border: 1px solid rgba(204, 168, 121, 0.35);
+  padding: 24px 28px;
+  background: #F0E7D6;
+  color: #25241F;
+  border-radius: 2px;
+}
+
+.museum-sources-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.museum-sources-heading button {
+  margin-left: auto;
+  border: 1px solid #B4A086;
+  background: transparent;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.museum-verified-facts {
+  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.museum-verified-facts span {
+  background: #DED0B7;
+  color: #26231F;
+  padding: 7px 10px;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.museum-sources-panel p {
+  line-height: 1.7;
+  font-size: 0.82rem;
+  margin-bottom: 13px;
+  color: #38342D;
+}
+
+.museum-sources-panel a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: #78282E;
+}
+
+/* Animations */
+@keyframes museumSwordBreath {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-0.28deg);
+  }
+}
+
+@keyframes museumSwordGlint {
+  0%, 100% {
+    opacity: 0.22;
+  }
+  45% {
+    opacity: 0.85;
+  }
+  65% {
+    opacity: 0.48;
+  }
+}
+
+@keyframes museumLightFloat {
+  0%, 100% {
+    opacity: 0.55;
+    transform: translateX(-3%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(3%);
+  }
+}
+
+/* Manuscript Scroll Reveal */
+.manuscript-scroll-target {
+  transition: opacity 0.95s cubic-bezier(0.17, 0.79, 0.25, 1),
+              clip-path 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  clip-path: inset(0 0 0 0);
+}
+
+.manuscript-scroll-target.manuscript-awaiting:not(.manuscript-revealed) {
+  opacity: 0;
+  clip-path: inset(0 0 94% 0);
+  transform: perspective(1100px) translateY(32px) rotateX(-4deg);
+}
+
+.manuscript-scroll-target.manuscript-revealed {
+  animation: manuscriptPaperSettle 1.2s cubic-bezier(0.17, 0.79, 0.25, 1) both;
+}
+
+@keyframes manuscriptPaperSettle {
+  0% {
+    filter: sepia(0.2) brightness(0.92);
+  }
+  50% {
+    filter: sepia(0.075) brightness(1.03);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE DESIGN BREAKPOINTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 1160px) {
+  .blade-intro-content-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 36px;
+  }
+
+  .museum-gallery-layout {
+    grid-template-columns: minmax(220px, 270px) minmax(0, 1fr);
+  }
+
+  .museum-gallery-display {
+    padding: 28px;
+  }
+
+  .museum-specimen-ledger {
+    gap: 14px;
+  }
+
+  .museum-display-name {
+    font-size: clamp(2.1rem, 4.5vw, 3.8rem);
+  }
+}
+
+@media (max-width: 960px) {
+  .blade-intro-content-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .blade-intro-sword-column {
+    order: -1;
+  }
+
+  .blade-vertical-svg-host {
+    height: 400px;
+  }
+
+  .museum-gallery-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-collection-rail {
+    border-right: 0;
+    border-bottom: 1px solid rgba(209, 182, 142, 0.22);
+    padding: 16px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .museum-rail-label {
+    margin: 0 19px 10px;
+    flex-basis: 100%;
+  }
+
+  .museum-collection-item {
+    flex: 1 1 145px;
+    width: auto;
+    min-width: 0;
+    padding: 12px 12px;
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+
+  .museum-collection-jp {
+    display: none;
+  }
+
+  .museum-collection-name {
+    font-size: 1rem;
+  }
+
+  .museum-collection-type {
+    font-size: 0.5rem;
+  }
+
+  .museum-rail-footnote {
+    flex-basis: 100%;
+    margin: 0;
+    padding: 12px 18px 0;
+  }
+
+  .museum-gallery-display {
+    padding: clamp(18px, 4vw, 32px);
+  }
+}
+
+@media (max-width: 640px) {
+  .section-blade-museum {
+    padding: 70px 0 90px;
+  }
+
+  .blade-intro-jp-title {
+    font-size: 2rem;
+  }
+
+  .blade-intro-headline {
+    font-size: 2.4rem;
+  }
+
+  .blade-intro-metadata-row {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .blade-vertical-svg-host {
+    height: 320px;
+  }
+
+  .blade-intro-explore-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .museum-gallery-kicker,
+  .museum-gallery-bottomline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 0.55rem;
+    padding: 14px 16px;
+  }
+
+  .museum-gallery-shell::before {
+    inset: 6px;
+  }
+
+  .museum-collection-rail {
+    padding: 10px 0;
+  }
+
+  .museum-collection-item {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 120px;
+  }
+
+  .museum-display-heading {
+    margin: 18px 0 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .museum-display-period {
+    text-align: left;
+  }
+
+  .museum-display-name {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .museum-blade-stage {
+    min-height: 180px;
+  }
+
+  .museum-blade-stage-bottom {
+    bottom: 8px;
+    font-size: 0.46rem;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .museum-blade-stage-seal {
+    top: 8px;
+    right: 14px;
+  }
+
+  .museum-gallery-tools {
+    gap: 6px;
+    margin: 12px 0 16px;
+  }
+
+  .museum-gallery-tools > button {
+    font-size: 0.56rem;
+    padding: 8px 10px;
+    min-height: 36px;
+  }
+
+  .museum-gallery-arrows {
+    margin-left: 0;
+  }
+
+  .museum-gallery-arrows button {
+    width: 36px;
+    min-height: 36px;
+  }
+
+  .museum-gallery-narrative {
+    padding: 18px 16px;
+  }
+
+  .museum-specimen-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .museum-specimen-ledger > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .museum-specimen-copy {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .museum-sources-panel {
+    padding: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .museum-blade-artifact,
+  .museum-blade-specular,
+  .museum-blade-stage-light,
+  .blade-intro-light-beam,
+  .manuscript-scroll-target.manuscript-revealed {
+    animation: none !important;
+  }
+
+  .manuscript-scroll-target.manuscript-awaiting {
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+
+  .museum-blade-art-transform {
+    transition: none !important;
+  }
+}

@@ -7,7 +7,6 @@ import SectionLegacy from './components/SectionLegacy';
 import SectionBushido from './components/SectionBushido';
 import SectionWarriors from './components/SectionWarriors';
 import SectionBlade from './components/SectionBlade';
-import KatanaForgingCinematic from './components/KatanaForgingCinematic';
 import SectionSpirit from './components/SectionSpirit';
 import SectionCTA from './components/SectionCTA';
 import SectionMonument from './components/SectionMonument';
@@ -43,7 +42,7 @@ export default function App() {
           {onlySection === 'bushido' && <SectionBushido />}
           {onlySection === 'warriors' && <SectionWarriors />}
           {onlySection === 'blade' && <SectionBlade />}
-          {onlySection === 'forge' && <KatanaForgingCinematic />}
+          {onlySection === 'forge' && <SectionBlade />}
           {onlySection === 'spirit' && <SectionSpirit />}
           {onlySection === 'monument' && <SectionMonument />}
           {onlySection === 'cta' && <SectionCTA onExploreLegacy={() => {}} />}
