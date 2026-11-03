@@ -5211,6 +5211,186 @@ svg {
   z-index: 5;
 }
 
+/* --- LIVING SAKURA LANDSCAPE: CINEMATIC CRIMSON SUN & ATMOSPHERE --- */
+.sakura-sun-group {
+  will-change: transform, opacity;
+}
+
+.sakura-sun-breathe-container {
+  transform-origin: 380px 280px;
+  animation: sakuraSunBreathe 9s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraSunBreathe {
+  0% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+  100% {
+    transform: scale(1.014);
+    opacity: 1;
+  }
+}
+
+.sakura-sun-glow-outer {
+  transform-origin: 380px 280px;
+  animation: sakuraSunGlowOuter 8s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraSunGlowOuter {
+  0% {
+    opacity: 0.42;
+    transform: scale(0.985);
+  }
+  100% {
+    opacity: 0.72;
+    transform: scale(1.025);
+  }
+}
+
+.sakura-sun-glow-mid {
+  transform-origin: 380px 280px;
+  animation: sakuraSunGlowMid 6.5s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraSunGlowMid {
+  0% {
+    opacity: 0.60;
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 0.88;
+    transform: scale(1.018);
+  }
+}
+
+.sakura-sun-rotating-texture {
+  transform-origin: 380px 280px;
+  animation: sakuraSunTextureRotate 120s linear infinite;
+  will-change: transform;
+}
+
+@keyframes sakuraSunTextureRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Atmospheric Mist Drift */
+.sakura-mist-layer-1 {
+  animation: sakuraMistDrift1 36s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes sakuraMistDrift1 {
+  0% {
+    transform: translateX(-24px);
+    opacity: 0.72;
+  }
+  100% {
+    transform: translateX(32px);
+    opacity: 0.88;
+  }
+}
+
+.sakura-mist-layer-2 {
+  animation: sakuraMistDrift2 48s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes sakuraMistDrift2 {
+  0% {
+    transform: translateX(28px);
+    opacity: 0.64;
+  }
+  100% {
+    transform: translateX(-32px);
+    opacity: 0.82;
+  }
+}
+
+/* Ink Birds Flight Dynamics */
+.sakura-bird-soar-1 {
+  animation: sakuraBirdDrift1 22s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraBirdDrift1 {
+  0% {
+    transform: translate(88px, 355px) scale(0.95);
+  }
+  50% {
+    transform: translate(115px, 338px) scale(0.92);
+  }
+  100% {
+    transform: translate(88px, 355px) scale(0.95);
+  }
+}
+
+.sakura-bird-soar-2 {
+  animation: sakuraBirdDrift2 26s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraBirdDrift2 {
+  0% {
+    transform: translate(268px, 248px) scale(0.85);
+  }
+  50% {
+    transform: translate(290px, 235px) scale(0.82);
+  }
+  100% {
+    transform: translate(268px, 248px) scale(0.85);
+  }
+}
+
+.sakura-bird-soar-3 {
+  animation: sakuraBirdDrift3 20s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraBirdDrift3 {
+  0% {
+    transform: translate(306px, 282px) scale(0.72);
+  }
+  50% {
+    transform: translate(328px, 270px) scale(0.70);
+  }
+  100% {
+    transform: translate(306px, 282px) scale(0.72);
+  }
+}
+
+.sakura-bird-wing-left {
+  transform-box: fill-box;
+  transform-origin: right bottom;
+  animation: sakuraWingFlapLeft 2.4s ease-in-out infinite alternate;
+}
+
+.sakura-bird-wing-right {
+  transform-box: fill-box;
+  transform-origin: left bottom;
+  animation: sakuraWingFlapRight 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraWingFlapLeft {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-16deg);
+  }
+}
+
+@keyframes sakuraWingFlapRight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(16deg);
+  }
+}
+
 .spirit-season-toggle-pill {
   position: absolute;
   top: 20px;
@@ -5982,6 +6162,17 @@ svg {
   .spirit-landscape-svg .archive-sun-halo,
   .spirit-landscape-svg .archive-foreground-drift,
   .spirit-landscape-svg .archive-petal-drift,
+  .sakura-sun-breathe-container,
+  .sakura-sun-glow-outer,
+  .sakura-sun-glow-mid,
+  .sakura-sun-rotating-texture,
+  .sakura-mist-layer-1,
+  .sakura-mist-layer-2,
+  .sakura-bird-soar-1,
+  .sakura-bird-soar-2,
+  .sakura-bird-soar-3,
+  .sakura-bird-wing-left,
+  .sakura-bird-wing-right,
   .zen-sun-breathe-container,
   .zen-sun-rotating-rim,
   .zen-sun-glow-outer,
