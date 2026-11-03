@@ -5129,9 +5129,9 @@ svg {
 /* 2. Master Two-Column Balanced Composition (Reference Composition) */
 .spirit-botanical-showcase-grid {
   display: grid;
-  grid-template-columns: 44% 56%;
+  grid-template-columns: 48% 52%;
   gap: clamp(2rem, 3.2vw, 3.75rem);
-  align-items: start;
+  align-items: center;
   position: relative;
 }
 
@@ -5145,13 +5145,12 @@ svg {
 .spirit-visual-frame-card {
   position: relative;
   width: 100%;
-  border-radius: 24px;
+  border-radius: 20px;
   overflow: hidden;
-  background: #DFE4E3;
-  box-shadow: 0 16px 40px -12px rgba(20, 25, 22, 0.15), 0 1px 3px rgba(20, 25, 22, 0.06);
-  aspect-ratio: 735 / 1050;
-  max-height: 800px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: radial-gradient(circle at 50% 45%, #FAF4E8 0%, #F5ECE0 65%, #EFE3D5 100%);
+  box-shadow: 0 16px 40px -12px rgba(20, 25, 22, 0.12), 0 1px 3px rgba(20, 25, 22, 0.05);
+  aspect-ratio: 1024 / 935;
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Floating Bookmark Button on Top Right (From Reference Image) */
@@ -5170,7 +5169,7 @@ svg {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
+  z-index: 15;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -5190,6 +5189,189 @@ svg {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   LIVING SAKURA TREE 2.5D BOTANICAL RECONSTRUCTION (AUTHENTIC SUMI-E)
+   -------------------------------------------------------------------------- */
+.sakura-interactive-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+}
+
+.sakura-aspect-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1024 / 935;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #FAF4E8 0%, #F5ECE0 65%, #EFE3D5 100%);
+}
+
+/* Base layer positioning (all layers map to 1024 x 935 coordinate space) */
+.sakura-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Washi Parchment Sky Ground */
+.sakura-parchment-sky {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 52% 44%, #FAF4E8 0%, #F6EDE0 55%, #EFE1D2 100%);
+  z-index: 1;
+}
+
+/* Distant Misty Mountains, Pagoda & Valley */
+.sakura-layer-mountains {
+  z-index: 2;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+
+/* Living Crimson Sun Container & Breathing Halo */
+.sakura-sun-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.sakura-sun-halo-glow {
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  margin-left: -220px;
+  margin-top: -220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 32, 43, 0.45) 0%, rgba(200, 32, 43, 0.15) 55%, transparent 75%);
+  filter: blur(28px);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.sakura-sun-img {
+  z-index: 3;
+}
+
+/* Valley Mist Bands */
+.sakura-valley-mist-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 56%;
+  height: 18%;
+  background: linear-gradient(180deg, transparent 0%, rgba(250, 244, 232, 0.55) 50%, transparent 100%);
+  filter: blur(14px);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Stationary Weathered Granite Crag & Nebari Roots */
+.sakura-layer-rock {
+  z-index: 5;
+}
+
+/* Living Hierarchical Botanical Tree Rig */
+.sakura-trunk-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.sakura-trunk-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Primary Left Bough */
+.sakura-bough-left-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.sakura-branch-left-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Primary Upper Crown */
+.sakura-bough-upper-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.sakura-branch-upper-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Primary Right Arching Bough & Weeping Cascade */
+.sakura-bough-right-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.sakura-branch-right-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Seasonal Momiji Color Grading (if toggled) */
+.sakura-trunk-rig.season-momiji .sakura-branch-left-img,
+.sakura-trunk-rig.season-momiji .sakura-branch-upper-img,
+.sakura-trunk-rig.season-momiji .sakura-branch-right-img {
+  filter: hue-rotate(180deg) saturate(1.25) brightness(1.05);
+}
+
+/* Falling Sakura Petals Canvas */
+.sakura-falling-petals-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .sakura-botanical-root {
@@ -5584,7 +5766,8 @@ svg {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: var(--color-crimson);
+  color: #FFFFFF !important;
+  padding: 0.25rem 0.85rem;
 }
 
 .meditation-location-badge {

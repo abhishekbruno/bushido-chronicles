@@ -5,6 +5,7 @@ export { default as InkQuotePanel } from './InkQuotePanel';
 export { default as InkBrushHeading } from './InkBrushHeading';
 export { default as InkBrushTextPanel } from './InkBrushTextPanel';
 export { default as InkManuscriptPanel } from './InkManuscriptPanel';
+export { default as HonorLegacyManuscript } from './HonorLegacyManuscript';
 export { default as useInkReveal } from './useInkReveal';
 
 

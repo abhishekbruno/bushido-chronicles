@@ -2196,200 +2196,526 @@
 /* --------------------------------------------------------------------------
    7. CHAPTER 05 — THE LEGACY OF HONOR (ENDURING RESIDUE & MEDITATION)
    -------------------------------------------------------------------------- */
-.honor-legacy-pillars-grid {
+.honor-legacy-experience {
+  position: relative;
+}
+
+.legacy-display-heading {
+  font-family: 'Anton', 'Cinzel', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+  text-transform: uppercase;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: #171714;
+  margin-bottom: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.32em;
+}
+
+.legacy-heading-brush-underline {
+  width: 100%;
+  max-width: 440px;
+  height: 3px;
+  background: linear-gradient(90deg, #C5282F 0%, #D4AF37 55%, rgba(212, 175, 55, 0.25) 85%, transparent 100%);
+  margin-bottom: 1.25rem;
+  transform-origin: 0% 50%;
+}
+
+.word-honor-accent {
+  position: relative;
+  color: #141517;
+}
+
+/* Three Asymmetrical Washi-Paper Manuscripts */
+.honor-legacy-manuscripts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.75rem;
-  margin-bottom: 3rem;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+  margin-bottom: 3.5rem;
+  align-items: stretch;
 }
 
-.legacy-pillar-card {
-  background: #FCF8F0;
-  border: 1px solid #D6C8AF;
-  border-radius: 4px;
-  padding: 2rem 1.75rem;
+.legacy-manuscript-perspective-stage {
+  perspective: 1200px;
+  width: 100%;
+  height: 100%;
+}
+
+.legacy-manuscript-panel {
   position: relative;
-  transition: all 0.25s ease;
+  background: #FCF8F1;
+  border: 1px solid #D8CBB6;
+  border-radius: 3px;
+  padding: clamp(1.85rem, 2.5vw, 2.5rem);
+  box-shadow: 
+    inset 0 0 45px rgba(214, 200, 175, 0.22),
+    0 10px 28px rgba(35, 30, 24, 0.05);
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.legacy-pillar-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(35, 30, 24, 0.08);
-  border-color: #C5282F;
+.legacy-manuscript-inner-content {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.pillar-top-meta {
+.legacy-manuscript-header {
+  margin-bottom: 1.35rem;
+  border-bottom: 1px solid #E6D8BF;
+  padding-bottom: 1.25rem;
+}
+
+.manuscript-header-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.95rem;
 }
 
-.pillar-index-num {
-  font-family: 'Anton', sans-serif;
-  font-size: 1.25rem;
-  color: #C5282F;
+/* Sumi-e Brushstroke Container behind Chapter Number & Kanji */
+.manuscript-brush-pill-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 1rem 0.4rem 0.85rem;
+  isolation: isolate;
 }
 
-.pillar-kanji-glyph {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.25rem;
-  font-weight: 900;
-  color: #17181A;
+.brush-badge-svg {
+  position: absolute;
+  inset: -4px -8px -6px -6px;
+  width: calc(100% + 14px);
+  height: calc(100% + 10px);
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
 }
 
-.pillar-title {
+.brush-badge-text-lockup {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.brush-badge-num {
   font-family: 'Cinzel', serif;
-  font-size: 1.15rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #E63842;
+  letter-spacing: 0.08em;
+}
+
+.brush-badge-dot {
+  color: #8C7E6C;
+  font-size: 0.75rem;
+}
+
+.brush-badge-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #FAF4E8;
+  letter-spacing: 0.05em;
+}
+
+.manuscript-cinnabar-hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.82rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(197, 40, 47, 0.35);
+  flex-shrink: 0;
+}
+
+.manuscript-title-motif-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.manuscript-title-pack {
+  flex: 1;
+}
+
+.legacy-manuscript-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
   font-weight: 700;
   letter-spacing: 0.06em;
   color: #17181A;
-  margin-bottom: 0.35rem;
+  margin: 0 0 0.35rem;
+  line-height: 1.25;
 }
 
-.pillar-subtitle {
+.legacy-manuscript-subtitle {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
-  font-size: 1.1rem;
-  color: #655E52;
-  margin-bottom: 1.15rem;
+  font-size: 1.08rem;
+  color: #5D5447;
+  line-height: 1.35;
 }
 
-.pillar-desc {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.15rem;
-  line-height: 1.65;
-  color: #35332F;
+.manuscript-vector-motif-pod {
+  flex-shrink: 0;
+}
+
+.motif-circle-medallion {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #22242A 0%, #111215 100%);
+  border: 1px solid #D4AF37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(17, 18, 21, 0.25);
+}
+
+.legacy-motif-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.legacy-manuscript-divider-seam {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.divider-gold-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #D4AF37 0%, transparent 90%);
+  opacity: 0.55;
+}
+
+.legacy-manuscript-divider-seam .divider-gold-line:last-child {
+  background: linear-gradient(270deg, #D4AF37 0%, transparent 90%);
+}
+
+.divider-kanji-glyph {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: #C5282F;
+}
+
+.legacy-manuscript-body {
+  flex: 1;
   margin-bottom: 1.5rem;
 }
 
-.pillar-bottom-tag {
+.legacy-manuscript-paragraph {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.1rem, 1.3vw, 1.24rem);
+  line-height: 1.76;
+  color: #2E2B26;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.legacy-manuscript-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #E6D8BF;
+  padding-top: 1rem;
+  margin-top: auto;
+}
+
+.footer-theme-tag {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Cinzel', serif;
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  color: #7A7062;
-  font-weight: 700;
-  padding-top: 1rem;
-  border-top: 1px solid #E8DCBE;
 }
 
-.pillar-dot {
+.footer-theme-dot {
   width: 5px;
   height: 5px;
   background: #C5282F;
   border-radius: 50%;
 }
 
-/* Zen Meditation Final Reflection Card */
-.honor-legacy-zen-meditation {
-  position: relative;
+.footer-theme-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: #6E6352;
+  font-weight: 700;
 }
 
-.meditation-washi-box {
-  background: #17181A;
-  color: #FAF4E8;
-  border-radius: 6px;
-  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 25px 60px rgba(18, 19, 21, 0.4);
+.footer-archive-stamp {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.meditation-washi-box::before {
-  content: '';
-  position: absolute;
-  top: -150px;
-  right: -100px;
-  width: 450px;
-  height: 450px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(197, 40, 47, 0.28) 0%, transparent 70%);
-  pointer-events: none;
+.footer-stamp-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: #8C7E6C;
 }
 
-.meditation-crest-seal {
+.footer-stamp-mini {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  border: 2px solid #C5282F;
-  background: rgba(197, 40, 47, 0.15);
-  border-radius: 3px;
-  margin-bottom: 1.75rem;
-}
-
-.crest-seal-kanji {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.95rem;
-  font-weight: 900;
-  color: #C5282F;
-}
-
-.meditation-quote-body {
-  max-width: 960px;
-  position: relative;
-  z-index: 2;
-  margin-bottom: 2rem;
-}
-
-.meditation-quote-mark {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 4rem;
-  line-height: 1;
-  color: #C5282F;
-  display: block;
-  margin-bottom: -1rem;
-}
-
-.meditation-statement {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1.3rem, 1.8vw, 1.65rem);
-  line-height: 1.65;
+  width: 16px;
+  height: 16px;
+  background: #C5282F;
   color: #FAF4E8;
-  font-style: italic;
-  margin: 0 0 1.5rem;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.58rem;
+  font-weight: 900;
+  border-radius: 2px;
 }
 
-.meditation-author {
-  display: block;
+/* Cinematic Sumi-e Closing Meditation Quotation Panel */
+.honor-legacy-closing-manuscript {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.closing-manuscript-surface {
+  position: relative;
+  background: linear-gradient(135deg, #18191D 0%, #0F1013 100%);
+  border: 1px solid #33363D;
+  border-radius: 4px;
+  padding: clamp(2.5rem, 5vw, 4.25rem) clamp(2rem, 5vw, 4.5rem);
+  box-shadow: 
+    0 25px 60px rgba(10, 11, 14, 0.45),
+    inset 0 0 80px rgba(0, 0, 0, 0.6);
+  color: #FAF4E8;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Organic sumi-e paint stroke background layer */
+.closing-brush-bg-layer {
+  position: absolute;
+  inset: -10px -20px;
+  width: calc(100% + 40px);
+  height: calc(100% + 20px);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+.closing-brush-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.closing-manuscript-inner {
+  position: relative;
+  z-index: 3;
+}
+
+.closing-header-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.closing-hanko-pod {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.closing-cinnabar-hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.65rem;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.88rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(197, 40, 47, 0.5);
+  letter-spacing: 0.08em;
+}
+
+.closing-jp-kanji-sub {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.82rem;
+  color: #E2C26E;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.closing-gold-seam {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #D4AF37 0%, transparent 90%);
+  opacity: 0.5;
+}
+
+.closing-kicker-tag {
   font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  color: #B2A796;
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  color: #A39B8B;
+  font-weight: 700;
+}
+
+.closing-quote-body {
+  position: relative;
+  max-width: 980px;
+  margin-bottom: 2.25rem;
+}
+
+.closing-quote-glyph-mark {
+  font-family: 'Cinzel', serif;
+  font-size: 3.5rem;
+  line-height: 0;
+  color: #C5282F;
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.closing-quote-statement {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  line-height: 1.58;
+  color: #F8F3E8;
+  font-style: italic;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.015em;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.closing-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.5rem;
+}
+
+.closing-author-citation {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  color: #B5AC9C;
   font-style: normal;
   font-weight: 700;
 }
 
-.meditation-actions {
-  position: relative;
-  z-index: 2;
+.citation-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #C5282F;
 }
 
+/* Redesigned Japanese Archival Action Button */
 .btn-honor-continue {
   display: inline-flex;
   align-items: center;
   gap: 0.85rem;
-  padding: 0.95rem 2rem;
-  background: #C5282F;
-  color: #FFFFFF;
-  border: none;
+  padding: 1.1rem 2.25rem;
+  background: linear-gradient(135deg, #C5282F 0%, #9E1B21 100%);
+  color: #FAF4E8;
+  border: 1px solid #D4AF37;
   border-radius: 3px;
   font-family: 'Cinzel', serif;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 18px rgba(197, 40, 47, 0.4);
 }
 
 .btn-honor-continue:hover {
-  background: #E5353D;
-  transform: translateX(6px);
-  box-shadow: 0 6px 20px rgba(197, 40, 47, 0.45);
+  background: linear-gradient(135deg, #E5353D 0%, #B82027 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(229, 53, 61, 0.5);
+  border-color: #F0D58C;
+}
+
+.btn-text-primary {
+  letter-spacing: 0.16em;
+}
+
+.btn-text-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.74rem;
+  color: #FFD2D6;
+  opacity: 0.9;
+  margin-left: 0.25rem;
+}
+
+.btn-arrow-icon {
+  transition: transform 0.25s ease;
+}
+
+.btn-honor-continue:hover .btn-arrow-icon {
+  transform: translateX(4px);
+}
+
+/* Subtle Dissolve Seam into Next Section */
+.legacy-terminus-transition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+  padding-bottom: 1rem;
+}
+
+.terminus-brush-line {
+  flex: 1;
+  max-width: 240px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #B38A22 60%, transparent 100%);
+  opacity: 0.45;
+}
+
+.terminus-seal-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: #8C7F6D;
+  font-weight: 700;
 }
 
 /* --------------------------------------------------------------------------
@@ -2457,6 +2783,13 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+  .honor-legacy-manuscripts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .legacy-manuscript-item.item-index-2 {
+    grid-column: span 2;
+  }
   .conflict-hero-meta {
     flex-direction: column;
     gap: 1.25rem;
@@ -2493,6 +2826,19 @@
   .honor-dilemma-selector-bar {
     grid-template-columns: 1fr;
   }
+  .honor-legacy-manuscripts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .legacy-manuscript-item.item-index-2 {
+    grid-column: span 1;
+  }
+  .closing-header-row,
+  .closing-footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -2526,6 +2872,13 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+  .btn-honor-continue {
+    width: 100%;
+    justify-content: center;
+  }
+  .legacy-terminus-transition {
+    gap: 0.75rem;
   }
 }
 
