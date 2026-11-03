@@ -3,55 +3,50 @@ import { windSystem } from '../utils/windSystem';
 import { sound } from '../utils/soundEngine';
 
 /**
- * SakuraTree (桜と紅葉 — Classical Living Japanese Landscape)
+ * SakuraTree (桜と紅葉 — Living Connected Japanese Bonsai Masterpiece)
  * -----------------------------------------------------------------------------
- * Fully coded, continuously animated Japanese watercolor and ink landscape:
- *  - Scalable SVG viewBox="0 0 735 1103" strictly scoped to visual frame card
+ * Fully connected, hierarchical animated Japanese watercolor and ink landscape:
+ *  - SVG viewBox="0 0 735 1103" strictly scoped to visual frame card
+ *  - Fixed, grounded Weathered Granite Crag with exposed Nebari Roots (stationary base)
  *  - Living Crimson Sun:
- *      * Slowly pulsing warm crimson illumination (8-10s cycle, ~12% intensity variation)
- *      * Gentle, soft-edged multi-tier atmospheric halo (scale 1.00 - 1.015)
+ *      * Soft-edged atmospheric halo (8-10s breathing cycle)
  *      * Ancient sumi-e weathered surface texture rotating slowly (120s per revolution)
- *      * Outer sun disk remains visually stable (no spinning wheel effect)
- *  - Atmospheric Depth:
- *      * Distant sumi-e alpine peaks and mid-ground mountain ridges
- *      * Layered drifting mist streams with smooth continuous horizontal translation
- *      * Soaring ink birds (Chidori) with articulated flapping wings and curved paths
- *      * Weathered granite crag base with multi-faceted planes, moss wash, and nebari root grip
- *  - Realistic Local Wind Physics:
- *      * Rooted Bonsai S-curve trunk (max sway 0.2°–0.35°, firmly anchored at nebari base)
- *      * 6 Articulated primary boughs with spring-like response (0.5°–1.4°) and phase offsets
- *      * Secondary branch nodes with delayed response (1.0°–2.2°)
- *      * Fine twigs and blossom clusters with gentle independent flutter (2.0°–3.5°)
- *      * Driven continuously at 60 FPS by the shared windSystem
- *  - Authentic Cherry Blossom Geometry:
- *      * Five-petal florets with delicate notched petal tips
- *      * Delicate centers, gold stamens (#FFE28A), and deep crimson cores (#C54E6D)
- *      * Palette: #FFFFFF, #F8DBE2, #F4C5D3, #EFA8BD, #DB88A5
- *      * Organic negative space revealing dark gnarled branches beneath
+ *      * Disk remains visually anchored
+ *  - Connected Botanical Motion Hierarchy:
+ *      * Roots/Rock: 100% stationary and anchored
+ *      * Main Trunk: subtle sway (0.2°–0.4° max, transformOrigin: 245px 850px)
+ *      * Primary Boughs: 6 articulated boughs inherit trunk motion + add 0.5°–1.2°
+ *      * Secondary Branches: nested inside boughs, adding delayed response
+ *      * Blossom Clusters: nested DIRECTLY inside branches, swaying and fluttering
+ *        with natural spring phase lag (2°–4° total motion)
+ *      * The entire tree moves as ONE connected living structure — no detached blossoms!
  *  - Local Falling Sakura Petal Emitter:
- *      * Restrained volume: 6-10 active petals visible at any time
- *      * Spawns directly from actual blossom cluster anchor positions
- *      * Aerodynamic drag, lateral wind drift, and 3D tumbling flips
- *      * Gracefully settles/fades near the granite crag base
- *      * Wind gust reactions: clusters of 2-3 petals detach during periodic wind gusts
- *  - Dual Seasonal Modes: Spring Sakura & Autumn Momiji (interactive click toggle)
+ *      * 5–9 active petals visible at any time (restrained, elegant volume)
+ *      * Detaches directly from actual blossom cluster coordinates on the canopy
+ *      * Aerodynamic drag, horizontal wind drift, and 3D tumbling flips
+ *      * Settles and fades naturally near the granite crag base
+ *      * Periodic gust bursts: wind gusts release 2–3 petals in a natural cluster
+ *  - Dual Seasonal Modes: Spring Sakura & Autumn Momiji (click tree to toggle)
  *  - Accessible: respects prefers-reduced-motion, pure requestAnimationFrame cleanup
  */
 
-// Actual Blossom Anchor Coordinates (SVG viewBox 735 x 1103)
+// Actual Blossom Anchor Coordinates on Tree Canopy (SVG viewBox 735 x 1103)
 const BLOSSOM_ANCHORS = [
-  { x: 85, y: 530 },   // Low-left shelf
-  { x: 125, y: 395 },  // Mid-left shelf
-  { x: 165, y: 275 },  // Upper-left shelf
-  { x: 250, y: 155 },  // Apex crown left
-  { x: 305, y: 105 },  // Apex crown top
-  { x: 345, y: 175 },  // Apex crown right
-  { x: 435, y: 235 },  // Upper-right bough
+  { x: 90, y: 535 },   // Low-left shelf
+  { x: 55, y: 495 },   // Low-left outer twig
+  { x: 115, y: 400 },  // Mid-left shelf
+  { x: 85, y: 360 },   // Mid-left outer twig
+  { x: 155, y: 280 },  // Upper-left shelf
+  { x: 125, y: 230 },  // Upper-left outer twig
+  { x: 295, y: 105 },  // Crown apex top
+  { x: 250, y: 160 },  // Crown apex left
+  { x: 340, y: 170 },  // Crown apex right
+  { x: 435, y: 240 },  // Upper-right bough
   { x: 505, y: 215 },  // Mid-right upper bough
-  { x: 565, y: 325 },  // Far-right bough
-  { x: 635, y: 315 },  // Far-right outer
-  { x: 545, y: 485 },  // Low-right weeping bough
-  { x: 615, y: 555 },  // Low-right drooping tip
+  { x: 565, y: 320 },  // Far-right bough
+  { x: 635, y: 310 },  // Far-right outer tip
+  { x: 545, y: 485 },  // Low-right weeping shelf
+  { x: 615, y: 560 },  // Low-right drooping tip
 ];
 
 export default function SakuraTree({
@@ -64,18 +59,24 @@ export default function SakuraTree({
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // SVG Elements for Hierarchical Wind Physics
+  // SVG Refs for Connected Hierarchical Wind Physics
   const trunkRef = useRef(null);
-  const boughLowLeftRef = useRef(null);
-  const boughMidLeftRef = useRef(null);
-  const boughUpperLeftRef = useRef(null);
-  const boughCrownRef = useRef(null);
-  const boughRightRef = useRef(null);
-  const boughLowRightRef = useRef(null);
-  const foregroundCanopyRef = useRef(null);
-  const deepCanopyRef = useRef(null);
+  // 6 Primary Boughs
+  const bough1Ref = useRef(null); // Low-Left
+  const bough2Ref = useRef(null); // Mid-Left
+  const bough3Ref = useRef(null); // Upper-Left
+  const bough4Ref = useRef(null); // Apex Crown
+  const bough5Ref = useRef(null); // Great Right
+  const bough6Ref = useRef(null); // Low-Right Weeping
+  // Blossom Cluster Groups nested directly inside each bough
+  const blossomCluster1Ref = useRef(null);
+  const blossomCluster2Ref = useRef(null);
+  const blossomCluster3Ref = useRef(null);
+  const blossomCluster4Ref = useRef(null);
+  const blossomCluster5Ref = useRef(null);
+  const blossomCluster6Ref = useRef(null);
 
-  // 1. Hierarchical Wind Physics (60 FPS, Driven by Shared windSystem)
+  // 1. Connected Hierarchical Wind Physics (60 FPS, Shared windSystem)
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -87,58 +88,73 @@ export default function SakuraTree({
       const t = wind.time;
       const windForce = wind.windX * (1 + wind.gust * 2.0);
 
-      // A. Trunk sway (stable, heavy and rooted; max 0.2°–0.35°)
+      // Level 1: Trunk Sway (subtle, heavy, anchored at nebari base 245px 850px; 0.2°–0.4° max)
       if (trunkRef.current) {
         const trunkAngle = Math.sin(t * 0.65) * 0.12 + windForce * 0.16;
         trunkRef.current.style.transform = `rotate(${trunkAngle.toFixed(3)}deg)`;
       }
 
-      // B. Bough 1: Low-Left Sweeping Bough (0.5°–1.0°)
-      if (boughLowLeftRef.current) {
-        const angle = Math.sin(t * 0.95 + 0.4) * 0.45 + windForce * 0.55;
-        boughLowLeftRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      // Level 2: Primary Boughs (bend with spring-like response; 0.5°–1.2°)
+      // Level 3: Blossom Clusters (nested inside boughs, inherit bough motion + add 1.2°–2.5° spring lag & flutter)
+
+      // BOUGH 1: Low-Left Sweeping Bough
+      if (bough1Ref.current) {
+        const angle = Math.sin(t * 0.95 + 0.4) * 0.42 + windForce * 0.52;
+        bough1Ref.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      }
+      if (blossomCluster1Ref.current) {
+        const lagAngle = Math.sin(t * 1.8 + 1.2) * 0.75 + Math.sin(t * 3.4) * 0.3 + windForce * 0.85;
+        blossomCluster1Ref.current.style.transform = `rotate(${lagAngle.toFixed(2)}deg)`;
       }
 
-      // C. Bough 2: Mid-Left Bonsai Branch (0.6°–1.1°)
-      if (boughMidLeftRef.current) {
-        const angle = Math.sin(t * 1.05 + 0.8) * 0.52 + windForce * 0.62;
-        boughMidLeftRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      // BOUGH 2: Mid-Left Bonsai Branch
+      if (bough2Ref.current) {
+        const angle = Math.sin(t * 1.05 + 0.8) * 0.48 + windForce * 0.58;
+        bough2Ref.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      }
+      if (blossomCluster2Ref.current) {
+        const lagAngle = Math.sin(t * 1.9 + 1.5) * 0.8 + Math.sin(t * 3.6 + 0.4) * 0.35 + windForce * 0.92;
+        blossomCluster2Ref.current.style.transform = `rotate(${lagAngle.toFixed(2)}deg)`;
       }
 
-      // D. Bough 3: Upper-Left Climbing Branch (0.7°–1.2°)
-      if (boughUpperLeftRef.current) {
-        const angle = Math.sin(t * 1.15 + 1.2) * 0.60 + windForce * 0.70;
-        boughUpperLeftRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      // BOUGH 3: Upper-Left Climbing Branch
+      if (bough3Ref.current) {
+        const angle = Math.sin(t * 1.15 + 1.2) * 0.55 + windForce * 0.66;
+        bough3Ref.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      }
+      if (blossomCluster3Ref.current) {
+        const lagAngle = Math.sin(t * 2.0 + 1.8) * 0.85 + Math.sin(t * 3.8 + 0.8) * 0.38 + windForce * 1.0;
+        blossomCluster3Ref.current.style.transform = `rotate(${lagAngle.toFixed(2)}deg)`;
       }
 
-      // E. Bough 4: Central Apex Crown Trunk & Dome (0.7°–1.3°)
-      if (boughCrownRef.current) {
-        const angle = Math.sin(t * 1.10 + 0.2) * 0.65 + windForce * 0.78;
-        boughCrownRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      // BOUGH 4: Central Apex Crown Trunk & Dome
+      if (bough4Ref.current) {
+        const angle = Math.sin(t * 1.10 + 0.2) * 0.60 + windForce * 0.74;
+        bough4Ref.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      }
+      if (blossomCluster4Ref.current) {
+        const lagAngle = Math.sin(t * 2.1 + 0.9) * 0.92 + Math.sin(t * 3.9 + 0.2) * 0.4 + windForce * 1.08;
+        blossomCluster4Ref.current.style.transform = `rotate(${lagAngle.toFixed(2)}deg)`;
       }
 
-      // F. Bough 5: Main Right Arching Great Bough (0.8°–1.4°)
-      if (boughRightRef.current) {
-        const angle = Math.sin(t * 1.20 + 1.5) * 0.72 + windForce * 0.88;
-        boughRightRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      // BOUGH 5: Main Right Arching Great Bough
+      if (bough5Ref.current) {
+        const angle = Math.sin(t * 1.20 + 1.5) * 0.68 + windForce * 0.82;
+        bough5Ref.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      }
+      if (blossomCluster5Ref.current) {
+        const lagAngle = Math.sin(t * 2.2 + 2.1) * 1.0 + Math.sin(t * 4.1 + 1.1) * 0.45 + windForce * 1.15;
+        blossomCluster5Ref.current.style.transform = `rotate(${lagAngle.toFixed(2)}deg)`;
       }
 
-      // G. Bough 6: Lower-Right Weeping Bough (0.8°–1.3°)
-      if (boughLowRightRef.current) {
-        const angle = Math.sin(t * 1.30 + 2.0) * 0.78 + windForce * 0.95;
-        boughLowRightRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
+      // BOUGH 6: Lower-Right Weeping Bough
+      if (bough6Ref.current) {
+        const angle = Math.sin(t * 1.30 + 2.0) * 0.74 + windForce * 0.90;
+        bough6Ref.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
       }
-
-      // H. Foreground Blossom Canopy Clouds (Gentle leaf flutter & breeze)
-      if (foregroundCanopyRef.current) {
-        const flutter = Math.sin(t * 2.4) * 0.25 + Math.cos(t * 1.4) * 0.35 + windForce * 0.5;
-        foregroundCanopyRef.current.style.transform = `rotate(${flutter.toFixed(2)}deg)`;
-      }
-
-      // I. Deep Background Canopy (Subtle counter-phase depth)
-      if (deepCanopyRef.current) {
-        const depthFlutter = Math.sin(t * 2.1 + 0.6) * 0.2 + windForce * 0.35;
-        deepCanopyRef.current.style.transform = `rotate(${depthFlutter.toFixed(2)}deg)`;
+      if (blossomCluster6Ref.current) {
+        const lagAngle = Math.sin(t * 2.3 + 2.6) * 1.05 + Math.sin(t * 4.3 + 1.5) * 0.5 + windForce * 1.20;
+        blossomCluster6Ref.current.style.transform = `rotate(${lagAngle.toFixed(2)}deg)`;
       }
 
       animId = requestAnimationFrame(updatePhysics);
@@ -148,7 +164,7 @@ export default function SakuraTree({
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // 2. Local Falling Sakura Petals Emitter (Canvas 60 FPS, Restrained 6–10 Active Petals)
+  // 2. Falling Petals Emitter (Canvas 60 FPS, Restrained 5–9 Active Petals)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -167,42 +183,42 @@ export default function SakuraTree({
     window.addEventListener('resize', handleResize);
 
     const isMomiji = mode === 'momiji';
-    const activePetalTarget = isMomiji ? 8 : 10; // Restrained volume: 6-10 active petals
+    const activePetalTarget = isMomiji ? 7 : 8; // 5 to 9 active petals
     let gustCooldown = 0;
 
-    // Helper: spawn a petal from an authentic blossom branch coordinate
-    const spawnPetal = (isImmediate = false) => {
+    // Helper: spawn a petal directly from an authentic blossom canopy node
+    const spawnPetal = (isInitial = false) => {
       const anchor = BLOSSOM_ANCHORS[Math.floor(Math.random() * BLOSSOM_ANCHORS.length)];
       // Convert SVG viewBox coordinate (735 x 1103) to canvas px
-      const sx = (anchor.x / 735) * width + (Math.random() - 0.5) * 24;
-      const sy = (anchor.y / 1103) * height + (Math.random() - 0.5) * 20;
+      const sx = (anchor.x / 735) * width + (Math.random() - 0.5) * 20;
+      const sy = (anchor.y / 1103) * height + (Math.random() - 0.5) * 16;
 
-      // Start partially down the screen on initial load for natural distribution
-      const initialY = isImmediate ? sy + Math.random() * (height * 0.55) : sy;
+      // On initial page load, distribute along fall height so they don't all detach simultaneously
+      const startY = isInitial ? sy + Math.random() * (height * 0.5) : sy;
 
       const momijiPalette = ['#C71825', '#E62432', '#FF4D2E', '#9B111E', '#FFA726'];
       const sakuraPalette = ['#FFFFFF', '#F8DBE2', '#F4C5D3', '#EFA8BD', '#DB88A5'];
 
       return {
         x: sx,
-        y: initialY,
+        y: startY,
         startX: sx,
         vx: (Math.random() - 0.2) * 0.35,
-        vy: Math.random() * 0.35 + 0.3,
-        size: Math.random() * 3.5 + 4.2, // 4.2 - 7.7 px
+        vy: Math.random() * 0.3 + 0.3,
+        size: Math.random() * 3.2 + 4.2, // 4.2 - 7.4 px single petal
         angle: Math.random() * Math.PI * 2,
         spin: (Math.random() - 0.5) * 0.035,
         flip: Math.random() * Math.PI,
-        flipSpeed: Math.random() * 0.03 + 0.018,
-        opacity: isImmediate ? Math.random() * 0.5 + 0.4 : 0.05,
-        targetOpacity: Math.random() * 0.4 + 0.55,
+        flipSpeed: Math.random() * 0.028 + 0.018,
+        opacity: isInitial ? Math.random() * 0.45 + 0.45 : 0.0,
+        targetOpacity: Math.random() * 0.35 + 0.6,
         swayPhase: Math.random() * Math.PI * 2,
         swaySpeed: Math.random() * 0.035 + 0.02,
         tint: isMomiji
           ? momijiPalette[Math.floor(Math.random() * momijiPalette.length)]
           : sakuraPalette[Math.floor(Math.random() * sakuraPalette.length)],
         isSettling: false,
-        dormantDelay: isImmediate ? 0 : Math.floor(Math.random() * 120),
+        dormantDelay: isInitial ? 0 : Math.floor(Math.random() * 100),
       };
     };
 
@@ -219,44 +235,44 @@ export default function SakuraTree({
       const wind = windSystem.getState();
       const windPushX = wind.windX * 0.85;
 
-      // Trigger gust burst: release 2-3 extra petals if wind gusts strongly
+      // Wind gust reaction: trigger release of dormant petals when wind gusts
       gustCooldown -= dt;
       if (wind.gust > 0.45 && gustCooldown <= 0) {
-        gustCooldown = 4.5; // Cooldown between gust bursts
+        gustCooldown = 4.0;
         petals.forEach((p) => {
           if (p.dormantDelay > 0) {
             p.dormantDelay = 0;
-            p.opacity = 0.85;
+            p.opacity = 0.8;
           }
         });
       }
 
       petals.forEach((p) => {
-        // Dormant delay before detach
+        // Dormant delay before detaching from flower
         if (p.dormantDelay > 0) {
           p.dormantDelay -= 1;
           return;
         }
 
-        // Fade in smoothly upon detach
+        // Smooth fade-in as petal detaches from the tree
         if (p.opacity < p.targetOpacity && !p.isSettling) {
-          p.opacity += 0.03;
+          p.opacity += 0.035;
         }
 
-        // Aerodynamics: gravity + lateral wind drag
-        p.vy = Math.min(1.4, p.vy + 0.012);
+        // Aerodynamics: slow gravity + lateral wind drift
+        p.vy = Math.min(1.35, p.vy + 0.012);
         p.vx += (windPushX - p.vx) * 0.035;
 
         // Oscillating horizontal flutter
         p.swayPhase += p.swaySpeed;
-        const flutterX = Math.sin(p.swayPhase) * 0.55;
+        const flutterX = Math.sin(p.swayPhase) * 0.5;
 
         p.x += p.vx + flutterX;
         p.y += p.vy;
         p.angle += p.spin;
         p.flip += p.flipSpeed;
 
-        // Settling threshold near granite crag base (approx 74% - 85% of height)
+        // Settling threshold near the granite rock base (approx 74% - 85% of height)
         const cragTopY = height * 0.74;
         if (p.y >= cragTopY && !p.isSettling) {
           p.isSettling = true;
@@ -265,17 +281,17 @@ export default function SakuraTree({
         if (p.isSettling) {
           p.vy *= 0.94;
           p.vx *= 0.90;
-          p.opacity -= 0.018; // Soft natural fade-out as it settles into crag moss
+          p.opacity -= 0.018; // Soft natural fade-out settling on the mossy rock
         }
 
-        // Respawn when faded out or off bounds
+        // Respawn when settled or off-bounds
         if (p.opacity <= 0 || p.y > height + 20 || p.x > width + 40) {
           const fresh = spawnPetal(false);
           Object.assign(p, fresh);
           return;
         }
 
-        // Render Individual Petal Geometry (Not generic circles!)
+        // Render Individual Realistic Petal Geometry
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.angle);
@@ -297,16 +313,19 @@ export default function SakuraTree({
           const s = p.size;
           ctx.beginPath();
           ctx.moveTo(0, -s);
-          ctx.bezierCurveTo(s * 0.65, -s * 0.85, s * 0.75, -s * 0.2, s * 0.3, s * 0.75);
-          // Soft basal notch
-          ctx.quadraticCurveTo(0, s * 0.45, -s * 0.3, s * 0.75);
-          ctx.bezierCurveTo(-s * 0.75, -s * 0.2, -s * 0.65, -s * 0.85, 0, -s);
+          // Right curved lobe with notched apex
+          ctx.bezierCurveTo(s * 0.65, -s * 0.85, s * 0.78, -s * 0.2, s * 0.32, s * 0.75);
+          // Basal notch
+          ctx.quadraticCurveTo(0, s * 0.45, -s * 0.32, s * 0.75);
+          // Left curved lobe
+          ctx.bezierCurveTo(-s * 0.78, -s * 0.2, -s * 0.65, -s * 0.85, 0, -s);
           ctx.closePath();
 
-          // Delicate radial translucent blush fill
-          const grad = ctx.createRadialGradient(0, s * 0.3, 0, 0, 0, s);
+          // Translucent petal blush gradient
+          const grad = ctx.createRadialGradient(0, s * 0.25, 0, 0, 0, s);
           grad.addColorStop(0, '#FFFFFF');
-          grad.addColorStop(0.45, p.tint);
+          grad.addColorStop(0.35, p.tint);
+          grad.addColorStop(0.85, '#EDA8BC');
           grad.addColorStop(1, '#DB88A5');
           ctx.fillStyle = grad;
           ctx.fill();
@@ -358,8 +377,8 @@ export default function SakuraTree({
       role="img"
       aria-label={
         isMomiji
-          ? 'Living Japanese Momiji Maple Tree on misty crag with rotating crimson sun'
-          : 'Living Japanese Bonsai Sakura Tree on misty crag with rotating crimson sun'
+          ? 'Living Japanese Momiji Maple Tree on misty crag with connected branch and leaf motion'
+          : 'Living Japanese Bonsai Sakura Tree on misty crag with connected branch and blossom motion'
       }
     >
       <svg
@@ -380,7 +399,7 @@ export default function SakuraTree({
             <stop offset="100%" stopColor="#CBD1D0" />
           </linearGradient>
 
-          {/* Crimson Sun Halo Outer Radial Glow */}
+          {/* Crimson Sun Halo Gradients */}
           <radialGradient id="sakuraSunHaloOuter" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#C91B28" stopOpacity="0.32" />
             <stop offset="45%" stopColor="#C91B28" stopOpacity="0.12" />
@@ -388,14 +407,12 @@ export default function SakuraTree({
             <stop offset="100%" stopColor="#C91B28" stopOpacity="0" />
           </radialGradient>
 
-          {/* Crimson Sun Mid-Tier Radiant Corona */}
           <radialGradient id="sakuraSunHaloMid" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#D92230" stopOpacity="0.52" />
             <stop offset="55%" stopColor="#BA1421" stopOpacity="0.22" />
             <stop offset="100%" stopColor="#8A0C16" stopOpacity="0" />
           </radialGradient>
 
-          {/* Crimson Sun Main Body Core Disk */}
           <radialGradient id="sakuraSunBodyGrad" cx="42%" cy="38%" r="62%">
             <stop offset="0%" stopColor="#E22635" />
             <stop offset="38%" stopColor="#C81726" />
@@ -403,7 +420,7 @@ export default function SakuraTree({
             <stop offset="100%" stopColor="#6E0812" />
           </radialGradient>
 
-          {/* Mountain Ridge Gradients */}
+          {/* Mountain Gradients */}
           <linearGradient id="farMountainPeakGrad" x1="30%" y1="0%" x2="70%" y2="100%">
             <stop offset="0%" stopColor="#96A0A2" stopOpacity="0.8" />
             <stop offset="50%" stopColor="#B0BABB" stopOpacity="0.5" />
@@ -486,7 +503,7 @@ export default function SakuraTree({
             <stop offset="100%" stopColor="#FFFFFF" />
           </radialGradient>
 
-          {/* Authentic Five-Petal Notched Sakura Flower */}
+          {/* Single Authentic 5-Petal Notched Sakura Flower */}
           <g id="sakuraSingleFloret">
             {[0, 72, 144, 216, 288].map((angle, idx) => (
               <path
@@ -531,7 +548,7 @@ export default function SakuraTree({
             <circle cx="22" cy="23" r="2.8" fill="#D66B91" />
           </g>
 
-          {/* Classical Botanical Sakura Cloud Shelf */}
+          {/* Volumetric Botanical Sakura Cloud Shelf */}
           <g id="sakuraCloudShelf">
             <ellipse cx="-35" cy="8" rx="48" ry="28" fill="url(#sakuraDeepShadow)" />
             <ellipse cx="38" cy="10" rx="50" ry="30" fill="url(#sakuraDeepShadow)" />
@@ -544,7 +561,7 @@ export default function SakuraTree({
             <ellipse cx="28" cy="16" rx="38" ry="26" fill="url(#sakuraLobeGrad1)" />
             <ellipse cx="0" cy="0" rx="52" ry="35" fill="url(#sakuraLobeGrad1)" />
 
-            {/* Exposed Fine Dark Twigs */}
+            {/* Exposed Fine Dark Twigs Weaving Outward */}
             <g stroke="#14100E" strokeWidth="2.4" strokeLinecap="round" fill="none" opacity="0.95">
               <path d="M 0 28 Q -18 10, -36 -2 Q -55 -12, -72 -14" />
               <path d="M 0 24 Q 20 12, 42 4 Q 60 -6, 78 -8" />
@@ -580,11 +597,7 @@ export default function SakuraTree({
             <ellipse cx="-40" cy="0" rx="42" ry="26" fill="rgba(199, 24, 37, 0.55)" />
             <ellipse cx="40" cy="0" rx="45" ry="28" fill="rgba(230, 36, 50, 0.55)" />
             <ellipse cx="0" cy="-20" rx="48" ry="30" fill="rgba(255, 77, 46, 0.65)" />
-            <use
-              href="#momijiMapleLeaf"
-              transform="translate(0, 0) scale(0.42)"
-              color="#E62432"
-            />
+            <use href="#momijiMapleLeaf" transform="translate(0, 0) scale(0.42)" color="#E62432" />
             <g transform="translate(0, -58) scale(0.38)" color="#FF3A28"><use href="#momijiMapleLeaf" /></g>
             <g transform="translate(-32, -52) scale(0.36) rotate(-25)" color="#E62432"><use href="#momijiMapleLeaf" /></g>
             <g transform="translate(34, -52) scale(0.36) rotate(25)" color="#FF3A28"><use href="#momijiMapleLeaf" /></g>
@@ -594,7 +607,7 @@ export default function SakuraTree({
             <g transform="translate(86, -8) scale(0.3) rotate(85)" color="#FF5238"><use href="#momijiMapleLeaf" /></g>
           </g>
 
-          {/* Sumi-e Pine Trees & Shrub */}
+          {/* Sumi-e Landscape Elements */}
           <g id="distantSumiPine">
             <path d="M 0 0 L 0 -110" stroke="#1D2220" strokeWidth="4" strokeLinecap="round" />
             <ellipse cx="-20" cy="-28" rx="26" ry="9" fill="#1F2522" />
@@ -614,17 +627,14 @@ export default function SakuraTree({
             <path d="M 8 -42 C 6 -56, 10 -68, 8 -78" stroke="#222728" strokeWidth="1.6" strokeLinecap="round" />
           </g>
 
-          {/* Articulated Flying Ink Bird with Animatable Wings */}
           <g id="sumiInkBirdArticulated">
             <ellipse cx="0" cy="1" rx="1.6" ry="3.2" fill="#121513" />
             <circle cx="0" cy="-2.4" r="1.1" fill="#0C0E0D" />
-            {/* Left Wing */}
             <path
               d="M 0 -0.5 C -5 -6, -11 -8, -17 -5 C -12 -3, -6 -1.5, 0 0.5 Z"
               fill="#161A18"
               className="sakura-bird-wing-left"
             />
-            {/* Right Wing */}
             <path
               d="M 0 -0.5 C 5 -6, 11 -8, 17 -5 C 12 -3, 6 -1.5, 0 0.5 Z"
               fill="#161A18"
@@ -634,212 +644,86 @@ export default function SakuraTree({
         </defs>
 
         {/* ================================================================ */}
-        {/* LAYER 0: MISTY MOUNTAIN LANDSCAPE & SKY                          */}
+        {/* LAYER 0: MISTY MOUNTAIN LANDSCAPE & LIVING CRIMSON SUN           */}
         {/* ================================================================ */}
         <g id="LandscapeAtmosphere">
-          {/* Base Washi Mist Sky */}
           <rect width="735" height="1103" fill="url(#sakuraMistySkyGrad)" />
 
-          {/* ============================================================== */}
-          {/* LAYER 0B: CINEMATIC LIVING CRIMSON SUN (Upper Sky Behind Peaks) */}
-          {/* ============================================================== */}
+          {/* Living Crimson Sun (Centered behind canopy at 380, 280) */}
           <g id="CrimsonSunGroup" className="sakura-sun-group">
             <g className="sakura-sun-breathe-container">
-              {/* 1A. Soft Atmospheric Outer Diffusion Halo */}
-              <circle
-                cx="380"
-                cy="280"
-                r="230"
-                fill="url(#sakuraSunHaloOuter)"
-                className="sakura-sun-glow-outer"
-              />
+              <circle cx="380" cy="280" r="230" fill="url(#sakuraSunHaloOuter)" className="sakura-sun-glow-outer" />
+              <circle cx="380" cy="280" r="185" fill="url(#sakuraSunHaloMid)" className="sakura-sun-glow-mid" />
+              <circle cx="380" cy="280" r="138" fill="url(#sakuraSunBodyGrad)" className="sakura-sun-body-disk" />
+              <circle cx="380" cy="280" r="142" fill="none" stroke="#7D0C15" strokeWidth="1.6" strokeDasharray="45 10 75 14 30 8 60 12" opacity="0.75" />
 
-              {/* 1B. Mid-Tier Radiant Corona */}
-              <circle
-                cx="380"
-                cy="280"
-                r="185"
-                fill="url(#sakuraSunHaloMid)"
-                className="sakura-sun-glow-mid"
-              />
-
-              {/* 1C. Painted Crimson Sun Body Core Disk */}
-              <circle
-                cx="380"
-                cy="280"
-                r="138"
-                fill="url(#sakuraSunBodyGrad)"
-                className="sakura-sun-body-disk"
-              />
-
-              {/* 1D. Archaic Dashed Rim Hairline */}
-              <circle
-                cx="380"
-                cy="280"
-                r="142"
-                fill="none"
-                stroke="#7D0C15"
-                strokeWidth="1.6"
-                strokeDasharray="45 10 75 14 30 8 60 12"
-                opacity="0.75"
-              />
-
-              {/* 1E. Weathered Surface Texture Group (Rotates Very Slowly 120s) */}
+              {/* Weathered Surface Texture Group (Rotates Very Slowly 120s) */}
               <g className="sakura-sun-rotating-texture">
-                {/* Subtle Lunar Grain & Ink Wash Mottling */}
                 <circle cx="340" cy="245" r="42" fill="#750B13" opacity="0.18" />
                 <circle cx="415" cy="295" r="55" fill="#6B0910" opacity="0.16" />
                 <circle cx="370" cy="330" r="38" fill="#780C14" opacity="0.15" />
                 <ellipse cx="380" cy="235" rx="60" ry="22" transform="rotate(-25 380 235)" fill="#61070E" opacity="0.14" />
                 <ellipse cx="350" cy="310" rx="45" ry="18" transform="rotate(35 350 310)" fill="#61070E" opacity="0.12" />
-
-                {/* Fine Brush Grain Imperfections */}
-                <path
-                  d="M 285 240 Q 340 220, 420 235 T 475 285"
-                  stroke="#5C050C"
-                  strokeWidth="2.5"
-                  fill="none"
-                  strokeDasharray="18 12 28 16"
-                  opacity="0.22"
-                />
-                <path
-                  d="M 295 320 Q 360 345, 435 325 T 465 290"
-                  stroke="#5C050C"
-                  strokeWidth="2.2"
-                  fill="none"
-                  strokeDasharray="22 14 16 10"
-                  opacity="0.20"
-                />
-                {/* Hand-Drawn Calligraphic Rim Accents */}
-                <path
-                  d="M 485 210 C 515 250, 520 295, 510 335"
-                  stroke="#800C16"
-                  strokeWidth="2.8"
-                  fill="none"
-                  opacity="0.65"
-                />
-                <path
-                  d="M 250 255 C 242 290, 248 325, 265 355"
-                  stroke="#700A12"
-                  strokeWidth="2.4"
-                  fill="none"
-                  opacity="0.55"
-                />
+                <path d="M 285 240 Q 340 220, 420 235 T 475 285" stroke="#5C050C" strokeWidth="2.5" fill="none" strokeDasharray="18 12 28 16" opacity="0.22" />
+                <path d="M 295 320 Q 360 345, 435 325 T 465 290" stroke="#5C050C" strokeWidth="2.2" fill="none" strokeDasharray="22 14 16 10" opacity="0.20" />
+                <path d="M 485 210 C 515 250, 520 295, 510 335" stroke="#800C16" strokeWidth="2.8" fill="none" opacity="0.65" />
+                <path d="M 250 255 C 242 290, 248 325, 265 355" stroke="#700A12" strokeWidth="2.4" fill="none" opacity="0.55" />
               </g>
             </g>
           </g>
 
-          {/* Jagged Mountain Peak on Left/Center */}
+          {/* Jagged Mountain Peak on Left */}
           <path
-            d="M 0 540
-               C 35 430, 85 310, 150 240
-               C 170 220, 190 245, 215 290
-               C 245 350, 290 440, 350 510
-               C 410 580, 480 640, 540 720
-               L 540 920
-               L 0 920 Z"
+            d="M 0 540 C 35 430, 85 310, 150 240 C 170 220, 190 245, 215 290 C 245 350, 290 440, 350 510 C 410 580, 480 640, 540 720 L 540 920 L 0 920 Z"
             fill="url(#midMountainRidgeGrad)"
           />
 
-          {/* Distant Alpine Peak on Upper Right */}
+          {/* Distant Alpine Peak on Right */}
           <path
-            d="M 280 620
-               C 360 480, 460 320, 550 210
-               C 590 160, 630 190, 670 280
-               C 700 350, 735 460, 735 600
-               L 735 900
-               L 280 900 Z"
+            d="M 280 620 C 360 480, 460 320, 550 210 C 590 160, 630 190, 670 280 C 700 350, 735 460, 735 600 L 735 900 L 280 900 Z"
             fill="url(#farMountainPeakGrad)"
           />
 
-          {/* Layered Horizontal Mist Streams with Smooth CSS Drift */}
-          <path
-            d="M -50 490 Q 220 440, 420 490 T 785 460 L 785 640 Q 480 600, 240 630 T -50 610 Z"
-            fill="#EDF1F0"
-            opacity="0.82"
-            filter="blur(18px)"
-            className="sakura-mist-layer-1"
-          />
-          <path
-            d="M 0 620 Q 280 570, 510 615 T 785 590 L 785 730 Q 470 700, 220 725 T 0 710 Z"
-            fill="#E2E7E5"
-            opacity="0.75"
-            filter="blur(22px)"
-            className="sakura-mist-layer-2"
-          />
+          {/* Drifting Mist Streams */}
+          <path d="M -50 490 Q 220 440, 420 490 T 785 460 L 785 640 Q 480 600, 240 630 T -50 610 Z" fill="#EDF1F0" opacity="0.82" filter="blur(18px)" className="sakura-mist-layer-1" />
+          <path d="M 0 620 Q 280 570, 510 615 T 785 590 L 785 730 Q 470 700, 220 725 T 0 710 Z" fill="#E2E7E5" opacity="0.75" filter="blur(22px)" className="sakura-mist-layer-2" />
 
-          {/* Soaring Ink Birds with Flapping Wing Dynamics */}
-          <g className="sakura-bird-soar-1">
-            <use href="#sumiInkBirdArticulated" />
-          </g>
-          <g className="sakura-bird-soar-2">
-            <use href="#sumiInkBirdArticulated" />
-          </g>
-          <g className="sakura-bird-soar-3">
-            <use href="#sumiInkBirdArticulated" />
-          </g>
+          {/* Articulated Soaring Ink Birds */}
+          <g className="sakura-bird-soar-1"><use href="#sumiInkBirdArticulated" /></g>
+          <g className="sakura-bird-soar-2"><use href="#sumiInkBirdArticulated" /></g>
+          <g className="sakura-bird-soar-3"><use href="#sumiInkBirdArticulated" /></g>
 
-          {/* Distant Bare Winter Shrub on Far Left Ground */}
-          <g transform="translate(85, 870) scale(0.95)" opacity="0.65">
-            <use href="#bareWinterShrub" />
-          </g>
-
-          {/* Two Distant Sumi-e Pine Trees on Right Slope */}
-          <g transform="translate(340, 800) scale(0.78)" opacity="0.62">
-            <use href="#distantSumiPine" />
-          </g>
-          <g transform="translate(305, 700) scale(0.55)" opacity="0.48">
-            <use href="#distantSumiPine" />
-          </g>
+          {/* Distant Vegetation */}
+          <g transform="translate(85, 870) scale(0.95)" opacity="0.65"><use href="#bareWinterShrub" /></g>
+          <g transform="translate(340, 800) scale(0.78)" opacity="0.62"><use href="#distantSumiPine" /></g>
+          <g transform="translate(305, 700) scale(0.55)" opacity="0.48"><use href="#distantSumiPine" /></g>
         </g>
 
         {/* ================================================================ */}
-        {/* LAYER 1: WEATHERED GRANITE CRAG & NEBARI ROOTS (y=760..1025)     */}
+        {/* LAYER 1: WEATHERED GRANITE CRAG (Completely Rooted & Still)      */}
         {/* ================================================================ */}
         <g id="GraniteCragBase" className="sakura-rock-base">
           <path
-            d="M 50 1025
-               L 65 965
-               L 95 910
-               L 85 865
-               L 125 815
-               L 170 770
-               L 235 758
-               L 290 780
-               L 355 805
-               L 405 850
-               L 442 915
-               L 425 978
-               L 438 1025 Z"
+            d="M 50 1025 L 65 965 L 95 910 L 85 865 L 125 815 L 170 770 L 235 758 L 290 780 L 355 805 L 405 850 L 442 915 L 425 978 L 438 1025 Z"
             fill="url(#graniteRockGrad)"
             stroke="#050607"
             strokeWidth="2.8"
           />
-
-          {/* Facets & Light Modeling */}
           <path d="M 125 815 L 170 770 L 235 758 L 220 825 L 160 855 Z" fill="url(#rockHighlightFacet)" />
           <path d="M 235 758 L 290 780 L 275 848 L 220 825 Z" fill="url(#rockHighlightFacet)" opacity="0.8" />
           <path d="M 290 780 L 355 805 L 338 870 L 275 848 Z" fill="url(#rockHighlightFacet)" opacity="0.6" />
 
-          {/* Granite Fissures & Deep Ink Crevices */}
+          {/* Crevices */}
           <path d="M 125 815 L 165 865 L 192 935 L 185 1025" stroke="#030405" strokeWidth="3.2" fill="none" />
           <path d="M 235 758 L 268 830 L 302 892 L 325 1025" stroke="#030405" strokeWidth="3.4" fill="none" />
           <path d="M 85 865 L 138 890 L 162 975" stroke="#030405" strokeWidth="2.4" fill="none" opacity="0.8" />
           <path d="M 290 780 L 345 840 L 375 925" stroke="#030405" strokeWidth="2.6" fill="none" opacity="0.75" />
           <path d="M 355 805 L 400 865 L 420 945" stroke="#030405" strokeWidth="2.2" fill="none" opacity="0.7" />
 
-          {/* Summit Lichen & Moss Wash */}
-          <path
-            d="M 125 815
-               Q 180 758, 235 758
-               Q 295 770, 355 805
-               L 345 830
-               Q 285 795, 230 785
-               Q 175 785, 130 830 Z"
-            fill="url(#rockMossWash)"
-          />
+          {/* Moss */}
+          <path d="M 125 815 Q 180 758, 235 758 Q 295 770, 355 805 L 345 830 Q 285 795, 230 785 Q 175 785, 130 830 Z" fill="url(#rockMossWash)" />
 
-          {/* Nebari Roots Clinging to Crevices */}
+          {/* Nebari Root Grip Anchored into Crevices */}
           <g id="NebariRootSystem" fill="url(#barkCoreGrad)">
             <path d="M 195 850 C 170 878, 140 918, 118 958 C 112 968, 116 974, 126 972 C 145 935, 175 890, 215 858 Z" />
             <path d="M 235 855 C 225 895, 232 945, 248 995 C 252 1005, 262 1005, 265 995 C 252 950, 248 900, 260 858 Z" />
@@ -848,44 +732,11 @@ export default function SakuraTree({
         </g>
 
         {/* ================================================================ */}
-        {/* LAYER 2: DEEP UNDER-CANOPY BLOSSOMS (Behind the branches)        */}
+        {/* LAYER 2: THE FULLY CONNECTED ANIMATED SAKURA TREE HIERARCHY      */}
+        {/* Anchored at nebari base: transformOrigin: 245px 850px            */}
         {/* ================================================================ */}
-        <g ref={deepCanopyRef} id="DeepBackgroundCanopy" opacity="0.95" style={{ transformOrigin: '260px 450px' }}>
-          {/* Low-Left Shelf Base */}
-          <g transform="translate(100, 520) scale(1.15) rotate(-10)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          {/* Mid-Left Shelf Base */}
-          <g transform="translate(130, 410) scale(1.22) rotate(8)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          {/* Upper-Left Shelf Base */}
-          <g transform="translate(170, 300) scale(1.28) rotate(-6)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          {/* Apex Dome Base */}
-          <g transform="translate(270, 180) scale(1.35) rotate(14)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          {/* Upper-Right Canopy Base */}
-          <g transform="translate(420, 260) scale(1.32) rotate(-8)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          {/* Mid-Right Canopy Base */}
-          <g transform="translate(520, 360) scale(1.28) rotate(12)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          {/* Lower-Right Weeping Base */}
-          <g transform="translate(500, 520) scale(1.18) rotate(18)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-        </g>
-
-        {/* ================================================================ */}
-        {/* LAYER 3: GNARLED BONSAI S-CURVE TRUNK & ARTICULATED BOUGHS       */}
-        {/* ================================================================ */}
-        <g ref={trunkRef} id="BonsaiMainTrunk" style={{ transformOrigin: '245px 850px' }}>
-          {/* Main Dramatic Contorted S-Curved Muscular Trunk Body */}
+        <g ref={trunkRef} id="RootedMainTrunk" style={{ transformOrigin: '245px 850px' }}>
+          {/* Main Dramatic Contorted S-Curved Trunk */}
           <path
             d="M 200 850
                C 205 810, 230 780, 245 760
@@ -902,28 +753,30 @@ export default function SakuraTree({
             strokeWidth="3.2"
           />
 
-          {/* S-Curving Longitudinal Bark Grooves & Wood Fibers */}
+          {/* Bark Fibers & Knots */}
           <g stroke="url(#barkHighlightGrad)" strokeWidth="3" strokeLinecap="round" fill="none">
             <path d="M 220 848 C 225 808, 248 778, 260 758 C 275 738, 248 698, 212 668 C 190 648, 198 605, 224 570 C 238 550, 246 520, 250 480" />
             <path d="M 240 845 C 245 805, 270 772, 282 752 C 298 732, 270 692, 235 662 C 212 642, 220 598, 248 565 C 262 545, 268 515, 272 478" />
             <path d="M 208 845 C 212 812, 235 785, 248 765 C 255 750, 230 712, 198 680 C 178 660, 185 620, 210 585 C 222 568, 232 535, 238 495" opacity="0.8" />
           </g>
 
-          {/* Ancient Knot Hollow (Uro) nestled into the S-bend */}
           <ellipse cx="238" cy="620" rx="9" ry="18" transform="rotate(-18, 238, 620)" fill="#020101" />
           <path d="M 226 602 C 220 622, 224 642, 236 652" stroke="#524335" strokeWidth="2.4" fill="none" opacity="0.85" />
           <path d="M 248 598 C 255 618, 252 638, 244 648" stroke="#3D3228" strokeWidth="1.8" fill="none" opacity="0.75" />
 
           {/* ============================================================== */}
-          {/* 6 MASTER BONSAI BOUGHS (Crooked, Jagged Tapering & Fine Twigs) */}
+          {/* PRIMARY BOUGH 1: LOW-LEFT SWEEPING BOUGH                       */}
+          {/* Pivots at branch junction: transformOrigin: '235px 485px'      */}
           {/* ============================================================== */}
+          <g ref={bough1Ref} id="PrimaryBoughLowLeft" style={{ transformOrigin: '235px 485px' }}>
+            {/* Deep Under-Canopy for this Bough */}
+            <g transform="translate(100, 520) scale(1.15) rotate(-10)" opacity="0.92">
+              <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+            </g>
 
-          {/* BOUGH 1: Low-Left Sweeping Bough */}
-          <g ref={boughLowLeftRef} style={{ transformOrigin: '235px 480px' }}>
+            {/* Branch Wood Structure */}
             <path
-              d="M 235 485
-                 C 210 495, 185 515, 165 540
-                 C 145 560, 120 555, 95 538"
+              d="M 235 485 C 210 495, 185 515, 165 540 C 145 560, 120 555, 95 538"
               stroke="#080605"
               strokeWidth="14"
               strokeLinecap="round"
@@ -934,14 +787,29 @@ export default function SakuraTree({
             <path d="M 88 588 Q 70 598, 48 592" stroke="#120E0B" strokeWidth="3" strokeLinecap="round" fill="none" />
             <path d="M 58 512 Q 42 502, 28 506" stroke="#120E0B" strokeWidth="2.6" strokeLinecap="round" fill="none" />
             <path d="M 95 538 Q 78 548, 58 542" stroke="#120E0B" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+
+            {/* Attached Blossom Clusters (Inherits Bough Motion + Adds Flutter) */}
+            <g ref={blossomCluster1Ref} id="BlossomsLowLeft" style={{ transformOrigin: '95px 538px' }}>
+              <g transform="translate(80, 540) scale(1.08) rotate(10)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(50, 490) scale(0.92) rotate(-15)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+            </g>
           </g>
 
-          {/* BOUGH 2: Mid-Left Jagged Bonsai Branch */}
-          <g ref={boughMidLeftRef} style={{ transformOrigin: '240px 460px' }}>
+          {/* ============================================================== */}
+          {/* PRIMARY BOUGH 2: MID-LEFT JAGGED BONSAI BRANCH                 */}
+          {/* Pivots at branch junction: transformOrigin: '240px 460px'      */}
+          {/* ============================================================== */}
+          <g ref={bough2Ref} id="PrimaryBoughMidLeft" style={{ transformOrigin: '240px 460px' }}>
+            <g transform="translate(130, 410) scale(1.22) rotate(8)" opacity="0.92">
+              <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+            </g>
+
             <path
-              d="M 240 460
-                 C 215 442, 188 432, 162 412
-                 C 140 396, 118 392, 90 386"
+              d="M 240 460 C 215 442, 188 432, 162 412 C 140 396, 118 392, 90 386"
               stroke="#080605"
               strokeWidth="12"
               strokeLinecap="round"
@@ -952,14 +820,28 @@ export default function SakuraTree({
             <path d="M 126 352 Q 110 342, 92 336" stroke="#120E0B" strokeWidth="2.8" strokeLinecap="round" fill="none" />
             <path d="M 90 386 Q 74 382, 56 384" stroke="#120E0B" strokeWidth="2.6" strokeLinecap="round" fill="none" />
             <path d="M 100 472 Q 84 484, 68 480" stroke="#120E0B" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+
+            <g ref={blossomCluster2Ref} id="BlossomsMidLeft" style={{ transformOrigin: '110px 400px' }}>
+              <g transform="translate(110, 400) scale(1.15) rotate(6)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(85, 360) scale(0.98) rotate(-8)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+            </g>
           </g>
 
-          {/* BOUGH 3: Upper-Left Climbing Branch */}
-          <g ref={boughUpperLeftRef} style={{ transformOrigin: '255px 440px' }}>
+          {/* ============================================================== */}
+          {/* PRIMARY BOUGH 3: UPPER-LEFT CLIMBING BRANCH                    */}
+          {/* Pivots at branch junction: transformOrigin: '255px 440px'      */}
+          {/* ============================================================== */}
+          <g ref={bough3Ref} id="PrimaryBoughUpperLeft" style={{ transformOrigin: '255px 440px' }}>
+            <g transform="translate(170, 300) scale(1.28) rotate(-6)" opacity="0.92">
+              <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+            </g>
+
             <path
-              d="M 255 440
-                 C 242 400, 222 352, 198 312
-                 C 182 286, 166 262, 142 236"
+              d="M 255 440 C 242 400, 222 352, 198 312 C 182 286, 166 262, 142 236"
               stroke="#080605"
               strokeWidth="13"
               strokeLinecap="round"
@@ -970,14 +852,28 @@ export default function SakuraTree({
             <path d="M 142 236 Q 126 222, 110 216" stroke="#120E0B" strokeWidth="3" strokeLinecap="round" fill="none" />
             <path d="M 182 252 Q 166 242, 150 240" stroke="#120E0B" strokeWidth="2.5" strokeLinecap="round" fill="none" />
             <path d="M 138 356 Q 120 364, 102 360" stroke="#120E0B" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+
+            <g ref={blossomCluster3Ref} id="BlossomsUpperLeft" style={{ transformOrigin: '150px 280px' }}>
+              <g transform="translate(150, 280) scale(1.22) rotate(14)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(125, 230) scale(1.05) rotate(-12)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+            </g>
           </g>
 
-          {/* BOUGH 4: Central Apex Crown Trunk & Dome Branches */}
-          <g ref={boughCrownRef} style={{ transformOrigin: '260px 450px' }}>
+          {/* ============================================================== */}
+          {/* PRIMARY BOUGH 4: CENTRAL APEX CROWN TRUNK & DOME               */}
+          {/* Pivots at branch junction: transformOrigin: '260px 450px'      */}
+          {/* ============================================================== */}
+          <g ref={bough4Ref} id="PrimaryBoughApexCrown" style={{ transformOrigin: '260px 450px' }}>
+            <g transform="translate(270, 180) scale(1.35) rotate(14)" opacity="0.92">
+              <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+            </g>
+
             <path
-              d="M 260 450
-                 C 266 392, 276 342, 272 292
-                 C 266 252, 272 212, 262 172"
+              d="M 260 450 C 266 392, 276 342, 272 292 C 266 252, 272 212, 262 172"
               stroke="#080605"
               strokeWidth="15"
               strokeLinecap="round"
@@ -989,15 +885,34 @@ export default function SakuraTree({
             <path d="M 312 232 Q 332 216, 350 206" stroke="#120E0B" strokeWidth="3" strokeLinecap="round" fill="none" />
             <path d="M 226 196 Q 212 182, 194 176" stroke="#120E0B" strokeWidth="2.6" strokeLinecap="round" fill="none" />
             <path d="M 306 102 Q 322 89, 340 86" stroke="#120E0B" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+
+            <g ref={blossomCluster4Ref} id="BlossomsApexCrown" style={{ transformOrigin: '290px 160px' }}>
+              <g transform="translate(250, 160) scale(1.3) rotate(8)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(300, 100) scale(1.25) rotate(-10)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(340, 170) scale(1.2) rotate(18)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+            </g>
           </g>
 
-          {/* BOUGH 5: Main Right Arching Great Bough */}
-          <g ref={boughRightRef} style={{ transformOrigin: '275px 460px' }}>
+          {/* ============================================================== */}
+          {/* PRIMARY BOUGH 5: MAIN RIGHT ARCHING GREAT BOUGH                */}
+          {/* Pivots at branch junction: transformOrigin: '275px 460px'      */}
+          {/* ============================================================== */}
+          <g ref={bough5Ref} id="PrimaryBoughGreatRight" style={{ transformOrigin: '275px 460px' }}>
+            <g transform="translate(420, 260) scale(1.32) rotate(-8)" opacity="0.92">
+              <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+            </g>
+            <g transform="translate(520, 360) scale(1.28) rotate(12)" opacity="0.92">
+              <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+            </g>
+
             <path
-              d="M 275 460
-                 C 310 470, 350 480, 390 470
-                 C 430 460, 470 440, 510 410
-                 C 545 385, 575 355, 610 320"
+              d="M 275 460 C 310 470, 350 480, 390 470 C 430 460, 470 440, 510 410 C 545 385, 575 355, 610 320"
               stroke="#080605"
               strokeWidth="16"
               strokeLinecap="round"
@@ -1008,92 +923,58 @@ export default function SakuraTree({
             <path d="M 610 320 Q 636 306, 660 296" stroke="#120E0B" strokeWidth="3.2" strokeLinecap="round" fill="none" />
             <path d="M 535 260 Q 556 246, 580 238" stroke="#120E0B" strokeWidth="2.8" strokeLinecap="round" fill="none" />
             <path d="M 715 330 Q 736 320, 754 316" stroke="#120E0B" strokeWidth="2.4" strokeLinecap="round" fill="none" />
-          </g>
 
-          {/* BOUGH 6: Lower-Right Weeping Bough */}
-          <g ref={boughLowRightRef} style={{ transformOrigin: '390px 470px' }}>
-            <path
-              d="M 430 460
-                 C 455 490, 485 520, 520 540
-                 C 555 560, 595 570, 630 575"
-              stroke="#080605"
-              strokeWidth="11"
-              strokeLinecap="round"
-              fill="none"
-            />
-            <path d="M 520 540 C 545 565, 575 585, 605 605" stroke="#0D0907" strokeWidth="7" strokeLinecap="round" fill="none" />
-            <path d="M 630 575 Q 656 580, 680 578" stroke="#120E0B" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-            <path d="M 605 605 Q 626 618, 650 622" stroke="#120E0B" strokeWidth="2.4" strokeLinecap="round" fill="none" />
-          </g>
-        </g>
+            {/* Attached Upper & Mid-Right Blossom Canopy Shelves */}
+            <g ref={blossomCluster5Ref} id="BlossomsGreatRight" style={{ transformOrigin: '530px 290px' }}>
+              <g transform="translate(430, 240) scale(1.28) rotate(-6)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(500, 210) scale(1.22) rotate(15)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(560, 320) scale(1.25) rotate(-8)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(630, 310) scale(1.18) rotate(12)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+              <g transform="translate(690, 320) scale(1.05) rotate(22)">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
+            </g>
 
-        {/* ================================================================ */}
-        {/* LAYER 4: FOREGROUND LUSH SAKURA CANOPY (Tiered Cloud Shelves)    */}
-        {/* ================================================================ */}
-        <g ref={foregroundCanopyRef} id="ForegroundCanopyClouds" style={{ transformOrigin: '260px 450px' }}>
-          {/* Tier 1: Low-Left Shelf */}
-          <g transform="translate(80, 540) scale(1.08) rotate(10)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(50, 490) scale(0.92) rotate(-15)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
+            {/* ============================================================ */}
+            {/* PRIMARY BOUGH 6: LOWER-RIGHT WEEPING BOUGH                   */}
+            {/* Branch off lower side of right bough: origin: '390px 470px' */}
+            {/* ============================================================ */}
+            <g ref={bough6Ref} id="PrimaryBoughLowRight" style={{ transformOrigin: '390px 470px' }}>
+              <g transform="translate(500, 520) scale(1.18) rotate(18)" opacity="0.92">
+                <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              </g>
 
-          {/* Tier 2: Mid-Left Shelf */}
-          <g transform="translate(110, 400) scale(1.15) rotate(6)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(85, 360) scale(0.98) rotate(-8)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
+              <path
+                d="M 430 460 C 455 490, 485 520, 520 540 C 555 560, 595 570, 630 575"
+                stroke="#080605"
+                strokeWidth="11"
+                strokeLinecap="round"
+                fill="none"
+              />
+              <path d="M 520 540 C 545 565, 575 585, 605 605" stroke="#0D0907" strokeWidth="7" strokeLinecap="round" fill="none" />
+              <path d="M 630 575 Q 656 580, 680 578" stroke="#120E0B" strokeWidth="2.8" strokeLinecap="round" fill="none" />
+              <path d="M 605 605 Q 626 618, 650 622" stroke="#120E0B" strokeWidth="2.4" strokeLinecap="round" fill="none" />
 
-          {/* Tier 3: Upper-Left Shelf */}
-          <g transform="translate(150, 280) scale(1.22) rotate(14)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(125, 230) scale(1.05) rotate(-12)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-
-          {/* Tier 4: Apex Crown Dome */}
-          <g transform="translate(250, 160) scale(1.3) rotate(8)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(300, 100) scale(1.25) rotate(-10)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(340, 170) scale(1.2) rotate(18)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-
-          {/* Tier 5: Upper-Right Canopy */}
-          <g transform="translate(430, 240) scale(1.28) rotate(-6)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(500, 210) scale(1.22) rotate(15)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-
-          {/* Tier 6: Far-Right Sweeping Canopy */}
-          <g transform="translate(560, 320) scale(1.25) rotate(-8)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(630, 310) scale(1.18) rotate(12)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(690, 320) scale(1.05) rotate(22)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-
-          {/* Tier 7: Lower-Right Weeping Shelf */}
-          <g transform="translate(540, 480) scale(1.18) rotate(14)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(610, 560) scale(1.12) rotate(8)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
-          </g>
-          <g transform="translate(640, 610) scale(0.98) rotate(18)">
-            <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+              <g ref={blossomCluster6Ref} id="BlossomsLowRight" style={{ transformOrigin: '550px 520px' }}>
+                <g transform="translate(540, 480) scale(1.18) rotate(14)">
+                  <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+                </g>
+                <g transform="translate(610, 560) scale(1.12) rotate(8)">
+                  <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+                </g>
+                <g transform="translate(640, 610) scale(0.98) rotate(18)">
+                  <use href={isMomiji ? '#momijiCloudShelf' : '#sakuraCloudShelf'} />
+                </g>
+              </g>
+            </g>
           </g>
         </g>
       </svg>
