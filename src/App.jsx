@@ -9,7 +9,9 @@ import SectionWarriors from './components/SectionWarriors';
 import SectionBlade from './components/SectionBlade';
 import SectionSpirit from './components/SectionSpirit';
 import SectionCTA from './components/SectionCTA';
+import SectionHonor from './components/SectionHonor';
 import SectionMonument from './components/SectionMonument';
+import SectionDateMasamune from './components/SectionDateMasamune';
 import './styles.css';
 
 export default function App() {
@@ -44,7 +46,9 @@ export default function App() {
           {onlySection === 'blade' && <SectionBlade />}
           {onlySection === 'forge' && <SectionBlade />}
           {onlySection === 'spirit' && <SectionSpirit />}
+          {onlySection === 'honor' && <SectionHonor />}
           {onlySection === 'monument' && <SectionMonument />}
+          {onlySection === 'masamune' && <SectionDateMasamune />}
           {onlySection === 'cta' && <SectionCTA onExploreLegacy={() => {}} />}
         </main>
       </div>
@@ -105,10 +109,16 @@ export default function App() {
         {/* SECTION 05: The Spirit of Japan (Sacred Zen Landscapes & Haiku) */}
         <SectionSpirit />
 
-        {/* SECTION 06: Dedicated monumental historical archive */}
+        {/* SECTION 06: The Honor of the Samurai (武士の名誉 — Five-Chapter Immersive Chapter) */}
+        <SectionHonor />
+
+        {/* SECTION 07: The Guardians of History (楠木正成 — Bronze Equestrian Monument) */}
         <SectionMonument />
 
-        {/* SECTION 07: Final Cinematic CTA & Luxury Editorial Footer */}
+        {/* SECTION 08: The One-Eyed Dragon (伊達政宗 — Date Masamune at Aoba Castle) */}
+        <SectionDateMasamune />
+
+        {/* SECTION 09: Final Cinematic CTA & Luxury Editorial Footer */}
         <SectionCTA onExploreLegacy={handleExploreLegacy} />
       </main>
     </div>
