@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useEffect, useRef, useState } from 'react';
 import RisingSun from './RisingSun';
 import AnimatedSamurai from './AnimatedSamurai';
@@ -16,7 +17,7 @@ export default function SamuraiScene({ onEnterLegend, onExploreWarriors }) {
     setIsReady(true);
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
 
     let mouseTargetX = 0;
     let mouseTargetY = 0;
@@ -31,11 +32,12 @@ export default function SamuraiScene({ onEnterLegend, onExploreWarriors }) {
       mouseTargetY = (e.clientY / innerHeight) * 2 - 1;
     };
 
-    const updateParallax = () => {
+    const updateParallax = ({dt, reducedMotion}) => {
+      if (reducedMotion) return;
       // Smooth linear interpolation (lerp) for cinematic inertia
-      mouseCurX += (mouseTargetX - mouseCurX) * 0.08;
-      mouseCurY += (mouseTargetY - mouseCurY) * 0.08;
-      scrollCurY += (window.scrollY - scrollCurY) * 0.12;
+      mouseCurX = damp(mouseCurX, mouseTargetX, 5.0029, dt);
+      mouseCurY = damp(mouseCurY, mouseTargetY, 5.0029, dt);
+      scrollCurY = damp(scrollCurY, window.scrollY, 7.6700, dt);
 
       if (stageRef.current) {
         stageRef.current.style.setProperty('--p-mouse-x', mouseCurX.toFixed(4));
@@ -43,15 +45,15 @@ export default function SamuraiScene({ onEnterLegend, onExploreWarriors }) {
         stageRef.current.style.setProperty('--p-scroll-y', scrollCurY.toFixed(2));
       }
 
-      animId = requestAnimationFrame(updateParallax);
+
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    animId = requestAnimationFrame(updateParallax);
+    const stop = createArtworkLoop(containerRef.current, updateParallax);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animId);
+      stop();
     };
   }, []);
 

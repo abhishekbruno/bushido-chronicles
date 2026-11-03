@@ -7887,3 +7887,49 @@ html { scroll-padding-top: 88px; }
     display: none !important;
   }
 }
+
+/* Motion stability: preserve CSS phases while out of view or in a hidden tab. */
+[data-motion-paused="true"],
+[data-motion-paused="true"] *,
+[data-motion-paused="true"] *::before,
+[data-motion-paused="true"] *::after {
+  animation-play-state: paused !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .samurai-app-root *, .samurai-app-root *::before, .samurai-app-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Keep the figure and its contact shadow grounded; movement belongs to cloth. */
+.honor-samurai-warrior-layer { animation: none; }
+.monument-statue-hero-anchor:hover .monument-statue-image { transform: none; }
+.honor-samurai-figure-mount:hover .honor-samurai-cloth-canvas,
+.honor-samurai-figure-mount:hover .honor-samurai-sketch-img { transform: translateZ(25px); }
+
+/* Peripheral paper fades preserve sharp focal detail and avoid rectangular cutouts. */
+.honor-samurai-figure-mount {
+  mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent),
+    linear-gradient(to bottom, transparent, #000 3%, #000 96%, transparent);
+  mask-composite: intersect;
+}
+.monument-castle-rampart-layer {
+  mask-image: linear-gradient(to right, transparent, #000 14%),
+    linear-gradient(to bottom, transparent, #000 12%, #000 90%, transparent);
+  mask-composite: intersect;
+}
+.monument-sakura-tree-layer {
+  mask-image: linear-gradient(to right, #000 84%, transparent),
+    linear-gradient(to bottom, #000 90%, transparent);
+  mask-composite: intersect;
+}
+.warrior-living-canvas { mask-image: linear-gradient(to bottom, #000 92%, transparent); }
+.ronin-living-stage {
+  mask-image: linear-gradient(to bottom, #000 91%, transparent 100%);
+}
+@media (max-width: 640px) {
+  .bc-ronin-scene-wrapper { aspect-ratio: 1; }
+}

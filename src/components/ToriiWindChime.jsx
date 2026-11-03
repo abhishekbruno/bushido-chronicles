@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useRef, useEffect, useCallback } from 'react';
 import { windSystem } from '../utils/windSystem';
 import { sound } from '../utils/soundEngine';
@@ -98,7 +99,7 @@ export default function ToriiWindChime({
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
 
     let animId;
     const p = physics.current;
@@ -123,18 +124,8 @@ export default function ToriiWindChime({
     const DAMP_CURL = 6.5;        // Damping on paper flex
     const CONTACT_LIMIT = 0.26;   // rad (~15.0° relative displacement before rim collision)
 
-    const updatePhysics = (now) => {
-      animId = requestAnimationFrame(updatePhysics);
-
-      if (!p.isVisible) {
-        p.lastTime = now;
-        return;
-      }
-
-      const rawDt = (now - p.lastTime) / 1000;
-      p.lastTime = now;
-      // Clamp dt to 35ms max to avoid numerical instability after tab backgrounding
-      const dt = Math.min(0.035, Math.max(0.001, rawDt));
+    const updatePhysics = ({dt, time, reducedMotion}) => {
+      if (reducedMotion) return;
 
       // Decrement chime cooldown
       if (p.chimeCooldown > 0) {
@@ -145,7 +136,7 @@ export default function ToriiWindChime({
       // A. COMPUTE SMOOTH REALISTIC AERODYNAMIC WIND SIGNAL
       // ==============================================================
       const wind = windSystem.getState();
-      const t = wind.time;
+      const t = time;
 
       // 1. Organic multi-frequency shifting breeze
       const ambientBreeze =
@@ -158,7 +149,7 @@ export default function ToriiWindChime({
       const dirShift = 1.0 + 0.18 * Math.sin(t * 0.22);
 
       // 3. Natural gusts with smooth bell envelope and micro-turbulence
-      const gustEnvelope = wind.gust > 0.05 ? wind.gust * 2.3 : 0;
+      const gustEnvelope = wind.gust * 2.3;
       const microTurbulence =
         (Math.sin(t * 3.8) * 0.12 + Math.sin(t * 7.4) * 0.07) *
         (0.25 + gustEnvelope * 0.75);
@@ -328,10 +319,10 @@ export default function ToriiWindChime({
       }
     };
 
-    animId = requestAnimationFrame(updatePhysics);
+    const stopPhysics = createArtworkLoop(rootRef.current, updatePhysics);
 
     return () => {
-      if (animId) cancelAnimationFrame(animId);
+      stopPhysics();
     };
   }, []);
 

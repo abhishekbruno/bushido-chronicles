@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Maximize2, Minimize2 } from 'lucide-react';
 import ToriiWindChime from './ToriiWindChime';
@@ -33,28 +34,29 @@ export default function LegacyInkPoster() {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
 
     const el = containerRef.current;
     if (!el) return;
 
-    const updateParallax = () => {
+    const updateParallax = ({dt, reducedMotion}) => {
+      if (reducedMotion) return;
       // Smooth linear interpolation (lerp)
-      mouseCurrX.current += (mouseTargetX.current - mouseCurrX.current) * 0.06;
-      mouseCurrY.current += (mouseTargetY.current - mouseCurrY.current) * 0.06;
+      mouseCurrX.current = damp(mouseCurrX.current, mouseTargetX.current, 3.7125, dt);
+      mouseCurrY.current = damp(mouseCurrY.current, mouseTargetY.current, 3.7125, dt);
 
       if (el) {
         el.style.setProperty('--poster-mouse-x', mouseCurrX.current.toFixed(4));
         el.style.setProperty('--poster-mouse-y', mouseCurrY.current.toFixed(4));
       }
 
-      animFrameRef.current = requestAnimationFrame(updateParallax);
+
     };
 
-    animFrameRef.current = requestAnimationFrame(updateParallax);
+    const stop = createArtworkLoop(el, updateParallax);
 
     return () => {
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      stop();
     };
   }, []);
 

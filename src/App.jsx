@@ -1,3 +1,4 @@
+import ArtworkMotionLifecycle from './components/ArtworkMotionLifecycle';
 import React, { useState, useEffect } from 'react';
 import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
@@ -11,7 +12,6 @@ import SectionSpirit from './components/SectionSpirit';
 import SectionCTA from './components/SectionCTA';
 import SectionHonor from './components/SectionHonor';
 import SectionMonument from './components/SectionMonument';
-import SectionDateMasamune from './components/SectionDateMasamune';
 import './styles.css';
 
 export default function App() {
@@ -35,6 +35,7 @@ export default function App() {
     return (
       <div className="samurai-app-root">
         <ScrollTransitions />
+        <ArtworkMotionLifecycle />
         <Navbar />
         <main className="main-content-flow" style={{ paddingTop: '70px' }}>
           {onlySection === 'hero' && (
@@ -48,7 +49,6 @@ export default function App() {
           {onlySection === 'spirit' && <SectionSpirit />}
           {onlySection === 'honor' && <SectionHonor />}
           {onlySection === 'monument' && <SectionMonument />}
-          {onlySection === 'masamune' && <SectionDateMasamune />}
           {onlySection === 'cta' && <SectionCTA onExploreLegacy={() => {}} />}
         </main>
       </div>
@@ -83,6 +83,7 @@ export default function App() {
 
       {/* 3. GSAP ScrollTrigger Storytelling Transitions */}
       <ScrollTransitions />
+        <ArtworkMotionLifecycle />
 
       {/* 4. Minimalist Fixed Navigation Bar with Ambient Audio Engine */}
       <Navbar />
@@ -115,10 +116,7 @@ export default function App() {
         {/* SECTION 07: The Guardians of History (楠木正成 — Bronze Equestrian Monument) */}
         <SectionMonument />
 
-        {/* SECTION 08: The One-Eyed Dragon (伊達政宗 — Date Masamune at Aoba Castle) */}
-        <SectionDateMasamune />
-
-        {/* SECTION 09: Final Cinematic CTA & Luxury Editorial Footer */}
+        {/* SECTION 08: Final Cinematic CTA & Luxury Editorial Footer */}
         <SectionCTA onExploreLegacy={handleExploreLegacy} />
       </main>
     </div>

@@ -8,11 +8,13 @@ export default function RisingSun() {
 
   useEffect(() => {
     if (!sunRef.current) return;
-    gsap.fromTo(
-      sunRef.current,
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const tween = gsap.fromTo(
+      sunRef.current.querySelector('.sun-layer-svg'),
       { y: 35, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out' }
     );
+    return () => tween.kill();
   }, []);
 
   return (

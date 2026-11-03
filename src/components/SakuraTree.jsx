@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useRef, useEffect, useState } from 'react';
 import { windSystem } from '../utils/windSystem';
 import { sound } from '../utils/soundEngine';
@@ -109,7 +110,7 @@ export default function SakuraTree({
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
 
     let animId;
     const p = springPhysics.current;
@@ -137,20 +138,11 @@ export default function SakuraTree({
       return node.angle;
     };
 
-    const updatePhysics = (now) => {
-      animId = requestAnimationFrame(updatePhysics);
-
-      if (!p.isVisible) {
-        p.lastTime = now;
-        return;
-      }
-
-      const rawDt = (now - p.lastTime) / 1000;
-      p.lastTime = now;
-      const dt = Math.min(0.035, Math.max(0.001, rawDt));
+    const updatePhysics = ({dt, time, reducedMotion}) => {
+      if (reducedMotion) return;
 
       const wind = windSystem.getState();
-      const t = wind.time;
+      const t = time;
 
       // Normalized wind force: gentle baseline with smooth gust reaction
       const windForce = Math.min(1.15, wind.windX * (0.55 + wind.gust * 0.95));
@@ -208,10 +200,10 @@ export default function SakuraTree({
       }
     };
 
-    animId = requestAnimationFrame(updatePhysics);
+    const stopPhysics = createArtworkLoop(containerRef.current, updatePhysics);
 
     return () => {
-      cancelAnimationFrame(animId);
+      stopPhysics();
     };
   }, []);
 
@@ -286,30 +278,26 @@ export default function SakuraTree({
       petals.push(spawnPetal(true));
     }
 
-    const render = () => {
-      if (!springPhysics.current.isVisible) {
-        animId = requestAnimationFrame(render);
-        return;
-      }
-
+    const render = ({dt, reducedMotion}) => {
+      const frames = dt * 60;
       ctx.clearRect(0, 0, width, height);
       const wind = windSystem.getState();
       const windDrift = wind.windX * 1.8;
 
-      petals.forEach((p) => {
+      (reducedMotion ? [] : petals).forEach((p) => {
         // Fade in when freshly spawned
         if (!p.isSettling && p.opacity < p.targetOpacity) {
-          p.opacity += 0.035;
+          p.opacity = Math.min(p.targetOpacity, p.opacity + 0.035 * frames);
         }
 
         // Horizontal sinusoidal fluttering drift
-        p.swayPhase += 0.032;
+        p.swayPhase += 0.018 * frames;
         const flutter = Math.sin(p.swayPhase) * 0.65;
 
-        p.x += p.vx + windDrift * 0.5 + flutter;
-        p.y += p.vy;
-        p.angle += p.spin;
-        p.flip += p.flipSpeed;
+        p.x += (p.vx + windDrift * 0.5 + flutter) * frames;
+        p.y += p.vy * frames;
+        p.angle += p.spin * frames;
+        p.flip += p.flipSpeed * frames;
 
         // Rock base settling boundary (approx 74% to 85% of height)
         const cragTopY = height * 0.74;
@@ -318,9 +306,9 @@ export default function SakuraTree({
         }
 
         if (p.isSettling) {
-          p.vy *= 0.94;
-          p.vx *= 0.90;
-          p.opacity -= 0.016; // Soft natural fade-out settling on the mossy rock
+          p.vy *= 0.94 ** frames;
+          p.vx *= 0.90 ** frames;
+          p.opacity -= 0.016 * frames; // Soft natural fade-out settling on the mossy rock
         }
 
         // Respawn when settled or off-bounds
@@ -369,13 +357,13 @@ export default function SakuraTree({
         ctx.restore();
       });
 
-      animId = requestAnimationFrame(render);
+
     };
 
-    animId = requestAnimationFrame(render);
+    const stop = createArtworkLoop(canvas, render);
 
     return () => {
-      cancelAnimationFrame(animId);
+      stop();
       window.removeEventListener('resize', handleResize);
     };
   }, [mode]);

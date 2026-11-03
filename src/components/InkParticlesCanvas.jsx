@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useEffect, useRef } from 'react';
 
 export default function InkParticlesCanvas() {
@@ -16,7 +17,7 @@ export default function InkParticlesCanvas() {
 
     // Check prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -65,18 +66,19 @@ export default function InkParticlesCanvas() {
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    let lastTime = performance.now();
 
-    const render = (time) => {
+
+    const render = ({dt, reducedMotion}) => {
+      const frames = dt * 60;
       ctx.clearRect(0, 0, width, height);
 
-      for (let i = 0; i < particles.length; i++) {
+      for (let i = 0; i < (reducedMotion ? 0 : particles.length); i++) {
         const p = particles[i];
 
         // Move particle
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.rotation += p.rotSpeed;
+        p.x += p.speedX * frames;
+        p.y += p.speedY * frames;
+        p.rotation += p.rotSpeed * frames;
 
         // Mouse interaction (gentle wind push)
         const dx = p.x - mouse.x;
@@ -84,8 +86,8 @@ export default function InkParticlesCanvas() {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < mouse.radius && dist > 0) {
           const force = (mouse.radius - dist) / mouse.radius;
-          p.x += (dx / dist) * force * 3;
-          p.y += (dy / dist) * force * 3;
+          p.x += (dx / dist) * force * 3 * frames;
+          p.y += (dy / dist) * force * 3 * frames;
         }
 
         // Screen wrap
@@ -116,13 +118,13 @@ export default function InkParticlesCanvas() {
         ctx.restore();
       }
 
-      animationFrameId = requestAnimationFrame(render);
+
     };
 
-    animationFrameId = requestAnimationFrame(render);
+    const stop = createArtworkLoop(canvas.parentElement, render);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      stop();
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
     };

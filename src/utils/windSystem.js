@@ -1,3 +1,4 @@
+import { clampDelta, damp } from './motion.js';
 /**
  * GlobalWindSystem (風 - Kaze)
  * -----------------------------------------------------------------------------
@@ -27,10 +28,13 @@ class WindSystem {
     this.listeners = new Set();
     this.lastFrameTime = performance.now();
     this.isRunning = false;
+    this.frameId = null;
 
     // Start background simulation loop
     if (typeof window !== 'undefined') {
-      this.start();
+      this.visibilityHandler = () => document.hidden ? this.stop() : this.start();
+      document.addEventListener('visibilitychange', this.visibilityHandler);
+      if (!document.hidden) this.start();
     }
   }
 
@@ -41,20 +45,23 @@ class WindSystem {
 
     const loop = (now) => {
       if (!this.isRunning) return;
-      const dt = Math.min((now - this.lastFrameTime) / 1000, 0.1);
+      const dt = clampDelta((now - this.lastFrameTime) / 1000);
       this.lastFrameTime = now;
       this.update(dt);
-      requestAnimationFrame(loop);
+      this.frameId = requestAnimationFrame(loop);
     };
 
-    requestAnimationFrame(loop);
+    this.frameId = requestAnimationFrame(loop);
   }
 
   stop() {
     this.isRunning = false;
+    if (this.frameId !== null) cancelAnimationFrame(this.frameId);
+    this.frameId = null;
   }
 
   update(dt) {
+    dt = clampDelta(dt);
     this.time += dt;
 
     // 1. Organic multi-frequency shifting breeze
@@ -71,28 +78,31 @@ class WindSystem {
       this.nextGustInterval = 6.0 + Math.random() * 6.0;
     }
 
+    let targetGust = 0;
     if (this.isGusting) {
       const gustAge = this.gustTimer;
       if (gustAge < this.gustDuration) {
         // Bell-shaped smooth gust curve
         const progress = gustAge / this.gustDuration;
-        this.gust = Math.sin(progress * Math.PI) * this.gustPeak;
+        targetGust = Math.sin(progress * Math.PI) ** 2 * this.gustPeak;
       } else {
         this.isGusting = false;
-        this.gust = 0;
+        targetGust = 0;
         this.gustTimer = 0;
       }
     } else {
-      this.gust = Math.max(0, this.gust - dt * 1.5);
+      targetGust = 0;
     }
+
+    this.gust = damp(this.gust, targetGust, 3, dt);
 
     // 3. Compute directional vector
     const totalSpeed = Math.max(0.2, 0.85 + organicDrift * 0.4 + this.gust * 1.6);
-    this.speed = totalSpeed;
+    this.speed = damp(this.speed, totalSpeed, 2.5, dt);
 
     const angle = this.baseAngle + Math.sin(this.time * 0.25) * 0.12;
-    this.windX = Math.cos(angle) * totalSpeed;
-    this.windY = Math.sin(angle) * totalSpeed * 0.6 + Math.cos(this.time * 0.8) * 0.1;
+    this.windX = Math.cos(angle) * this.speed;
+    this.windY = Math.sin(angle) * this.speed * 0.6 + Math.cos(this.time * 0.8) * 0.1;
 
     // 4. Notify high-performance listeners
     if (this.listeners.size > 0) {
@@ -105,10 +115,16 @@ class WindSystem {
    * Manually trigger a sudden gust (e.g. on tree click, sword slash, or section arrival)
    */
   triggerGust(strength = 1.0) {
-    this.isGusting = true;
-    this.gustTimer = 0;
-    this.gustPeak = Math.min(2.5, 1.2 * strength);
-    this.gustDuration = 2.0 + Math.random() * 1.2;
+    const peak = Math.max(0, Math.min(2.5, 1.2 * strength));
+    if (this.isGusting) {
+      // Reinforce the current gust without rewinding its rise on every click.
+      this.gustPeak = Math.max(this.gustPeak, peak);
+    } else {
+      this.isGusting = true;
+      this.gustTimer = 0;
+      this.gustPeak = peak;
+      this.gustDuration = 2.0 + Math.random() * 1.2;
+    }
 
     // Dispatch global custom event for non-react or external handlers
     if (typeof window !== 'undefined') {
@@ -145,4 +161,9 @@ class WindSystem {
 
 export const windSystem = new WindSystem();
 export default windSystem;
+
+if (import.meta.hot) import.meta.hot.dispose(() => {
+  windSystem.stop();
+  document.removeEventListener('visibilitychange', windSystem.visibilityHandler);
+});
 

@@ -1,3 +1,6 @@
+import { createArtworkLoop, damp } from '../utils/motion';
+import { drawWindCloth } from '../utils/cloth';
+import { windSystem } from '../utils/windSystem';
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { sound } from '../utils/soundEngine';
 
@@ -23,7 +26,9 @@ import { sound } from '../utils/soundEngine';
 export default function HonorSamuraiFigure({ className = '', onInteract }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const tilt = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
+  const stageRef = useRef(null);
+  const glintTimer = useRef(null);
   const [isGlinting, setIsGlinting] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [layersLoaded, setLayersLoaded] = useState(false);
@@ -57,11 +62,13 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
     const rect = containerRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: x * 6, y: -y * 6 });
+    tilt.current.targetX = x * 3;
+    tilt.current.targetY = -y * 3;
   };
 
   const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
+    tilt.current.targetX = 0;
+    tilt.current.targetY = 0;
     setIsHovered(false);
   };
 
@@ -70,10 +77,12 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
   };
 
   const triggerBladeGlint = useCallback(() => {
+    if (animStateRef.current.reducedMotion || animStateRef.current.glintProgress < 1) return;
     setIsGlinting(true);
     sound.playBladeGlint();
     animStateRef.current.glintProgress = 0.0;
-    setTimeout(() => {
+    clearTimeout(glintTimer.current);
+    glintTimer.current = setTimeout(() => {
       setIsGlinting(false);
     }, 1300);
   }, []);
@@ -128,6 +137,7 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       tassels: '/images/samurai_layers/samurai_tassels.png',
     };
 
+    let cancelled = false;
     let loadedCount = 0;
     const totalLayers = Object.keys(layerUrls).length;
     const loadedImgs = {};
@@ -136,6 +146,7 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       const img = new Image();
       img.src = url;
       img.onload = () => {
+        if (cancelled) return;
         loadedImgs[key] = img;
         loadedCount++;
         if (loadedCount === totalLayers) {
@@ -149,24 +160,10 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
     });
 
     // 3. Intersection Observer to pause RAF when out of viewport
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          animStateRef.current.isVisible = entry.isIntersecting;
-        });
-      },
-      { threshold: 0.05 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
     return () => {
-      observer.disconnect();
-      if (animStateRef.current.rafId) {
-        cancelAnimationFrame(animStateRef.current.rafId);
-      }
+      // Late image loads must not update state after unmount.
+      cancelled = true;
+      clearTimeout(glintTimer.current);
     };
   }, [initParticles]);
 
@@ -184,49 +181,17 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
     canvas.height = CH;
 
     const state = animStateRef.current;
-    state.lastTime = performance.now();
-
-    const render = (now) => {
-      state.rafId = requestAnimationFrame(render);
-
-      if (!state.isVisible) {
-        state.lastTime = now;
-        return;
-      }
-
-      const dt = Math.min((now - state.lastTime) / 1000, 0.08); // cap dt
-      state.lastTime = now;
-
-      // Advance wave time
-      const timeScale = state.reducedMotion ? 0.35 : 1.0;
-      state.waveTime += dt * timeScale;
+    const render = ({dt, reducedMotion}) => {
+      state.reducedMotion = reducedMotion;
+      state.waveTime += dt;
       const t = state.waveTime;
-
-      // -------------------------------------------------------------
-      // Dynamic Wind Gust Engine (Right-to-Left Gust Cycle)
-      // -------------------------------------------------------------
-      if (t >= state.nextGustTime) {
-        state.gustElapsed += dt;
-        const p = state.gustElapsed / state.gustDuration;
-        if (p <= 1.0) {
-          // Bell curve gust profile: smooth onset, powerful peak, gradual tail
-          state.gust = Math.sin(p * Math.PI) * 0.95;
-        } else {
-          state.gust = 0;
-          state.gustElapsed = 0;
-          // Schedule next gust between 5.5s and 8.0s
-          state.nextGustTime = t + 5.5 + Math.random() * 2.5;
-        }
-      } else {
-        state.gust = 0;
-      }
+      const pointer = tilt.current;
+      pointer.x = reducedMotion ? 0 : damp(pointer.x, pointer.targetX, 6, dt);
+      pointer.y = reducedMotion ? 0 : damp(pointer.y, pointer.targetY, 6, dt);
+      if (stageRef.current) stageRef.current.style.transform = `perspective(1000px) rotateY(${pointer.x}deg) rotateX(${pointer.y}deg)`;
+      state.gust = damp(state.gust, Math.min(1.4, windSystem.getState().gust), 2.2, dt);
       const gust = state.gust;
-
-      // Advance blade glint progress if active
-      if (state.glintProgress < 1.0) {
-        state.glintProgress = Math.min(1.0, state.glintProgress + dt / 1.15);
-      }
-
+      if (!reducedMotion && state.glintProgress < 1) state.glintProgress = Math.min(1, state.glintProgress + dt / 1.15);
       // Clear frame
       ctx.clearRect(0, 0, CW, CH);
 
@@ -236,88 +201,29 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       // LAYER 1: UPPER CAPE WING (Left Shoulder / Torn Wing)
       // Root at x ≈ 230px, tip billowing out to x ≈ 0px
       // =============================================================
-      if (capeUpper) {
-        const numSlicesUpper = 36;
-        const spanX = 240;
-        const sliceW = spanX / numSlicesUpper;
-        const xRoot = 230;
-
-        for (let i = 0; i < numSlicesUpper; i++) {
-          const sx = i * sliceW;
-          const sw = sliceW + 0.6; // slight subpixel overlap
-          const u = Math.max(0, Math.min(1, (xRoot - sx) / xRoot));
-          const w = Math.pow(u, 1.3);
-
-          // Delayed traveling wave from right to left
-          const phase = t * 2.6 + 0.019 * (xRoot - sx);
-          const dy =
-            w *
-              (9.0 * Math.sin(phase) +
-                3.8 * Math.sin(2.4 * phase + 0.9) +
-                2.2 * Math.sin(6.8 * phase) * u) *
-              (1.0 + 1.1 * gust) -
-            6.5 * w * gust;
-          const dx = -w * (6.5 * (1 - Math.cos(phase)) + 12.0 * gust * w + 2.5 * Math.sin(1.8 * phase));
-
-          ctx.drawImage(capeUpper, sx, 0, sw, CH, sx + dx, dy, sw, CH);
-        }
-      }
+      if (capeUpper) drawWindCloth(ctx, capeUpper, {
+        width: CW, height: CH, root: 230, span: 230, direction: -1,
+        time: t, gust, amplitude: 6, speed: 1.45,
+      });
 
       // =============================================================
       // LAYER 2: RIGHT CAPE FLAP (Behind Right Arm / Elbow)
       // Gentle flutter on the windward side
       // =============================================================
-      if (capeRight) {
-        const numSlicesRight = 24;
-        const startX = 645;
-        const spanX = CW - startX;
-        const sliceW = spanX / numSlicesRight;
-
-        for (let i = 0; i < numSlicesRight; i++) {
-          const sx = startX + i * sliceW;
-          const sw = sliceW + 0.6;
-          const u = Math.max(0, Math.min(1, (sx - startX) / (spanX * 0.85)));
-          const w = Math.pow(u, 1.25);
-
-          const phase = t * 2.8 + 0.02 * (sx - startX);
-          const dy = w * (5.0 * Math.sin(phase) + 2.4 * Math.sin(2.3 * phase + 0.6)) * (1.0 + 0.6 * gust);
-          const dx = -w * (3.5 * (1 - Math.cos(phase * 0.8)) + 7.0 * gust);
-
-          ctx.drawImage(capeRight, sx, 0, sw, CH, sx + dx, dy, sw, CH);
-        }
-      }
+      if (capeRight) drawWindCloth(ctx, capeRight, {
+        width: CW, height: CH, root: 645, span: 174, direction: 1,
+        time: t, gust, amplitude: 3, speed: 1.35,
+      });
 
       // =============================================================
       // LAYER 3: LOWER BILLOWING FLORAL CAPE (Behind Katana & Leg)
       // Root at x ≈ 290px, tip billowing out to x ≈ 0px
       // Rich traveling waves, tip snapping, and vertical gust lift
       // =============================================================
-      if (capeLower) {
-        const numSlicesLower = 50;
-        const spanX = 310;
-        const sliceW = spanX / numSlicesLower;
-        const xRoot = 290;
-
-        for (let i = 0; i < numSlicesLower; i++) {
-          const sx = i * sliceW;
-          const sw = sliceW + 0.6;
-          const u = Math.max(0, Math.min(1, (xRoot - sx) / xRoot));
-          const w = Math.pow(u, 1.35);
-
-          // Wave equation: Traveling right-to-left wave with phase delay
-          const phase = t * 2.3 + 0.016 * (xRoot - sx);
-          const dy =
-            w *
-              (13.5 * Math.sin(phase) +
-                5.8 * Math.sin(2.3 * phase + 1.2) +
-                2.8 * Math.sin(6.6 * phase) * u) *
-              (1.0 + 1.25 * gust) -
-            11.0 * w * gust; // lifts cape upward as wind gust accelerates
-          const dx = -w * (8.0 * (1 - Math.cos(phase)) + 16.5 * gust * w + 3.2 * Math.sin(1.6 * phase));
-
-          ctx.drawImage(capeLower, sx, 0, sw, CH, sx + dx, dy, sw, CH);
-        }
-      }
+      if (capeLower) drawWindCloth(ctx, capeLower, {
+        width: CW, height: CH, root: 290, span: 290, direction: -1,
+        time: t, gust, amplitude: 8, speed: 1.3,
+      });
 
       // =============================================================
       // LAYER 4: CORE RIGID SAMURAI WARRIOR (BODY, KATANA, ARMOR)
@@ -334,8 +240,8 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       if (tassels) {
         const tasselAngle =
           -0.035 * (1.0 + 1.8 * gust) +
-          0.022 * Math.sin(t * 3.2) +
-          0.01 * Math.sin(t * 6.5);
+          0.014 * Math.sin(t * 1.8) +
+          0.004 * Math.sin(t * 2.5);
 
         // Left Tassel
         ctx.save();
@@ -356,7 +262,7 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       // LAYER 6: KATANA BLADE GLINT SHIMMER (Interactive Ray)
       // Sweeps along the Katana blade from hilt (335, 510) to tip (780, 745)
       // =============================================================
-      if (state.glintProgress < 1.0) {
+      if (!reducedMotion && state.glintProgress < 1.0) {
         const gp = state.glintProgress;
         const hiltX = 335;
         const hiltY = 510;
@@ -400,7 +306,7 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       // Accelerate during gusts
       // =============================================================
       const gustSpeedMult = 1.0 + 1.45 * gust;
-      state.particles.forEach((p) => {
+      (reducedMotion ? [] : state.particles).forEach((p) => {
         // Horizontal translation right -> left
         p.x -= p.speedX * gustSpeedMult * dt;
 
@@ -451,13 +357,7 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       });
     };
 
-    state.rafId = requestAnimationFrame(render);
-
-    return () => {
-      if (state.rafId) {
-        cancelAnimationFrame(state.rafId);
-      }
-    };
+    return createArtworkLoop(containerRef.current, render);
   }, [layersLoaded]);
 
   return (
@@ -472,9 +372,9 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
       aria-label="Master ink-and-lacquer portrait of a lone armored Samurai standing with quiet dignity before a crimson sun"
     >
       <div
-        className="honor-samurai-stage-3d"
+        ref={stageRef} className="honor-samurai-stage-3d"
         style={{
-          transform: `perspective(1000px) rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)`,
+          transform: 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
           transition: isHovered ? 'transform 0.12s ease-out' : 'transform 0.8s ease-out',
         }}
       >

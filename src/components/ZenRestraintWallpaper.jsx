@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Maximize2, Minimize2, Sparkles, Wind, Volume2, VolumeX } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
@@ -31,11 +32,11 @@ export default function ZenRestraintWallpaper() {
 
   // Mouse parallax physics (lerped)
   const mouseRef = useRef({ targetX: 0, targetY: 0, currX: 0, currY: 0 });
-  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+  const parallax = { x: 0, y: 0 };
 
   // Continuous animation clock
   const timeRef = useRef(0);
-  const [ambientTick, setAmbientTick] = useState(0);
+  const ambientTick = 0;
 
   // ---------------------------------------------------------------------------
   // 1. Intersection Observer: Pause offscreen for maximum battery / CPU efficiency
@@ -95,7 +96,7 @@ export default function ZenRestraintWallpaper() {
     window.addEventListener('resize', handleResize);
 
     // Particle pool: 28 tranquil ambient particles
-    const PARTICLE_COUNT = 32;
+    const PARTICLE_COUNT = window.innerWidth < 640 ? 12 : 24;
     const particles = [];
 
     // Pre-create maple leaf shape path
@@ -133,40 +134,26 @@ export default function ZenRestraintWallpaper() {
 
     let localClock = 0;
 
-    const render = (now) => {
-      animFrameRef.current = requestAnimationFrame(render);
-
-      if (!isVisibleRef.current) return;
-
-      const dt = Math.min(0.064, (now - lastTimeRef.current) / 1000);
-      lastTimeRef.current = now;
-      localClock += dt;
-      timeRef.current = localClock;
-
-      // Smooth mouse lerp
+    const motionNodes = [...containerRef.current.querySelectorAll('[data-zen-r], [data-zen-opacity], [data-zen-d]')];
+    const render = ({dt, time: localClock, reducedMotion}) => {
       const m = mouseRef.current;
-      m.currX += (m.targetX - m.currX) * 0.08;
-      m.currY += (m.targetY - m.currY) * 0.08;
-      setParallax({ x: m.currX, y: m.currY });
-
-      // Update ambient clock state every ~60ms for smooth SVG renders
-      if (Math.floor(localClock * 16) !== Math.floor((localClock - dt) * 16)) {
-        setAmbientTick(localClock);
-      }
-
+      m.currX = damp(m.currX, reducedMotion ? 0 : m.targetX, 5, dt);
+      m.currY = damp(m.currY, reducedMotion ? 0 : m.targetY, 5, dt);
+      updateScene(containerRef.current, motionNodes, localClock, {x: m.currX, y: m.currY});
+      const frames = dt * 60;
       ctx.clearRect(0, 0, width, height);
 
       // Render & update particles
-      for (let i = 0; i < particles.length; i++) {
+      for (let i = 0; i < (reducedMotion ? 0 : particles.length); i++) {
         const p = particles[i];
 
         // Natural wind sway
         p.swayPhase += p.swaySpeed * dt;
         const swayX = Math.sin(p.swayPhase) * (p.type === 'leaf' ? 1.2 : 0.4);
 
-        p.x += (p.vx + swayX) * (width / 600);
-        p.y += p.vy * (height / 750);
-        p.rot += p.vRot;
+        p.x += (p.vx + swayX) * (width / 600) * frames;
+        p.y += p.vy * (height / 750) * frames;
+        p.rot += p.vRot * frames;
 
         // Wrap around boundaries seamlessly
         if (p.type === 'leaf') {
@@ -221,11 +208,11 @@ export default function ZenRestraintWallpaper() {
       }
     };
 
-    animFrameRef.current = requestAnimationFrame(render);
+    const stop = createArtworkLoop(containerRef.current, render);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      stop();
     };
   }, []);
 
@@ -425,14 +412,14 @@ export default function ZenRestraintWallpaper() {
                 stroke="#0A0A0A"
                 strokeWidth="7"
                 strokeLinecap="round"
-                opacity={0.16 + Math.sin(t * 0.5) * 0.04}
+                data-zen-opacity="0" opacity={0.16 + Math.sin(t * 0.5) * 0.04}
               />
               <path
                 d="M 60 144 C 185 85, 415 76, 540 114"
                 stroke="#1A1B20"
                 strokeWidth="2"
                 strokeLinecap="round"
-                opacity={0.22 + Math.sin(t * 0.5) * 0.05}
+                data-zen-opacity="1" opacity={0.22 + Math.sin(t * 0.5) * 0.05}
               />
             </g>
 
@@ -442,33 +429,32 @@ export default function ZenRestraintWallpaper() {
             <g
               className="zen-sun-living-group"
               style={{
-                transform: `translate(${sunParallaxX}px, ${sunParallaxY}px)`,
-                transition: 'transform 0.15s ease-out',
+                transform: 'var(--zen-motion-0)',
               }}
             >
               {/* Outer Radiant Glow Halo (Breathing) */}
               <circle
                 cx="300"
                 cy="240"
-                r={220 * (1 + sunPulse * 1.8)}
+                data-zen-r="2" r={220 * (1 + sunPulse * 1.8)}
                 fill="url(#zenSunAuraGrad)"
-                opacity={sunGlowAlpha}
+                data-zen-opacity="3" opacity={sunGlowAlpha}
               />
 
               {/* Mid Atmosphere Light Diffusion */}
               <circle
                 cx="300"
                 cy="240"
-                r={165 * (1 + sunPulse * 1.1)}
+                data-zen-r="4" r={165 * (1 + sunPulse * 1.1)}
                 fill="#FF4433"
-                opacity={0.22 + sunPulse}
+                data-zen-opacity="5" opacity={0.22 + sunPulse}
               />
 
               {/* Sacred Core Crimson Sun Disc */}
               <circle
                 cx="300"
                 cy="240"
-                r={138 * (1 + sunPulse * 0.4)}
+                data-zen-r="6" r={138 * (1 + sunPulse * 0.4)}
                 fill="url(#zenSunCoreGrad)"
                 style={{
                   filter: 'drop-shadow(0 6px 30px rgba(217, 4, 22, 0.45))',
@@ -479,28 +465,28 @@ export default function ZenRestraintWallpaper() {
             {/* ========================================================== */}
             {/* 3. POETIC DISTANT BIRDS (CHIDORI) FLIGHT                   */}
             {/* ========================================================== */}
-            {birdActive && (
+            {(
               <g
                 className="zen-birds-flight-group"
                 style={{
-                  transform: `translate(${birdX}px, ${birdY}px)`,
-                  opacity: Math.sin(birdProg * Math.PI),
+                  transform: 'var(--zen-motion-1)',
+                  opacity: 'var(--zen-motion-2)',
                 }}
               >
                 {/* Bird 1: Lead Crane */}
                 <path
-                  d={`M -7 ${-birdWingFlap * 4} Q 0 0 7 ${-birdWingFlap * 4} Q 0 ${birdWingFlap * 2} -7 ${-birdWingFlap * 4}`}
+                  data-zen-d="7" d={`M -7 ${-birdWingFlap * 4} Q 0 0 7 ${-birdWingFlap * 4} Q 0 ${birdWingFlap * 2} -7 ${-birdWingFlap * 4}`}
                   fill="#0A0A0A"
                 />
                 {/* Bird 2: Companion Crane (Trailing slightly) */}
                 <path
-                  d={`M -21 ${12 - birdWingFlap * 3.5} Q -15 16 -9 ${12 - birdWingFlap * 3.5} Q -15 ${16 + birdWingFlap * 1.8} -21 ${12 - birdWingFlap * 3.5}`}
+                  data-zen-d="8" d={`M -21 ${12 - birdWingFlap * 3.5} Q -15 16 -9 ${12 - birdWingFlap * 3.5} Q -15 ${16 + birdWingFlap * 1.8} -21 ${12 - birdWingFlap * 3.5}`}
                   fill="#141416"
                   opacity="0.85"
                 />
                 {/* Bird 3: Distant fledgling */}
                 <path
-                  d={`M -32 ${6 - birdWingFlap * 2.8} Q -28 9 -24 ${6 - birdWingFlap * 2.8} Q -28 ${9 + birdWingFlap * 1.4} -32 ${6 - birdWingFlap * 2.8}`}
+                  data-zen-d="9" d={`M -32 ${6 - birdWingFlap * 2.8} Q -28 9 -24 ${6 - birdWingFlap * 2.8} Q -28 ${9 + birdWingFlap * 1.4} -32 ${6 - birdWingFlap * 2.8}`}
                   fill="#2A2B30"
                   opacity="0.65"
                 />
@@ -513,8 +499,7 @@ export default function ZenRestraintWallpaper() {
             <g
               className="zen-far-mountains-group"
               style={{
-                transform: `translate(${farHillParallaxX}px, ${farHillParallaxY}px)`,
-                transition: 'transform 0.2s ease-out',
+                transform: 'var(--zen-motion-3)',
               }}
             >
               <path
@@ -524,7 +509,7 @@ export default function ZenRestraintWallpaper() {
             </g>
 
             {/* Mid-Valley Billowing Mist Ribbon */}
-            <g className="zen-valley-mist-1" style={{ opacity: 0.55 + Math.sin(t * 0.4) * 0.2 }}>
+            <g className="zen-valley-mist-1" style={{ opacity: 'var(--zen-motion-4)', }}>
               <path
                 d="M 0 485 Q 160 450, 320 480 T 600 465 L 600 525 Q 440 545, 280 515 T 0 535 Z"
                 fill="url(#zenValleyMistGrad)"
@@ -537,8 +522,7 @@ export default function ZenRestraintWallpaper() {
             <g
               className="zen-mid-hill-group"
               style={{
-                transform: `translate(${midHillParallaxX}px, ${midHillParallaxY}px)`,
-                transition: 'transform 0.18s ease-out',
+                transform: 'var(--zen-motion-5)',
               }}
             >
               {/* Midground Hill Curve */}
@@ -551,7 +535,7 @@ export default function ZenRestraintWallpaper() {
               <g
                 className="zen-torii-gate-assembly"
                 style={{
-                  transform: `translate(${toriiParallaxX * 0.2}px, ${toriiParallaxY * 0.2}px)`,
+                  transform: 'var(--zen-motion-6)',
                 }}
               >
                 {/* Torii Soft Dynamic Shadow on Grass */}
@@ -561,7 +545,7 @@ export default function ZenRestraintWallpaper() {
                   rx="48"
                   ry="9"
                   fill="#0A0B0E"
-                  opacity={0.35 + Math.sin(t * 0.8) * 0.08}
+                  data-zen-opacity="10" opacity={0.35 + Math.sin(t * 0.8) * 0.08}
                 />
 
                 {/* Left & Right Hashira (Upright Pillars with slight inward taper) */}
@@ -583,7 +567,7 @@ export default function ZenRestraintWallpaper() {
             </g>
 
             {/* Foreground Soft Drifting Mist Ribbon */}
-            <g className="zen-valley-mist-2" style={{ opacity: 0.6 + Math.sin(t * 0.5 + 1.2) * 0.2 }}>
+            <g className="zen-valley-mist-2" style={{ opacity: 'var(--zen-motion-7)', }}>
               <path
                 d="M 0 540 Q 200 510, 400 545 T 600 530 L 600 590 Q 380 610, 200 570 T 0 590 Z"
                 fill="url(#zenValleyMistGrad)"
@@ -596,8 +580,7 @@ export default function ZenRestraintWallpaper() {
             <g
               className="zen-near-hill-group"
               style={{
-                transform: `translate(${nearHillParallaxX}px, ${nearHillParallaxY}px)`,
-                transition: 'transform 0.15s ease-out',
+                transform: 'var(--zen-motion-8)',
               }}
             >
               {/* Foreground Dark Ridge */}
@@ -614,8 +597,7 @@ export default function ZenRestraintWallpaper() {
                 className="zen-bonsai-root-group"
                 style={{
                   transformOrigin: '510px 680px',
-                  transform: `rotate(${trunkRot}deg)`,
-                  transition: 'transform 0.08s linear',
+                  transform: 'var(--zen-motion-9)',
                 }}
               >
                 {/* 1. Main Twisted Trunk */}
@@ -641,8 +623,7 @@ export default function ZenRestraintWallpaper() {
                   className="zen-bonsai-main-limb"
                   style={{
                     transformOrigin: '430px 455px',
-                    transform: `rotate(${mainLimbRot}deg)`,
-                    transition: 'transform 0.08s linear',
+                    transform: 'var(--zen-motion-10)',
                   }}
                 >
                   <path
@@ -658,8 +639,7 @@ export default function ZenRestraintWallpaper() {
                     className="zen-foliage-pad pad-a"
                     style={{
                       transformOrigin: '320px 410px',
-                      transform: `rotate(${pad1Rot}deg) translateY(${pad1Y}px)`,
-                      transition: 'transform 0.08s linear',
+                      transform: 'var(--zen-motion-11)',
                     }}
                   >
                     <ellipse cx="320" cy="410" rx="46" ry="22" fill="#0A0B0E" />
@@ -672,8 +652,7 @@ export default function ZenRestraintWallpaper() {
                     className="zen-foliage-pad pad-b"
                     style={{
                       transformOrigin: '280px 425px',
-                      transform: `rotate(${pad2Rot}deg) translateY(${pad2Y}px)`,
-                      transition: 'transform 0.08s linear',
+                      transform: 'var(--zen-motion-12)',
                     }}
                   >
                     <ellipse cx="282" cy="426" rx="38" ry="18" fill="#0A0B0E" />
@@ -686,8 +665,7 @@ export default function ZenRestraintWallpaper() {
                   className="zen-bonsai-lower-limb"
                   style={{
                     transformOrigin: '475px 510px',
-                    transform: `rotate(${trunkRot * 1.5}deg)`,
-                    transition: 'transform 0.08s linear',
+                    transform: 'var(--zen-motion-13)',
                   }}
                 >
                   <path
@@ -703,8 +681,7 @@ export default function ZenRestraintWallpaper() {
                     className="zen-foliage-pad pad-c"
                     style={{
                       transformOrigin: '395px 545px',
-                      transform: `rotate(${pad3Rot}deg) translateY(${pad3Y}px)`,
-                      transition: 'transform 0.08s linear',
+                      transform: 'var(--zen-motion-14)',
                     }}
                   >
                     <ellipse cx="395" cy="545" rx="42" ry="20" fill="#0A0B0E" />
@@ -717,8 +694,7 @@ export default function ZenRestraintWallpaper() {
                   className="zen-foliage-pad pad-d"
                   style={{
                     transformOrigin: '460px 475px',
-                    transform: `rotate(${pad4Rot}deg) translateY(${pad4Y}px)`,
-                    transition: 'transform 0.08s linear',
+                    transform: 'var(--zen-motion-15)',
                   }}
                 >
                   <ellipse cx="462" cy="478" rx="40" ry="19" fill="#0A0B0E" />
@@ -748,4 +724,93 @@ export default function ZenRestraintWallpaper() {
       </div>
     </div>
   );
+}
+
+function updateScene(root, nodes, t, parallax) {
+
+
+  // Crimson Sun breathing aura
+  const sunPulse = Math.sin(t * 0.9) * 0.035; // ±3.5% scale
+  const sunGlowAlpha = 0.82 + Math.sin(t * 0.7) * 0.12; // 0.70 to 0.94
+  const sunFloatY = Math.sin(t * 0.6) * 3.5; // slow vertical drift
+  const sunParallaxX = -parallax.x * 12;
+  const sunParallaxY = -parallax.y * 8 + sunFloatY;
+
+  // Mountain & Hill Parallax offsets
+  const farHillParallaxX = -parallax.x * 6 + Math.sin(t * 0.3) * 4;
+  const farHillParallaxY = -parallax.y * 3;
+
+  const midHillParallaxX = -parallax.x * 11;
+  const midHillParallaxY = -parallax.y * 6;
+
+  const nearHillParallaxX = -parallax.x * 16;
+  const nearHillParallaxY = -parallax.y * 9;
+
+  // Torii Gate micro-shift with mid hill
+  const toriiParallaxX = midHillParallaxX;
+  const toriiParallaxY = midHillParallaxY;
+
+  // Articulated Bonsai Wind Sway Calculations
+  // Base trunk flexes gently
+  const trunkRot = Math.sin(t * 0.65) * 0.7 + parallax.x * 2.5; // -0.7deg to +0.7deg
+  // Secondary main limb
+  const mainLimbRot = Math.sin(t * 0.65 - 0.4) * 1.3 + parallax.x * 3.5;
+  // Foliage cluster 1 (top left, near sun)
+  const pad1Rot = Math.sin(t * 1.1) * 2.2;
+  const pad1Y = Math.sin(t * 0.95) * 1.8;
+  // Foliage cluster 2 (middle left)
+  const pad2Rot = Math.sin(t * 1.25 + 0.5) * 2.4;
+  const pad2Y = Math.sin(t * 1.05 + 0.3) * 1.5;
+  // Foliage cluster 3 (lower left)
+  const pad3Rot = Math.sin(t * 1.0 + 1.1) * 1.9;
+  const pad3Y = Math.sin(t * 0.85 + 0.8) * 1.4;
+  // Foliage cluster 4 (right crest)
+  const pad4Rot = Math.sin(t * 1.3 + 1.8) * 2.1;
+  const pad4Y = Math.sin(t * 1.15 + 1.2) * 1.6;
+
+  // Poetic Zen Birds Flight Path
+  // Flapping wing cycle (5 Hz)
+  const birdWingFlap = Math.sin(t * 5);
+  // Flight loop: traverses rightwards across sun every ~20 seconds
+  const birdCycleTime = ((t + 4.5) * 0.05) % 1; // 0 to 1 over 20s
+  const birdActive = birdCycleTime < 0.75; // Visible during 75% of the loop
+  const birdProg = birdCycleTime / 0.75;
+  const birdX = -30 + birdProg * 660; // Fly from x=-30 to x=630
+  const birdY = 165 + Math.sin(birdProg * Math.PI * 2.2) * 25 - birdProg * 35; // Gentle sine wave climb
+
+  root.style.setProperty('--zen-motion-0', `translate(${sunParallaxX}px, ${sunParallaxY}px)`);
+  root.style.setProperty('--zen-motion-1', `translate(${birdX}px, ${birdY}px)`);
+  root.style.setProperty('--zen-motion-2', birdActive ? Math.max(0, Math.sin(birdProg * Math.PI)) : 0);
+  root.style.setProperty('--zen-motion-3', `translate(${farHillParallaxX}px, ${farHillParallaxY}px)`);
+  root.style.setProperty('--zen-motion-4', 0.55 + Math.sin(t * 0.4) * 0.2);
+  root.style.setProperty('--zen-motion-5', `translate(${midHillParallaxX}px, ${midHillParallaxY}px)`);
+  root.style.setProperty('--zen-motion-6', `translate(${toriiParallaxX * 0.2}px, ${toriiParallaxY * 0.2}px)`);
+  root.style.setProperty('--zen-motion-7', 0.6 + Math.sin(t * 0.5 + 1.2) * 0.2);
+  root.style.setProperty('--zen-motion-8', `translate(${nearHillParallaxX}px, ${nearHillParallaxY}px)`);
+  root.style.setProperty('--zen-motion-9', `rotate(${trunkRot}deg)`);
+  root.style.setProperty('--zen-motion-10', `rotate(${mainLimbRot}deg)`);
+  root.style.setProperty('--zen-motion-11', `rotate(${pad1Rot}deg) translateY(${pad1Y}px)`);
+  root.style.setProperty('--zen-motion-12', `rotate(${pad2Rot}deg) translateY(${pad2Y}px)`);
+  root.style.setProperty('--zen-motion-13', `rotate(${trunkRot * 1.5}deg)`);
+  root.style.setProperty('--zen-motion-14', `rotate(${pad3Rot}deg) translateY(${pad3Y}px)`);
+  root.style.setProperty('--zen-motion-15', `rotate(${pad4Rot}deg) translateY(${pad4Y}px)`);
+  const attributes = [
+    ['opacity', 0.16 + Math.sin(t * 0.5) * 0.04],
+    ['opacity', 0.22 + Math.sin(t * 0.5) * 0.05],
+    ['r', 220 * (1 + sunPulse * 1.8)],
+    ['opacity', sunGlowAlpha],
+    ['r', 165 * (1 + sunPulse * 1.1)],
+    ['opacity', 0.22 + sunPulse],
+    ['r', 138 * (1 + sunPulse * 0.4)],
+    ['d', `M -7 ${-birdWingFlap * 4} Q 0 0 7 ${-birdWingFlap * 4} Q 0 ${birdWingFlap * 2} -7 ${-birdWingFlap * 4}`],
+    ['d', `M -21 ${12 - birdWingFlap * 3.5} Q -15 16 -9 ${12 - birdWingFlap * 3.5} Q -15 ${16 + birdWingFlap * 1.8} -21 ${12 - birdWingFlap * 3.5}`],
+    ['d', `M -32 ${6 - birdWingFlap * 2.8} Q -28 9 -24 ${6 - birdWingFlap * 2.8} Q -28 ${9 + birdWingFlap * 1.4} -32 ${6 - birdWingFlap * 2.8}`],
+    ['opacity', 0.35 + Math.sin(t * 0.8) * 0.08]
+  ];
+  nodes.forEach(node => {
+    for (const attr of ['r', 'opacity', 'd']) {
+      const index = node.getAttribute(`data-zen-${attr}`);
+      if (index !== null) node.setAttribute(attr, attributes[Number(index)][1]);
+    }
+  });
 }

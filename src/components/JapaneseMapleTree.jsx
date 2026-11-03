@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useRef, useEffect, useState } from 'react';
 import { windSystem } from '../utils/windSystem';
 import { sound } from '../utils/soundEngine';
@@ -70,46 +71,49 @@ export default function JapaneseMapleTree({
   // Real-time 60 FPS Wind Sway Physics
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
 
     let animId;
 
-    const updatePhysics = () => {
+    let force = 0;
+    const updatePhysics = ({dt, time, reducedMotion}) => {
+      if (reducedMotion) return;
       const wind = windSystem.getState();
-      const t = wind.time;
-      const windEffect = wind.windX * (1 + wind.gust * 2.2);
+      const t = time;
+      force = damp(force, Math.min(1.2, wind.windX * 0.5), 2, dt);
+      const windEffect = force;
 
       // Hierarchical limb articulation
       if (limbLowerLeftRef.current) {
-        const angle = Math.sin(t * 0.9 + 0.3) * 1.6 + windEffect * 1.4;
+        const angle = Math.sin(t * 0.9 + 0.3) * 0.3 + windEffect * 0.3;
         limbLowerLeftRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
       }
 
       if (limbMidRightRef.current) {
-        const angle = Math.sin(t * 1.1 + 1.2) * 2.2 + windEffect * 2.2;
+        const angle = Math.sin(t * 1.1 + 1.2) * 0.4 + windEffect * 0.4;
         limbMidRightRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
       }
 
       if (limbUpperLeftRef.current) {
-        const angle = Math.sin(t * 1.3 + 2.1) * 2.6 + windEffect * 2.8;
+        const angle = Math.sin(t * 1.3 + 2.1) * 0.4 + windEffect * 0.5;
         limbUpperLeftRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
       }
 
       if (limbCrownRef.current) {
-        const angle = Math.sin(t * 1.5 + 3.0) * 3.4 + windEffect * 3.6;
+        const angle = Math.sin(t * 1.5 + 3.0) * 0.45 + windEffect * 0.5;
         limbCrownRef.current.style.transform = `rotate(${angle.toFixed(2)}deg)`;
       }
 
-      if (trunkRef.current && wind.gust > 0.3) {
-        const flex = (wind.gust * 0.8).toFixed(2);
+      if (trunkRef.current) {
+        const flex = (windEffect * 0.12).toFixed(2);
         trunkRef.current.style.transform = `rotate(${flex}deg)`;
       }
 
-      animId = requestAnimationFrame(updatePhysics);
+
     };
 
-    animId = requestAnimationFrame(updatePhysics);
-    return () => cancelAnimationFrame(animId);
+    const stopPhysics = createArtworkLoop(containerRef.current, updatePhysics);
+    return stopPhysics;
   }, []);
 
   const handleClick = () => {

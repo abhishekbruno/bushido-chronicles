@@ -83,11 +83,14 @@ export default function SectionLegacy() {
               className="legacy-quote-card"
             />
 
-            {/* Archival Mode Selector: Chronicles of Ascent vs Nippon Kokoro Archives */}
+            {/* Archival Mode Selector / Jump to Monument Exhibition */}
             <div className="archive-mode-toggle-bar">
               <button
-                className={`mode-toggle-btn ${activeArchiveView === 'eras' ? 'active' : ''} interactive`}
-                onClick={() => handleViewChange('eras')}
+                className="mode-toggle-btn active interactive"
+                onClick={() => {
+                  sound.playWoodenClick();
+                  setActiveEra('sengoku');
+                }}
               >
                 <Scroll size={14} />
                 <span>CHRONICLES OF ASCENT</span>
@@ -95,73 +98,62 @@ export default function SectionLegacy() {
               </button>
 
               <button
-                className={`mode-toggle-btn ${activeArchiveView === 'monument' ? 'active' : ''} interactive`}
-                onClick={() => handleViewChange('monument')}
+                className="mode-toggle-btn interactive"
+                onClick={() => {
+                  sound.playWoodenClick();
+                  const target = document.getElementById('monument');
+                  if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
                 <Award size={14} />
-                <span>NIPPON KOKORO ARCHIVES (01/08)</span>
-                <span className="mode-btn-kanji">記念碑</span>
+                <span>THE GUARDIANS OF HISTORY</span>
+                <span className="mode-btn-kanji">楠木正成 記念碑</span>
               </button>
             </div>
 
-            {/* VIEW 1: Historical Eras Interactive Selector */}
-            {activeArchiveView === 'eras' ? (
-              <div className="eras-container">
-                <h4 className="eras-label">FEUDAL EPOCHS · 歴史の変遷</h4>
-                <div className="eras-tab-group">
-                  {eras.map((era) => (
-                    <button
-                      key={era.id}
-                      className={`era-tab ${activeEra === era.id ? 'active' : ''} interactive`}
-                      onClick={() => {
-                        sound.playWoodenClick();
-                        setActiveEra(era.id);
-                      }}
-                    >
-                      <span className="era-tab-kanji">{era.kanji}</span>
-                      <span className="era-tab-name">{era.name}</span>
-                      <span className="era-tab-dates">{era.dates}</span>
-                    </button>
-                  ))}
-                </div>
+            {/* Historical Eras Interactive Selector */}
+            <div className="eras-container">
+              <h4 className="eras-label">FEUDAL EPOCHS · 歴史の変遷</h4>
+              <div className="eras-tab-group">
+                {eras.map((era) => (
+                  <button
+                    key={era.id}
+                    className={`era-tab ${activeEra === era.id ? 'active' : ''} interactive`}
+                    onClick={() => {
+                      sound.playWoodenClick();
+                      setActiveEra(era.id);
+                    }}
+                  >
+                    <span className="era-tab-kanji">{era.kanji}</span>
+                    <span className="era-tab-name">{era.name}</span>
+                    <span className="era-tab-dates">{era.dates}</span>
+                  </button>
+                ))}
+              </div>
 
-                {/* TYPE B: Washi Brush-Frame Panel for Feudal Epoch History */}
-                <WashiBrushPanel
-                  interactive
-                  className="active-era-panel"
-                >
-                  {(() => {
-                    const curr = eras.find((e) => e.id === activeEra) || eras[0];
-                    return (
-                      <div className="era-detail-content">
-                        <div className="era-detail-header">
-                          <CrimsonBrushAccent variant="badge" className="era-badge">
-                            {curr.dates}
-                          </CrimsonBrushAccent>
-                          <h3 className="era-detail-title">{curr.title}</h3>
-                        </div>
-                        <p className="era-detail-desc">{curr.desc}</p>
+              {/* TYPE B: Washi Brush-Frame Panel for Feudal Epoch History */}
+              <WashiBrushPanel
+                interactive
+                className="active-era-panel"
+              >
+                {(() => {
+                  const curr = eras.find((e) => e.id === activeEra) || eras[0];
+                  return (
+                    <div className="era-detail-content">
+                      <div className="era-detail-header">
+                        <CrimsonBrushAccent variant="badge" className="era-badge">
+                          {curr.dates}
+                        </CrimsonBrushAccent>
+                        <h3 className="era-detail-title">{curr.title}</h3>
                       </div>
-                    );
-                  })()}
-                </WashiBrushPanel>
-              </div>
-            ) : (
-              /* VIEW 2: Featured Mini Summary leading to Monument Archive */
-              <div className="monument-quick-summary">
-                <WashiPaperPanel variant="ink-frame" cornerMarks crimsonAccent className="monument-preview-banner">
-                  <div className="preview-top">
-                    <span className="preview-tag">MONUMENT 01 / 08 · TOKYO</span>
-                    <span className="preview-kanji">楠木正成</span>
-                  </div>
-                  <h4 className="preview-name">KUSUNOKI MASASHIGE</h4>
-                  <p className="preview-desc">
-                    The General of Unwavering Loyalty (忠義の武将). Inspect the bronze equestrian monument,
-                    historical chronicle, and 10-point archival record below.
-                  </p>
-                </WashiPaperPanel>
-              </div>
-            )}
+                      <p className="era-detail-desc">{curr.desc}</p>
+                    </div>
+                  );
+                })()}
+              </WashiBrushPanel>
+            </div>
           </div>
 
           {/* Right Column: Dynamic Sumi-e Ink Artwork & Artifact */}
@@ -169,13 +161,6 @@ export default function SectionLegacy() {
             <LegacyInkPoster />
           </div>
         </div>
-
-        {/* NIPPON KOKORO ARCHIVES: Featured Imperial Monument Showcase */}
-        {activeArchiveView === 'monument' && (
-          <div className="monument-archive-full-mount">
-            <KokoroMonumentArchive onReturn={() => handleViewChange('eras')} />
-          </div>
-        )}
       </div>
     </section>
   );

@@ -11,3 +11,6 @@ dom-dump.html
 heading-test-legacy.png
 scripts/
 
+
+# Local warrior browser validation artifacts
+.tmp-warriors/

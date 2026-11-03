@@ -41,7 +41,7 @@ export default function ScrollTransitions() {
       });
 
       // 2. Manuscript Sections Horizontal Brushstroke Seams
-      const sections = ['#legacy', '#bushido', '#warriors', '#blade', '#spirit', '#monument', '#masamune', '#cta'];
+      const sections = ['#legacy', '#bushido', '#warriors', '#blade', '#spirit', '#monument', '#cta'];
 
       sections.forEach((secSelector) => {
         const secEl = document.querySelector(secSelector);

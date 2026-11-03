@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { sound } from '../utils/soundEngine';
 import WarriorCard from './WarriorCard';
 import WarriorDossierModal from './WarriorDossierModal';
-import AnimatedChapterHeading from './AnimatedChapterHeading';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const warriorsData = [
   {
@@ -11,7 +14,7 @@ export const warriorsData = [
     japanese: '宮本 武蔵',
     kanjiHonorific: '剣聖 · 二天一流',
     title: 'THE SWORD SAINT',
-    era: '1584 – 1645 · Sengoku to Early Edo',
+    era: '1584 – 1645 · SENGOKU TO EARLY EDO',
     signatureWeapon: 'Daishō (Two Blades: Katana & Wakizashi / Bokken)',
     style: 'Niten Ichi-ryū (Two Heavens as One)',
     crest: 'Niten Cross',
@@ -32,7 +35,7 @@ export const warriorsData = [
       { year: '1612', name: 'Duel on Ganryūjima Island', desc: 'Neutralized Sasaki Kojirō’s legendary Nodachi "Drying Pole" with a carved wooden oar.' },
       { year: '1638', name: 'Shimabara Rebellion', desc: 'Served as tactical advisor to the Tokugawa Shogunate command.' },
     ],
-    accentColor: '#D90416',
+    accentColor: '#B82218',
   },
   {
     id: 'nobunaga',
@@ -40,7 +43,7 @@ export const warriorsData = [
     japanese: '織田 信長',
     kanjiHonorific: '天下布武 · 第六天魔王',
     title: 'THE GREAT UNIFIER',
-    era: '1534 – 1582 · Sengoku Jidai',
+    era: '1534 – 1582 · SENGOKU JIDAI',
     signatureWeapon: 'Tanegashima Matchlock Arquebuses & Naginata',
     style: 'Total Battlefield Integration & Volley Fire Tactics',
     crest: 'Oda Mokkō (Melon Flower)',
@@ -61,7 +64,7 @@ export const warriorsData = [
       { year: '1575', name: 'Battle of Nagashino', desc: 'Pioneered 3-rank rotating matchlock volley fire, decimating the invincible Takeda cavalry.' },
       { year: '1582', name: 'Incident at Honnō-ji', desc: 'Betrayed by general Akechi Mitsuhide, perishing in the flames after committing seppuku.' },
     ],
-    accentColor: '#B30212',
+    accentColor: '#961410',
   },
   {
     id: 'masamune',
@@ -69,7 +72,7 @@ export const warriorsData = [
     japanese: '伊達 政宗',
     kanjiHonorific: '独眼竜 · 奥州の覇者',
     title: 'THE ONE-EYED DRAGON',
-    era: '1567 – 1636 · Late Sengoku to Early Edo',
+    era: '1567 – 1636 · LATE SENGOKU TO EARLY EDO',
     signatureWeapon: 'Black Lacquered Katana & Nanban Armor',
     style: 'Oshu Cavalry Shock Tactics & Diplomatic Statecraft',
     crest: 'Bamboo & Sparrow (Take ni Suzume)',
@@ -98,7 +101,7 @@ export const warriorsData = [
     japanese: '真田 幸村',
     kanjiHonorific: '日本一の兵 · 真田丸',
     title: 'THE CRIMSON DEMON',
-    era: '1567 – 1615 · Siege of Osaka',
+    era: '1567 – 1615 · SIEGE OF OSAKA',
     signatureWeapon: 'Jūmonji Yari (Cross-bladed Spear)',
     style: 'Guerrilla Fortification & Desperate Cavalry Charges',
     crest: 'Rokumonsen (Six Coins for the Underworld)',
@@ -118,20 +121,59 @@ export const warriorsData = [
       { year: '1614', name: 'Battle of Sanada-maru', desc: 'Inflicted devastating casualties on the Tokugawa vanguard from his custom-built earthen barbican.' },
       { year: '1615', name: 'Battle of Tennōji', desc: 'Led a suicidal final cavalry charge that penetrated directly into Tokugawa Ieyasu’s command tent.' },
     ],
-    accentColor: '#D90416',
+    accentColor: '#B82218',
   },
 ];
 
 export default function SectionWarriors() {
   const [selectedWarrior, setSelectedWarrior] = useState(null);
+  const gridRef = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const warriorParam = params.get('warrior') || params.get('dossier');
     if (warriorParam) {
       const match = warriorsData.find((w) => w.id === warriorParam.toLowerCase());
       if (match) setSelectedWarrior(match);
     }
+  }, []);
+
+  // Scroll reveal with IntersectionObserver & GSAP
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const prefersReducedMotion =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const cards = grid.querySelectorAll('.warrior-card-inner');
+    if (!cards.length) return;
+
+    let entrance;
+    // Smooth rise entrance without hiding cards
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entrance = gsap.from(cards, {
+              y: 24,
+              scale: 0.985,
+              duration: 0.6,
+              stagger: 0.08,
+              ease: 'power2.out',
+              clearProps: 'all',
+            });
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(grid);
+
+    return () => { observer.disconnect(); entrance?.kill(); };
   }, []);
 
   const openWarrior = (w) => {
@@ -147,36 +189,47 @@ export default function SectionWarriors() {
   };
 
   return (
-    <section className="section-warriors" id="warriors">
-      {/* Background Maple Framing Branches */}
-
+    <section className="section-warriors" id="warriors" aria-labelledby="warriors-heading">
       <div className="section-container">
-        {/* Section Header */}
+        {/* Section Metadata Header */}
         <div className="section-meta-row">
           <span className="section-index">03 / 06</span>
-          <span className="section-meta-tag">HALL OF TITANS · HISTORICAL ARCHIVES</span>
+          <span className="section-meta-tag">SENGOKU LEGENDS · HISTORICAL ARCHIVES</span>
           <span className="section-meta-kanji">伝説の武将 · 英雄録</span>
         </div>
 
-        <div className="warriors-intro-row">
-          <div className="warriors-intro-heading">
-            <AnimatedChapterHeading
-              chapter="warriors"
-              sectionLabel="HISTORICAL CHRONICLES · KYOTO VAULT"
-              primaryText="LEGENDARY"
-              accentText="WARRIORS."
-              breakLine={false}
-              className="warriors-main-title"
-            />
+        {/* Concept Master Editorial Header */}
+        <header className="warriors-concept-header">
+          {/* Eyebrow: S E N G O K U   L E G E N D S */}
+          <div className="warriors-eyebrow-row">
+            <span className="eyebrow-line" aria-hidden="true" />
+            <span className="warriors-eyebrow-text">S E N G O K U &nbsp; L E G E N D S</span>
+            <span className="eyebrow-line" aria-hidden="true" />
           </div>
-          <p className="warriors-intro-text">
-            Four iconic titans whose martial genius, blade mastery, and unyielding honor
-            shaped the destiny of feudal Japan. Hover over each card to awaken their spirit; click to inspect their complete archival dossier.
+
+          {/* Master Heading: LEGENDARY WARRIORS */}
+          <h2 id="warriors-heading" className="warriors-concept-title">
+            LEGENDARY WARRIORS
+          </h2>
+
+          {/* Crimson Brushstroke Underline Accent */}
+          <div className="warriors-title-crimson-stroke" aria-hidden="true">
+            <svg viewBox="0 0 160 12" className="crimson-brush-svg" preserveAspectRatio="none">
+              <path
+                d="M 2 7 Q 40 2, 80 6 Q 120 10, 158 5 Q 110 9, 80 7 Q 40 5, 2 7 Z"
+                fill="#A82218"
+              />
+            </svg>
+          </div>
+
+          {/* Editorial Subtitle */}
+          <p className="warriors-concept-subtitle">
+            Four titans of Japan's age of war — visionaries, tacticians, and swordsmen whose legacy still endures.
           </p>
-        </div>
+        </header>
 
         {/* 4 Warriors Cinematic Card Showcase */}
-        <div className="warriors-grid">
+        <div ref={gridRef} className="warriors-grid">
           {warriorsData.map((w, index) => (
             <WarriorCard
               key={w.id}

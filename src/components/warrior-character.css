@@ -1,0 +1,398 @@
+/* ==========================================================================
+   LEGENDARY WARRIORS — 歴戦の武士 (VINTAGE SAMURAI ARCHIVAL MANUSCRIPT)
+   ========================================================================== */
+
+/* 0. Concept Master Editorial Header */
+.section-warriors .warriors-concept-header {
+  text-align: center;
+  max-width: 920px;
+  margin: 0 auto 3.75rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.section-warriors .warriors-eyebrow-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 0.95rem;
+}
+
+.section-warriors .eyebrow-line {
+  width: 44px;
+  height: 1px;
+  background-color: #8C7F68;
+  opacity: 0.7;
+}
+
+.section-warriors .warriors-eyebrow-text {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.74rem, 0.9vw, 0.84rem);
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  color: #554A38;
+  text-transform: uppercase;
+}
+
+.section-warriors .warriors-concept-title {
+  font-family: 'Cinzel', 'Noto Serif JP', Georgia, serif;
+  font-size: clamp(2.3rem, 4.4vw, 4.2rem);
+  font-weight: 800;
+  color: #16171A;
+  letter-spacing: 0.05em;
+  line-height: 1.05;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.section-warriors .warriors-title-crimson-stroke {
+  width: 170px;
+  height: 10px;
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-warriors .crimson-brush-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1px 2px rgba(168, 34, 24, 0.25));
+}
+
+.section-warriors .warriors-concept-subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.08rem, 1.3vw, 1.28rem);
+  font-style: italic;
+  font-weight: 600;
+  color: #423B30;
+  line-height: 1.5;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+/* 1. Archival Card Container */
+.section-warriors .warrior-card {
+  position: relative;
+  background-color: #F1E9D7;
+  background-image: 
+    radial-gradient(ellipse at 50% 20%, #FAF5EA 0%, #EDE2CA 70%, #E3D4B6 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+  border: 1px solid #7D7058;
+  border-radius: 2px;
+  box-shadow: 
+    0 10px 28px rgba(32, 26, 18, 0.12),
+    0 1px 3px rgba(32, 26, 18, 0.08);
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-warriors .warrior-card:hover,
+.section-warriors .warrior-card.is-card-hovered {
+  transform: translateY(-5px);
+  border-color: #A82218;
+  box-shadow: 
+    0 20px 48px rgba(32, 24, 15, 0.22),
+    0 0 28px rgba(168, 34, 24, 0.16);
+}
+
+.section-warriors .warrior-card:focus-visible {
+  outline: 3px solid #A82218;
+  outline-offset: 4px;
+}
+
+.warrior-card-inner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 2. Double Hairline Frame & Corner Brackets */
+.card-archival-frame {
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(125, 112, 88, 0.35);
+  pointer-events: none;
+  z-index: 8;
+  transition: border-color 0.3s ease;
+}
+
+.warrior-card:hover .card-archival-frame {
+  border-color: rgba(168, 34, 24, 0.45);
+}
+
+.frame-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: #6C5C45;
+  border-style: solid;
+  transition: border-color 0.3s ease;
+}
+
+.warrior-card:hover .frame-corner {
+  border-color: #A82218;
+}
+
+.frame-corner.top-left {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.frame-corner.top-right {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+
+.frame-corner.bottom-left {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+
+.frame-corner.bottom-right {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+/* 3. Living Artwork Viewport Box */
+.warrior-art-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 222 / 270;
+  min-height: 310px;
+  overflow: hidden;
+  background-color: #DCCEA8;
+  background-image: radial-gradient(ellipse at 50% 40%, #EFE5C7 0%, #D8C7A0 65%, #C2B088 100%);
+  border-bottom: 1px solid rgba(125, 112, 88, 0.38);
+}
+
+.warrior-portrait-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.warrior-living-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.warrior-living-canvas.is-loading {
+  opacity: 0;
+}
+
+.warrior-living-canvas.is-ready {
+  opacity: 1;
+}
+
+.warrior-portrait-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  pointer-events: none;
+}
+
+/* 4. Vertical Japanese Calligraphy (Top-Left) */
+.warrior-vertical-kanji {
+  position: absolute;
+  top: 1.15rem;
+  left: 1.15rem;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.02rem, 1.2vw, 1.35rem);
+  font-weight: 900;
+  letter-spacing: 0.32em;
+  color: #1C1D20;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  z-index: 6;
+  line-height: 1.25;
+}
+
+/* 5. Traditional Cinnabar Hanko Seal (Right) */
+.warrior-cinnabar-seal {
+  position: absolute;
+  top: 50%;
+  right: 1.15rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 6;
+}
+
+.seal-box {
+  width: 22px;
+  height: 26px;
+  border: 1.5px solid #A82218;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(244, 235, 218, 0.75);
+  box-shadow: 0 0 6px rgba(168, 34, 24, 0.2);
+}
+
+.seal-char {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #A82218;
+  line-height: 1;
+}
+
+/* 6. Archival Historical Information Box */
+.warrior-info-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.35rem 1.35rem;
+  background: linear-gradient(180deg, #F3EBDA 0%, #EFE4CD 100%);
+  z-index: 5;
+}
+
+.warrior-era-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin-bottom: 0.35rem;
+  min-height: 1.4rem;
+}
+
+.warrior-index {
+  font-family: 'Cinzel', serif;
+  font-weight: 800;
+  font-size: 0.75rem;
+  color: #A82218;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.warrior-era-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #6C6250;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+}
+
+.section-warriors .warrior-card .warrior-name {
+  font-family: 'Cinzel', serif !important;
+  font-size: clamp(1.15rem, 1.35vw, 1.38rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #16171A;
+  margin: 0.12rem 0 0.18rem;
+  line-height: 1.2;
+}
+
+.warrior-title-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #A82218;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.warrior-quote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #3F392E;
+  margin: 0 0 0.85rem;
+  min-height: 2.75rem;
+}
+
+.warrior-weapon-info {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.78rem;
+  color: #625946;
+  line-height: 1.4;
+  margin-bottom: 1.15rem;
+  min-height: 2.2rem;
+}
+
+/* 7. Action Button: VIEW DOSSIER */
+.warrior-action-row {
+  margin-top: auto;
+}
+
+.warrior-dossier-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: #1C1D18;
+  border: 1px solid #75684E;
+  border-radius: 1px;
+  padding: 0.55rem 0.85rem;
+  color: #EDE2C4;
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(18, 16, 12, 0.2);
+  transition: all 0.28s ease;
+  pointer-events: none; /* card container handles click */
+}
+
+.warrior-card:hover .warrior-dossier-btn {
+  background: #A82218;
+  border-color: #D4AF37;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(168, 34, 24, 0.4);
+}
+
+.btn-chevron {
+  transition: transform 0.25s ease;
+}
+
+.warrior-card:hover .btn-chevron {
+  transform: translateX(3px);
+}
+
+/* 8. Bottom Watermark Wave Pattern (Matching Concept Image) */
+.card-bottom-watermark {
+  height: 28px;
+  width: 100%;
+  background-image: radial-gradient(circle at 10px 10px, transparent 8px, rgba(125, 112, 88, 0.15) 9px, transparent 10px);
+  background-size: 20px 20px;
+  background-position: center;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* 9. Prefers-Reduced-Motion & Off-Screen Pause */
+@media (prefers-reduced-motion: reduce) {
+  .section-warriors .warrior-card {
+    transition: none !important;
+  }
+}

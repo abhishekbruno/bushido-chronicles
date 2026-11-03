@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useEffect, useRef } from 'react';
 
 export default function InkParticles() {
@@ -15,7 +16,7 @@ export default function InkParticles() {
     let dpr = 1;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -64,15 +65,16 @@ export default function InkParticles() {
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    const render = () => {
+    const render = ({dt, reducedMotion}) => {
+      const frames = dt * 60;
       ctx.clearRect(0, 0, width, height);
 
-      for (let i = 0; i < particles.length; i++) {
+      for (let i = 0; i < (reducedMotion ? 0 : particles.length); i++) {
         const p = particles[i];
 
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.rotation += p.rotSpeed;
+        p.x += p.speedX * frames;
+        p.y += p.speedY * frames;
+        p.rotation += p.rotSpeed * frames;
 
         // Mouse deflection
         const dx = p.x - mouse.x;
@@ -80,8 +82,8 @@ export default function InkParticles() {
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < mouse.radius && dist > 0) {
           const force = (mouse.radius - dist) / mouse.radius;
-          p.x += (dx / dist) * force * 3.5;
-          p.y += (dy / dist) * force * 3.5;
+          p.x += (dx / dist) * force * 3.5 * frames;
+          p.y += (dy / dist) * force * 3.5 * frames;
         }
 
         // Screen wrap
@@ -112,13 +114,13 @@ export default function InkParticles() {
         ctx.restore();
       }
 
-      animId = requestAnimationFrame(render);
+
     };
 
-    animId = requestAnimationFrame(render);
+    const stop = createArtworkLoop(canvas.parentElement, render);
 
     return () => {
-      cancelAnimationFrame(animId);
+      stop();
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
     };

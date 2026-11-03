@@ -1,3 +1,4 @@
+import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useRef, useEffect } from 'react';
 import { windSystem } from '../utils/windSystem';
 
@@ -77,63 +78,45 @@ export default function MonumentGardenScene({ className = '', onMonumentClick })
       };
     };
 
-    const activePetals = Array.from({ length: 16 }, () => spawnPetal(true));
+    const activePetals = Array.from({ length: window.innerWidth < 640 ? 7 : 14 }, () => spawnPetal(true));
 
-    let animId;
-    let isVisible = true;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
-      { threshold: 0.1 }
-    );
-
-    if (canvas.parentElement) {
-      observer.observe(canvas.parentElement);
-    }
-
-    const render = () => {
-      if (!isVisible) {
-        animId = requestAnimationFrame(render);
-        return;
-      }
-
+    const render = ({dt, reducedMotion}) => {
+      const frames = dt * 60;
       ctx.clearRect(0, 0, width, height);
       const wind = windSystem?.getState?.() || { windX: 0.4, gust: 0 };
       const currentWindX = wind.windX * 0.85;
 
-      for (let i = 0; i < activePetals.length; i++) {
+      for (let i = 0; i < (reducedMotion ? 0 : activePetals.length); i++) {
         const p = activePetals[i];
 
         if (p.dormant > 0) {
-          p.dormant--;
+          p.dormant -= frames;
           continue;
         }
 
         if (p.opacity < p.targetOpacity && !p.isSettling) {
-          p.opacity += 0.035;
+          p.opacity = Math.min(p.targetOpacity, p.opacity + 0.035 * frames);
         }
 
-        p.vy = Math.min(1.4, p.vy + 0.012);
-        p.vx += (currentWindX - p.vx) * 0.03;
+        p.vy = Math.min(1.4, p.vy + 0.012 * frames);
+        p.vx = damp(p.vx, currentWindX, 1.83, dt);
 
-        p.swayPhase += p.swaySpeed;
+        p.swayPhase += p.swaySpeed * frames;
         const flutter = Math.sin(p.swayPhase) * 0.5;
 
-        p.x += p.vx + flutter;
-        p.y += p.vy;
-        p.angle += p.spin;
-        p.flip += p.flipSpeed;
+        p.x += (p.vx + flutter) * frames;
+        p.y += p.vy * frames;
+        p.angle += p.spin * frames;
+        p.flip += p.flipSpeed * frames;
 
         if (p.y >= height * 0.82 && !p.isSettling) {
           p.isSettling = true;
         }
 
         if (p.isSettling) {
-          p.vy *= 0.94;
-          p.vx *= 0.91;
-          p.opacity -= 0.016;
+          p.vy *= 0.94 ** frames;
+          p.vx *= 0.91 ** frames;
+          p.opacity -= 0.016 * frames;
         }
 
         if (p.opacity <= 0 || p.y > height + 25 || p.x > width + 30) {
@@ -160,15 +143,15 @@ export default function MonumentGardenScene({ className = '', onMonumentClick })
         ctx.restore();
       }
 
-      animId = requestAnimationFrame(render);
+
     };
 
-    animId = requestAnimationFrame(render);
+    const stop = createArtworkLoop(canvas, render);
 
     return () => {
-      cancelAnimationFrame(animId);
+      stop();
       window.removeEventListener('resize', handleResize);
-      observer.disconnect();
+
     };
   }, []);
 

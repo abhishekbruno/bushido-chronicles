@@ -37,7 +37,6 @@ export default function Navbar({ activeSection, onNavigate }) {
     { label: 'SPIRIT', href: '#spirit', kanji: '魂' },
     { label: 'HONOR', href: '#honor', kanji: '誉' },
     { label: 'MONUMENT', href: '#monument', kanji: '碑' },
-    { label: 'MASAMUNE', href: '#masamune', kanji: '竜' },
   ];
 
   const handleLinkClick = (e, href) => {

@@ -7,11 +7,13 @@ export default function AnimatedSamurai() {
 
   useEffect(() => {
     if (!warriorRef.current) return;
-    gsap.fromTo(
-      warriorRef.current,
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const tween = gsap.fromTo(
+      warriorRef.current.querySelector('.samurai-character-inner'),
       { y: 25, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.1, ease: 'power3.out' }
     );
+    return () => tween.kill();
   }, []);
 
   return (
