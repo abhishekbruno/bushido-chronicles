@@ -1,87 +1,342 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import { windSystem } from '../utils/windSystem';
 
-// Hand-constructed interpretive artwork, distinct from the historical sculpture.
-// Local blossom branches and petal animation never escape their SVG stage.
-const blossomAnchors = [
-  [91,215],[120,170],[159,133],[196,116],[224,142],[261,113],[293,154],[312,195],
-  [83,261],[123,244],[163,202],[206,217],[253,201],[296,237],[340,226],
-  [119,298],[176,279],[230,285],[280,275],[342,283],[376,247],
-  [166,337],[228,342],[290,318],[343,330],[403,280],
+/**
+ * MonumentGardenScene (皇居外苑 · 楠木正成 銅像)
+ * -----------------------------------------------------------------------------
+ * Museum-grade cinematic recreation of the historic bronze equestrian monument
+ * of Kusunoki Masashige (楠木正成) at Tokyo Imperial Palace Outer Gardens.
+ *
+ * Visual Layers:
+ *  1. Panoramic Washi Sky & Distant Mountain Ridges
+ *  2. Living Celestial Crimson Sun with 8–12s atmospheric breathing halo
+ *  3. Chidorigafuchi Moat with sun reflections & gentle water ripples
+ *  4. Architectural Edo Castle Watchtower (Fujimi Yagura), stone ishigaki ramparts & pines
+ *  5. Hero Bronze Equestrian Sculpture on stepped granite pedestal (strictly rigid & stationary)
+ *  6. Ancient Gnarled Sakura Tree with pink blossoms framing the left foreground
+ *  7. Real-Time Canvas Falling Sakura Petals with aerodynamic drag & wind drift
+ *  8. Museum Exhibit Plaque Caption
+ */
+
+const SAKURA_EMITTERS = [
+  { x: 0.08, y: 0.16 },
+  { x: 0.14, y: 0.12 },
+  { x: 0.18, y: 0.22 },
+  { x: 0.22, y: 0.15 },
+  { x: 0.27, y: 0.20 },
+  { x: 0.15, y: 0.32 },
+  { x: 0.22, y: 0.36 },
+  { x: 0.30, y: 0.26 },
 ];
-function CherryBlossoms() {
-  const flowers = blossomAnchors.flatMap(([x,y],index) => Array.from({length: 5},(_,j)=>{
-    const dx = Math.sin(index * 3.3 + j * 2.4) * (7 + j * 2);
-    const dy = Math.cos(index * 1.5 + j * 3.1) * (7 + j * 2);
-    return {x:x+dx,y:y+dy,s: index % 3 === 0 ? 1.1 : .73 + j*.045,angle:(index*47+j*63)%360};
-  }));
-  return <g className="bc-garden-blossoms">{flowers.map((b,i) => <g key={i} transform={`translate(${b.x} ${b.y}) rotate(${b.angle}) scale(${b.s})`}>
-    {[0,72,144,216,288].map((a)=><path key={a} d="M0 0 C-5-4-6-10-1-12 C-1-10 1-10 1-12 C7-10 6-4 0 0Z" transform={`rotate(${a})`} fill={i%7===0?'#e58ba0':i%4===0?'#f2b9c7':'#edccd0'} stroke="#bd8792" strokeWidth=".45" opacity={.78+i%3*.08}/>) }
-    <circle r="1.4" fill="#a9626d"/>
-  </g>)}</g>;
-}
-const petals = Array.from({ length: 10 }, (_, i) => ({
-  x: [300,196,342,401,268,155,349,374,239,310][i],
-  y: [206,265,224,309,261,337,358,278,297,241][i],
-  delay: `${-i*1.03}s`, duration: `${7+i*.47}s`
-}));
-export default function MonumentGardenScene(){
-  return <svg className="bc-monument-svg" viewBox="0 0 1180 650" role="img" aria-label="Interpretive bronze-toned illustration of a mounted Samurai memorial with a blossoming cherry tree in a Japanese garden">
-    <defs>
-      <linearGradient id="bc-memorial-bronze" x1="0" y1="0" x2=".9" y2="1"><stop stopColor="#746c53"/><stop offset=".37" stopColor="#414b3c"/><stop offset=".8" stopColor="#2d3832"/><stop offset="1" stopColor="#151e1b"/></linearGradient>
-      <linearGradient id="bc-memorial-pedestal" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#a9a092"/><stop offset="1" stopColor="#665d54"/></linearGradient>
-      <radialGradient id="bc-memorial-sky" cx=".65" cy=".45"><stop stopColor="#d0aaa0" stopOpacity=".68"/><stop offset=".82" stopColor="#d0aaa0" stopOpacity=".08"/><stop offset="1" stopColor="#d0aaa0" stopOpacity="0"/></radialGradient>
-    </defs>
-    <circle cx="850" cy="230" r="208" fill="url(#bc-memorial-sky)"/>
-    <circle cx="843" cy="207" r="136" fill="#af4040" opacity=".87"/>
-    <path d="M0 486Q143 462 281 459T541 474Q685 441 814 457T1180 458V650H0Z" fill="#d6d0bd" opacity=".82"/>
-    <path d="M0 544 Q274 488 489 524T1180 515V650H0Z" fill="#a6a292" opacity=".34"/>
-    <g className="bc-garden-tree">
-      <path d="M100 538Q131 497 128 444Q111 405 153 363Q174 330 181 287Q196 260 217 247Q240 225 245 186" stroke="#41312d" strokeWidth="35" strokeLinecap="round" fill="none"/>
-      <path d="M105 542Q84 544 66 560M108 538Q140 529 163 554M124 470Q114 501 97 530" stroke="#352724" strokeWidth="12" strokeLinecap="round" fill="none"/>
-      <path d="M179 303Q133 273 88 259Q70 242 67 213M180 306Q199 269 260 258Q308 245 345 215M214 250Q215 206 203 159Q184 138 161 125M228 224Q269 187 310 171Q330 155 359 155M161 360Q188 325 226 328Q265 333 298 306M197 275Q164 235 127 209Q110 178 117 153M240 191Q263 171 266 121" fill="none" stroke="#41312d" strokeWidth="13" strokeLinecap="round"/>
-      <path d="M88 258Q106 233 102 196M155 130Q143 108 129 104M203 159Q224 133 235 111M310 171Q297 145 284 130M347 216Q371 222 387 238M270 258Q273 286 297 299M115 213Q81 200 69 182M227 328Q223 350 250 361" fill="none" stroke="#51413b" strokeWidth="4.2" strokeLinecap="round"/>
-      <path d="M107 534Q151 439 143 416Q151 364 183 309" fill="none" stroke="#91736c" strokeWidth="2.5" opacity=".6"/>
-      <g className="bc-garden-flower-sway"><CherryBlossoms/></g>
-      {petals.map((p,i)=><g className="bc-monument-petal" style={{'--petal-delay': p.delay,'--petal-duration':p.duration}} key={i} transform={`translate(${p.x} ${p.y})`}><path d="M0 0Q-8-13 1-18Q11-13 0 0Z" fill="#eaa5ba" stroke="#c9879d" strokeWidth=".65" opacity=".82"/></g>)}
-    </g>
-    {/* Pedestal: clearly identified as a stylized visual interpretation, not survey geometry. */}
-    <g className="bc-memorial-sculpture">
-      <path d="M520 542L904 542L932 565L495 565Z" fill="#b0a89b" stroke="#5a544c" strokeWidth="3"/>
-      <path d="M522 565L904 565L892 625L534 625Z" fill="url(#bc-memorial-pedestal)" stroke="#5b554d" strokeWidth="3"/>
-      <path d="M541 581H887M549 610H879" fill="none" stroke="#c9c4ba" strokeWidth="3" opacity=".45"/>
-      <path d="M503 625L919 625L932 647H488Z" fill="#70675d"/>
-      <path d="M605 581H807V606H605Z" fill="#625d50" stroke="#bdb6a5" strokeWidth="1"/>
-      <text x="706" y="598" fill="#d4c5ab" fontSize="16" fontFamily="serif" textAnchor="middle">楠木正成</text>
-      {/* horse: clear anatomical silhouette including bridled head, mane, all four legs */}
-      <path d="M593 372Q564 370 531 357Q510 348 503 357Q522 375 552 394Z" fill="#2b352e"/>
-      <path d="M566 357Q600 324 664 325Q717 323 765 343Q788 348 807 335L838 293Q854 270 875 280L890 304Q910 308 921 329L917 349Q898 358 878 346Q868 335 861 324L826 394Q785 421 750 411L699 423Q627 440 580 411Z" fill="url(#bc-memorial-bronze)" stroke="#202b25" strokeWidth="4"/>
-      <path d="M853 300Q833 320 830 351M858 311Q840 329 837 347" fill="none" stroke="#a1a180" strokeWidth="4" opacity=".5"/>
-      <path d="M892 305Q901 304 906 310L905 319L891 317Z" fill="#2d3027"/>
-      <path d="M890 328L908 338L902 343L886 336Z" fill="#85836d"/>
-      <path d="M893 319L889 322" stroke="#d2c0a0" strokeWidth="2"/>
-      <path d="M580 395Q568 446 562 470L544 536L559 542L584 487L611 422Z" fill="#2b332a" stroke="#1c2723" strokeWidth="3"/>
-      <path d="M628 411Q624 475 617 528L628 536L644 477L654 421Z" fill="#394238" stroke="#202b26" strokeWidth="3"/>
-      <path d="M740 405Q768 463 757 523L775 531Q795 473 776 404Z" fill="#29352c" stroke="#1f2924" strokeWidth="3"/>
-      <path d="M798 388Q806 436 834 479L844 532L861 532Q857 490 846 470L829 378Z" fill="#334138" stroke="#1c2923" strokeWidth="3"/>
-      <path d="M538 531L567 529L574 543L530 543ZM604 528L640 528L650 541L603 541ZM753 521L783 522L790 540L747 539ZM829 530L863 528L867 542L824 543Z" fill="#273027"/>
-      <path d="M610 348Q657 361 710 346Q750 343 776 363" fill="none" stroke="#9f9c7d" strokeWidth="4" opacity=".45"/>
-      {/* rider mounted on saddle; lamellar armor and helmet */}
-      <path d="M671 315Q681 356 654 405L675 410Q710 372 716 323Z" fill="#2b392f"/>
-      <path d="M713 313Q728 360 750 382L765 378Q746 325 735 301Z" fill="#1c2925"/>
-      <path d="M660 225Q676 205 703 212Q731 214 741 238L735 322Q695 333 658 307Z" fill="#3a493b" stroke="#202e28" strokeWidth="4"/>
-      <path d="M664 239H735M659 258H735M665 278H730M673 297H728" stroke="#b1aa80" strokeWidth="3.5" opacity=".62"/>
-      <path d="M666 219Q639 239 627 284L651 295L680 249Z" fill="#53604d" stroke="#26342b" strokeWidth="3"/>
-      <path d="M726 222Q758 234 768 276L746 291L721 250Z" fill="#4c5b4b" stroke="#26342b" strokeWidth="3"/>
-      <path d="M665 206Q680 185 699 192Q718 185 727 205L719 222L672 223Z" fill="#4c5948"/>
-      <ellipse cx="698" cy="184" rx="19" ry="26" fill="#435044"/>
-      <path d="M671 171Q681 150 699 152Q719 153 726 170L731 181Q695 189 664 180Z" fill="#252e28" stroke="#ab9b77" strokeWidth="2"/>
-      <path d="M696 152L701 131L707 151" fill="#a5a180"/>
-      <path d="M670 181L657 199M720 182L736 201" stroke="#77826d" strokeWidth="5"/>
-      <path d="M657 263Q615 281 585 315" fill="none" stroke="#495346" strokeWidth="13" strokeLinecap="round"/>
-      <path d="M583 314Q579 324 588 332L608 322Z" fill="#404a3d"/>
-      <path d="M744 265Q789 279 832 311" fill="none" stroke="#455242" strokeWidth="11" strokeLinecap="round"/>
-      <path d="M830 310L854 322" stroke="#a29d7c" strokeWidth="3" fill="none"/>
-    </g>
-    <path d="M0 620Q160 602 330 624T698 627T1180 605V650H0Z" fill="#8f8a7d" opacity=".25"/>
-  </svg>;
+
+export default function MonumentGardenScene({ className = '', onMonumentClick }) {
+  const canvasRef = useRef(null);
+
+  // Real-Time Canvas Falling Sakura Petals Physics Loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = (canvas.width = canvas.parentElement?.clientWidth || 1200);
+    let height = (canvas.height = canvas.parentElement?.clientHeight || 680);
+
+    const handleResize = () => {
+      if (!canvas.parentElement) return;
+      width = canvas.width = canvas.parentElement.clientWidth;
+      height = canvas.height = canvas.parentElement.clientHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    const sakuraColors = ['#FFFFFF', '#FDE4EB', '#F7C4D3', '#EFA8BD', '#E28CA5'];
+
+    const spawnPetal = (isInitial = false) => {
+      const anchor = SAKURA_EMITTERS[Math.floor(Math.random() * SAKURA_EMITTERS.length)];
+      const sx = anchor.x * width + (Math.random() - 0.5) * 40;
+      const sy = anchor.y * height + (Math.random() - 0.5) * 30;
+
+      return {
+        x: sx,
+        y: isInitial ? sy + Math.random() * (height * 0.7) : sy,
+        vx: Math.random() * 0.4 + 0.35,
+        vy: Math.random() * 0.45 + 0.3,
+        size: Math.random() * 3.5 + 4.5,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.035,
+        flip: Math.random() * Math.PI,
+        flipSpeed: Math.random() * 0.025 + 0.015,
+        swayPhase: Math.random() * Math.PI * 2,
+        swaySpeed: Math.random() * 0.035 + 0.02,
+        opacity: isInitial ? Math.random() * 0.5 + 0.45 : 0.0,
+        targetOpacity: Math.random() * 0.35 + 0.6,
+        color: sakuraColors[Math.floor(Math.random() * sakuraColors.length)],
+        isSettling: false,
+        dormant: isInitial ? 0 : Math.floor(Math.random() * 60),
+      };
+    };
+
+    const activePetals = Array.from({ length: 16 }, () => spawnPetal(true));
+
+    let animId;
+    let isVisible = true;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+
+    if (canvas.parentElement) {
+      observer.observe(canvas.parentElement);
+    }
+
+    const render = () => {
+      if (!isVisible) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+      const wind = windSystem?.getState?.() || { windX: 0.4, gust: 0 };
+      const currentWindX = wind.windX * 0.85;
+
+      for (let i = 0; i < activePetals.length; i++) {
+        const p = activePetals[i];
+
+        if (p.dormant > 0) {
+          p.dormant--;
+          continue;
+        }
+
+        if (p.opacity < p.targetOpacity && !p.isSettling) {
+          p.opacity += 0.035;
+        }
+
+        p.vy = Math.min(1.4, p.vy + 0.012);
+        p.vx += (currentWindX - p.vx) * 0.03;
+
+        p.swayPhase += p.swaySpeed;
+        const flutter = Math.sin(p.swayPhase) * 0.5;
+
+        p.x += p.vx + flutter;
+        p.y += p.vy;
+        p.angle += p.spin;
+        p.flip += p.flipSpeed;
+
+        if (p.y >= height * 0.82 && !p.isSettling) {
+          p.isSettling = true;
+        }
+
+        if (p.isSettling) {
+          p.vy *= 0.94;
+          p.vx *= 0.91;
+          p.opacity -= 0.016;
+        }
+
+        if (p.opacity <= 0 || p.y > height + 25 || p.x > width + 30) {
+          activePetals[i] = spawnPetal(false);
+          continue;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.scale(Math.max(0.2, Math.abs(Math.cos(p.flip))), 1);
+
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.opacity);
+
+        ctx.beginPath();
+        const s = p.size;
+        ctx.moveTo(0, -s);
+        ctx.bezierCurveTo(s * 0.75, -s * 0.75, s * 0.9, s * 0.3, 0, s);
+        ctx.bezierCurveTo(-s * 0.9, s * 0.3, -s * 0.75, -s * 0.75, 0, -s);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      animId = requestAnimationFrame(render);
+    };
+
+    animId = requestAnimationFrame(render);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div className={`bc-monument-scene-panoramic ${className}`} onClick={onMonumentClick}>
+      {/* 1. MASTER SCENERY SVG (Sky, Sun, Mountains, Moat, Birds) */}
+      <svg
+        className="monument-scenery-svg"
+        viewBox="0 0 1600 900"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="xMidYMid slice"
+        role="img"
+        aria-label="Tokyo Imperial Palace Outer Gardens with celestial crimson sun, Chidorigafuchi moat, and ancient Sakura tree"
+      >
+        <defs>
+          {/* Atmosphere Washi Sky */}
+          <linearGradient id="monSkyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#F5EBDD" />
+            <stop offset="35%" stopColor="#F0E3D1" />
+            <stop offset="70%" stopColor="#E8D8C3" />
+            <stop offset="100%" stopColor="#DDCCB3" />
+          </linearGradient>
+
+          {/* Crimson Sun Gradients */}
+          <radialGradient id="monSunHaloGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#C41E28" stopOpacity="0.45" />
+            <stop offset="45%" stopColor="#C41E28" stopOpacity="0.22" />
+            <stop offset="80%" stopColor="#C41E28" stopOpacity="0.06" />
+            <stop offset="100%" stopColor="#C41E28" stopOpacity="0" />
+          </radialGradient>
+
+          <radialGradient id="monSunCoreGrad" cx="42%" cy="38%" r="62%">
+            <stop offset="0%" stopColor="#E22635" />
+            <stop offset="38%" stopColor="#C81726" />
+            <stop offset="76%" stopColor="#9C0F1A" />
+            <stop offset="100%" stopColor="#6E0812" />
+          </radialGradient>
+
+          {/* Distant Ridge Shaders */}
+          <linearGradient id="monMountainGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#A89D8E" stopOpacity="0.75" />
+            <stop offset="65%" stopColor="#C2B7A6" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#DDD3C2" stopOpacity="0.05" />
+          </linearGradient>
+
+          {/* Imperial Moat Water Gradient */}
+          <linearGradient id="monMoatWater" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#5E6D65" stopOpacity="0.9" />
+            <stop offset="45%" stopColor="#45544C" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#2A352F" stopOpacity="0.98" />
+          </linearGradient>
+        </defs>
+
+        {/* 1A. Background Washi Canvas */}
+        <rect width="1600" height="900" fill="url(#monSkyGrad)" />
+
+        {/* 1B. Distant Musashi Plain Ridges */}
+        <path
+          d="M 0 540 Q 320 490, 680 520 T 1250 510 Q 1420 480, 1600 515 L 1600 750 L 0 750 Z"
+          fill="url(#monMountainGrad)"
+        />
+
+        {/* 1C. Giant Weathered Crimson Sun with 8-12s Breathing Halo */}
+        <g id="MonSunGroup" className="monument-sun-group">
+          <circle
+            cx="1080"
+            cy="330"
+            r="285"
+            fill="url(#monSunHaloGrad)"
+            className="monument-sun-halo-breathe"
+          />
+          <circle
+            cx="1080"
+            cy="330"
+            r="220"
+            fill="url(#monSunCoreGrad)"
+            className="monument-sun-core"
+          />
+
+          {/* Sumi-e Cloud Drift Streaks Across Sun */}
+          <path
+            d="M 920 280 C 990 270, 1070 288, 1160 278 C 1240 268, 1300 288, 1350 280 C 1310 298, 1230 294, 1150 302 C 1070 310, 990 296, 920 280 Z"
+            fill="#FAF2E3"
+            opacity="0.32"
+          />
+          <path
+            d="M 960 350 C 1030 342, 1100 358, 1200 348 C 1270 340, 1330 356, 1380 348 C 1340 366, 1260 362, 1180 370 C 1100 378, 1030 366, 960 350 Z"
+            fill="#F6EBDB"
+            opacity="0.25"
+          />
+        </g>
+
+        {/* 1D. Tokyo Imperial Palace Moat (Chidorigafuchi) & Reflections */}
+        <g id="ImperialMoat">
+          <rect x="0" y="650" width="1600" height="250" fill="url(#monMoatWater)" />
+
+          {/* Water Ripples & Crimson Sun Shimmer */}
+          <ellipse cx="1080" cy="710" rx="160" ry="8" fill="#C41E28" opacity="0.18" />
+          <ellipse cx="1070" cy="740" rx="130" ry="6" fill="#C41E28" opacity="0.12" />
+          <ellipse cx="1090" cy="770" rx="90" ry="5" fill="#C41E28" opacity="0.08" />
+
+          {/* Ambient Moat Ripple Lines */}
+          <line x1="850" y1="680" x2="1350" y2="680" stroke="#7E8E85" strokeWidth="1.2" opacity="0.4" />
+          <line x1="780" y1="705" x2="1420" y2="705" stroke="#7E8E85" strokeWidth="1" opacity="0.3" />
+          <line x1="820" y1="735" x2="1390" y2="735" stroke="#7E8E85" strokeWidth="0.8" opacity="0.25" />
+          <line x1="880" y1="770" x2="1320" y2="770" stroke="#7E8E85" strokeWidth="0.8" opacity="0.2" />
+        </g>
+
+        {/* 1E. Morning Mist Layers */}
+        <g id="MorningMist" opacity="0.6">
+          <rect x="0" y="610" width="1600" height="45" fill="#FAF2E3" opacity="0.5" className="monument-mist-drift-1" />
+          <rect x="0" y="640" width="1600" height="35" fill="#F4EADB" opacity="0.4" className="monument-mist-drift-2" />
+        </g>
+
+        {/* 1F. Distant Soaring Birds across Sky */}
+        <g className="monument-birds-flock" fill="#26231E" opacity="0.75">
+          <path d="M 0 0 Q 7 -5, 14 -1 Q 21 -5, 28 0 Q 21 -2, 14 2 Q 7 -2, 0 0 Z" transform="translate(1360, 270) scale(0.9)" />
+          <path d="M 0 0 Q 6 -4, 12 -1 Q 18 -4, 24 0 Q 18 -2, 12 2 Q 6 -2, 0 0 Z" transform="translate(1415, 255) scale(0.8)" />
+          <path d="M 0 0 Q 6 -4, 12 -1 Q 18 -4, 24 0 Q 18 -2, 12 2 Q 6 -2, 0 0 Z" transform="translate(1460, 285) scale(0.75)" />
+          <path d="M 0 0 Q 5 -3, 10 -1 Q 15 -3, 20 0 Q 15 -2, 10 2 Q 5 -2, 0 0 Z" transform="translate(1500, 265) scale(0.65)" />
+        </g>
+      </svg>
+
+      {/* 2. EDO CASTLE WATCHTOWER & PINE RAMPARTS (High-Fidelity Right Midground) */}
+      <div className="monument-castle-rampart-layer" aria-hidden="true">
+        <img
+          src="/images/kusunoki-castle-rampart.png?v=3"
+          alt="Edo Castle Fujimi Yagura watchtower and pine ramparts across the moat"
+          className="monument-castle-rampart-img"
+          loading="eager"
+        />
+      </div>
+
+      {/* 3. THE MAGNIFICENT BRONZE EQUESTRIAN MONUMENT ON GRANITE PEDESTAL */}
+      {/* Strictly rigid, stationary sculpture with authentic metallic reflections */}
+      <div className="monument-statue-hero-anchor">
+        <img
+          src="/images/kusunoki-monument-statue.png?v=3"
+          alt="Bronze equestrian monument of Kusunoki Masashige on carved granite pedestal at Tokyo Imperial Palace"
+          className="monument-statue-image"
+          loading="eager"
+        />
+        {/* Contact Shadow beneath Pedestal */}
+        <div className="monument-pedestal-shadow" aria-hidden="true" />
+      </div>
+
+      {/* 4. ANCIENT SAKURA TREE FRAMING THE LEFT FOREGROUND */}
+      <div className="monument-sakura-tree-layer" aria-hidden="true">
+        <img
+          src="/images/kusunoki-sakura-tree.png?v=3"
+          alt="Ancient Sakura tree with blooming pink cherry blossoms framing the scene"
+          className="monument-sakura-tree-img"
+          loading="eager"
+        />
+      </div>
+
+      {/* 5. Real-Time Canvas Falling Sakura Petals Overlay */}
+      <canvas ref={canvasRef} className="monument-falling-petals-canvas" />
+
+      {/* 6. Bottom Museum Exhibit Caption */}
+      <div className="monument-museum-plaque-caption">
+        <span className="caption-gold-text">楠木正成 銅像</span>
+        <span className="caption-divider">·</span>
+        <span>BRONZE EQUESTRIAN MONUMENT (1900)</span>
+        <span className="caption-divider">·</span>
+        <span>TOKYO IMPERIAL PALACE OUTER GARDENS</span>
+      </div>
+    </div>
+  );
 }

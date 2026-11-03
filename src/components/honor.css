@@ -1,0 +1,1965 @@
+/* ==========================================================================
+   BUSHIDO CHRONICLES — THE HONOR OF THE SAMURAI (武士の名誉)
+   Complete 5-Chapter Cinematic Editorial Style System
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. MASTER SECTION CONTAINER & FOUNDATION
+   -------------------------------------------------------------------------- */
+.section-honor-master {
+  position: relative;
+  background-color: #F8F2E6;
+  background-image: 
+    radial-gradient(ellipse at 85% 15%, rgba(197, 40, 47, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 15% 75%, rgba(212, 175, 55, 0.06) 0%, transparent 55%);
+  padding: clamp(4rem, 7vw, 7.5rem) 0;
+  overflow: hidden;
+  color: #1A1A18;
+}
+
+.honor-anchor-pin {
+  position: absolute;
+  top: -80px;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.honor-master-container {
+  max-width: 1640px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 3.5vw, 3.5rem);
+  position: relative;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   1. CHAPTER 01 — THE ARRANGEMENT CARD & HERO COMPOSITION
+   -------------------------------------------------------------------------- */
+.honor-arrangement-card {
+  position: relative;
+  background: #FAF5EB;
+  border: 1px solid #DFD3BE;
+  border-radius: 6px;
+  box-shadow: 
+    0 1px 3px rgba(35, 30, 24, 0.04),
+    0 20px 45px rgba(45, 38, 28, 0.07);
+  overflow: hidden;
+}
+
+/* Section Top Header Row */
+.honor-section-top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.15rem clamp(1.25rem, 3vw, 2.5rem);
+  border-bottom: 1px solid #E5D9C4;
+  background: #F4ECE0;
+}
+
+.honor-top-left-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brand-hanko-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(197, 40, 47, 0.35);
+}
+
+.honor-brand-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: #2D2C28;
+}
+
+.honor-top-right-tag {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: #7A7264;
+}
+
+.tag-archival-label {
+  font-family: 'Cinzel', serif;
+}
+
+.tag-crimson-kanji {
+  font-family: 'Noto Serif JP', serif;
+  color: #C5282F;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+/* Master Two-Column Balanced Composition */
+.honor-botanical-showcase-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 4vw, 4.5rem);
+  padding: clamp(2rem, 4.5vw, 4rem) clamp(1.25rem, 3.5vw, 3.5rem);
+  align-items: center;
+}
+
+/* Left Editorial Column */
+.honor-editorial-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.honor-archival-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  color: #7D7466;
+  text-transform: uppercase;
+}
+
+.eyebrow-accent-bullet {
+  width: 6px;
+  height: 6px;
+  background: #C5282F;
+  transform: rotate(45deg);
+}
+
+.eyebrow-kanji {
+  font-family: 'Noto Serif JP', serif;
+  color: #C5282F;
+  font-weight: 700;
+  font-size: 0.82rem;
+  margin-left: 0.25rem;
+}
+
+.honor-japanese-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #17181A;
+  margin-top: 0.85rem;
+  line-height: 1.15;
+}
+
+.honor-editorial-headline {
+  font-family: 'Anton', 'Cinzel', sans-serif;
+  font-size: clamp(2.8rem, 5.5vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: #141517;
+  margin: 0.5rem 0 1.15rem;
+}
+
+.headline-crimson-dot {
+  color: #C5282F;
+}
+
+.honor-hero-ink-panel {
+  max-width: 680px;
+  margin: 1.15rem 0 1.65rem;
+}
+
+/* Delicate Manuscript Separator between Brushstroke Panel & Metadata */
+.honor-manuscript-connector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 580px;
+  margin: 0.25rem 0 1.25rem;
+  opacity: 0.85;
+}
+
+.connector-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #D4AF37 0%, rgba(197, 40, 47, 0.45) 45%, rgba(212, 175, 55, 0.2) 80%, transparent 100%);
+}
+
+.connector-crimson-diamond {
+  width: 6px;
+  height: 6px;
+  background: #C5282F;
+  transform: rotate(45deg);
+  box-shadow: 0 0 6px rgba(197, 40, 47, 0.4);
+}
+
+.honor-metadata-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 2.2rem;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #EFE6D6;
+  border: 1px solid #D8CABA;
+  color: #554F45;
+  padding: 0.35rem 0.85rem;
+  border-radius: 2px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.meta-pill:hover {
+  background: #FAF3E6;
+  border-color: #C5282F;
+}
+
+.meta-crimson-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #C5282F;
+  margin-right: 0.45rem;
+  box-shadow: 0 0 4px rgba(197, 40, 47, 0.4);
+}
+
+/* Chapter Navigation Pill Ribbon */
+.honor-chapter-nav-ribbon {
+  border-top: 1px solid #E2D5BF;
+  padding-top: 1.6rem;
+  margin-top: auto;
+}
+
+.nav-ribbon-title {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: #82786B;
+  margin-bottom: 0.85rem;
+}
+
+.nav-pills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.honor-nav-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.95rem;
+  background: #FAF4E8;
+  border: 1px solid #D8CABA;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #2A2825;
+  transition: all 0.25s ease;
+}
+
+.honor-nav-pill-btn:hover,
+.honor-nav-pill-btn.is-active {
+  background: #17181A;
+  color: #FAF4E8;
+  border-color: #17181A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(23, 24, 26, 0.18);
+}
+
+.pill-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.85rem;
+  color: #C5282F;
+}
+
+.honor-nav-pill-btn:hover .pill-num,
+.honor-nav-pill-btn.is-active .pill-num {
+  color: #E5353D;
+}
+
+.pill-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.pill-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.72rem;
+  opacity: 0.7;
+}
+
+/* Right Visual Column */
+.honor-visual-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.honor-visual-frame-card {
+  position: relative;
+  background: #FAF4E8;
+  border: 1px solid #D9CCA8;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 
+    0 1px 3px rgba(35, 30, 24, 0.06),
+    0 22px 50px rgba(35, 30, 24, 0.12);
+}
+
+.honor-visual-bookmark-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 25;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(23, 24, 26, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.honor-visual-bookmark-btn:hover {
+  transform: scale(1.1);
+  background: #C5282F;
+  border-color: #C5282F;
+}
+
+.honor-visual-bookmark-btn.is-bookmarked {
+  background: #C5282F;
+  border-color: #C5282F;
+}
+
+.honor-frame-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.35rem;
+  background: #EFE4D2;
+  border-top: 1px solid #DFD0BA;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: #685E50;
+}
+
+.caption-dot {
+  color: #C5282F;
+  font-weight: 700;
+}
+
+.honor-conceptual-arrangement-caption {
+  padding: 1.15rem 2rem;
+  border-top: 1px solid #E5D9C4;
+  background: #F5EDE1;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #6A6255;
+  text-align: center;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. LIVING SAMURAI FIGURE SCENE (HONOR SAMURAI FIGURE)
+   -------------------------------------------------------------------------- */
+.honor-samurai-figure-mount {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 800 / 1020;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  background: #F3EBDD;
+}
+
+.honor-samurai-stage-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.honor-samurai-backdrop-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes sunHaloBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+.honor-sun-pulse-aura {
+  transform-origin: 470px 380px;
+  animation: sunHaloBreath 9s ease-in-out infinite;
+}
+
+@keyframes mistDrift {
+  0% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(20px);
+  }
+}
+
+.honor-mist-ribbons {
+  animation: mistDrift 20s ease-in-out infinite alternate;
+}
+
+@keyframes samuraiIdleBreathe {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.honor-samurai-warrior-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+  animation: samuraiIdleBreathe 7s ease-in-out infinite;
+}
+
+.honor-samurai-sketch-img {
+  height: 94%;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 32px rgba(25, 22, 18, 0.28));
+  transform: translateZ(25px);
+  transition: transform 0.3s ease;
+}
+
+.honor-samurai-figure-mount:hover .honor-samurai-sketch-img {
+  transform: translateZ(40px) scale(1.015);
+}
+
+/* Katana Blade Glint Shimmer */
+.honor-blade-glint-streak {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+  opacity: 0;
+}
+
+.honor-blade-glint-streak.is-animating {
+  animation: glintFlash 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes glintFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-25deg);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.15) rotate(-25deg);
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3) rotate(-25deg);
+  }
+}
+
+.glint-flare {
+  position: absolute;
+  top: 48%;
+  left: 36%;
+  width: 140px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #FFFFFF 50%, #FFEBAA 70%, transparent);
+  box-shadow: 
+    0 0 15px rgba(255, 255, 255, 0.9),
+    0 0 35px rgba(212, 175, 55, 0.8);
+  border-radius: 50%;
+  transform: rotate(-35deg);
+}
+
+/* Foreground Overlay (Calligraphy, Hanko, Plate, Hint) */
+.honor-samurai-foreground-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.honor-vertical-calligraphy {
+  position: absolute;
+  top: 2.5rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: rgba(22, 23, 25, 0.5);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.2em;
+  transform: translateZ(35px);
+}
+
+.calligraphy-char {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.honor-hanko-seal-badge {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  transform: translateZ(40px);
+}
+
+.hanko-box {
+  width: 44px;
+  height: 44px;
+  border: 2px solid #C5282F;
+  background: rgba(197, 40, 47, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(197, 40, 47, 0.2);
+}
+
+.hanko-char {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #C5282F;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.hanko-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: #8C2228;
+  font-weight: 700;
+}
+
+.honor-specimen-plate {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  transform: translateZ(30px);
+}
+
+.specimen-code {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  color: #7A7062;
+  font-weight: 600;
+}
+
+.specimen-virtue {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: #C5282F;
+  font-weight: 700;
+}
+
+.honor-interactive-hint {
+  position: absolute;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateZ(30px);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(248, 242, 230, 0.88);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(217, 204, 185, 0.85);
+  padding: 0.35rem 0.95rem;
+  border-radius: 20px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: #4D453A;
+  box-shadow: 0 4px 15px rgba(35, 30, 24, 0.08);
+}
+
+.hint-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #C5282F;
+  animation: hintDotPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintDotPulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+    box-shadow: 0 0 8px #C5282F;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. SCROLL SEAMS (TRADITIONAL JOINTS BETWEEN CHAPTERS)
+   -------------------------------------------------------------------------- */
+.honor-scroll-seam-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: clamp(3.5rem, 6vw, 6rem) 0;
+  position: relative;
+}
+
+.seam-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D5C7B0 30%, #D5C7B0 70%, transparent);
+}
+
+.seam-kanji-crest {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #C5282F;
+  background: #F8F2E6;
+  padding: 0.4rem 1.1rem;
+  border: 1px solid #D9CCA8;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(35, 30, 24, 0.05);
+}
+
+.honor-scroll-sub-section {
+  position: relative;
+  background: #FAF5EB;
+  border: 1px solid #DFD3BE;
+  border-radius: 6px;
+  box-shadow: 
+    0 1px 3px rgba(35, 30, 24, 0.04),
+    0 20px 45px rgba(45, 38, 28, 0.07);
+  overflow: hidden;
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(1.25rem, 3.5vw, 3.5rem);
+}
+
+/* Common Chapter Header */
+.honor-chapter-header {
+  max-width: 860px;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.honor-chapter-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-num-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: #C5282F;
+}
+
+.chapter-eyebrow-line {
+  width: 40px;
+  height: 1px;
+  background: #C5282F;
+}
+
+.chapter-eyebrow-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #655E52;
+}
+
+.honor-chapter-title {
+  font-family: 'Anton', 'Cinzel', sans-serif;
+  font-size: clamp(2.2rem, 4.2vw, 3.8rem);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #17181A;
+  margin-bottom: 1.15rem;
+}
+
+.title-crimson-dot {
+  color: #C5282F;
+}
+
+.honor-chapter-desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.15rem, 1.35vw, 1.35rem);
+  line-height: 1.65;
+  color: #3B3833;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. CHAPTER 02 — THE FIVE PRINCIPLES OF HONOR (HONOR PRINCIPLES)
+   -------------------------------------------------------------------------- */
+.honor-principles-manuscript-grid {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: flex-start;
+}
+
+.honor-principles-tablist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.honor-principle-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: #F4ECDC;
+  border: 1px solid #D8CABA;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.honor-principle-tab:hover {
+  background: #EFE4D0;
+  border-color: #C5282F;
+  transform: translateX(4px);
+}
+
+.honor-principle-tab.is-active {
+  background: #17181A;
+  border-color: #17181A;
+  color: #FAF4E8;
+  transform: translateX(6px);
+  box-shadow: 0 4px 15px rgba(23, 24, 26, 0.2);
+}
+
+.tab-left-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tab-item-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.95rem;
+  color: #C5282F;
+}
+
+.honor-principle-tab.is-active .tab-item-num {
+  color: #E5353D;
+}
+
+.tab-item-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.tab-right-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: right;
+}
+
+.tab-item-english {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.tab-item-title {
+  font-size: 0.65rem;
+  opacity: 0.75;
+}
+
+.tab-active-indicator {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid #17181A;
+  display: none;
+}
+
+.honor-principle-tab.is-active .tab-active-indicator {
+  display: block;
+}
+
+/* Active Principle Expanded Manuscript View */
+.honor-principle-active-manuscript {
+  position: relative;
+}
+
+.manuscript-parchment-frame {
+  position: relative;
+  background: #FCF8F0;
+  border: 1px solid #D6C8AF;
+  border-radius: 4px;
+  padding: clamp(1.75rem, 3.5vw, 3rem);
+  box-shadow: inset 0 0 40px rgba(214, 200, 175, 0.25);
+}
+
+.parchment-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #B38A22;
+  pointer-events: none;
+}
+
+.parchment-bracket.top-left {
+  top: 8px;
+  left: 8px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.parchment-bracket.top-right {
+  top: 8px;
+  right: 8px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.parchment-bracket.bottom-left {
+  bottom: 8px;
+  left: 8px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.parchment-bracket.bottom-right {
+  bottom: 8px;
+  right: 8px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+.manuscript-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #E8DCBE;
+  padding-bottom: 1.75rem;
+}
+
+.manuscript-index-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.65rem;
+}
+
+.tag-cinnabar-hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.8rem;
+  border-radius: 2px;
+}
+
+.tag-archival-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: #7A7062;
+  font-weight: 700;
+}
+
+.manuscript-main-heading {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #17181A;
+  margin-bottom: 0.45rem;
+}
+
+.manuscript-subtitle-line {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #6A6052;
+}
+
+.manuscript-symbol-pod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.principle-symbol-svg {
+  width: 72px;
+  height: 72px;
+}
+
+.symbol-jp-caption {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: #8C2228;
+  font-weight: 700;
+}
+
+.manuscript-quote-banner {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: #F3EBDD;
+  border-left: 3px solid #C5282F;
+  padding: 1.15rem 1.6rem;
+  margin-bottom: 2.25rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.manuscript-quote-text {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #1D1E20;
+  margin: 0;
+}
+
+.manuscript-body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.column-label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: #7A6F60;
+  margin-bottom: 0.85rem;
+}
+
+.column-label-kanji {
+  font-family: 'Noto Serif JP', serif;
+  color: #C5282F;
+  font-weight: 700;
+}
+
+.column-paragraph {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #35332F;
+  margin: 0;
+}
+
+.manuscript-bottom-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #E8DCBE;
+  padding-top: 1.25rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: #807668;
+}
+
+.footer-seal-mark {
+  color: #C5282F;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   5. CHAPTER 03 — THE INNER CONFLICT (GIRI VS NINJO)
+   -------------------------------------------------------------------------- */
+.honor-dilemma-selector-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.15rem;
+  margin-bottom: 2.5rem;
+}
+
+.dilemma-select-tab {
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem 1.4rem;
+  background: #F4ECDC;
+  border: 1px solid #D8CABA;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+}
+
+.dilemma-select-tab:hover {
+  background: #EFE4D0;
+  border-color: #C5282F;
+  transform: translateY(-2px);
+}
+
+.dilemma-select-tab.is-active {
+  background: #17181A;
+  border-color: #17181A;
+  color: #FAF4E8;
+  box-shadow: 0 4px 15px rgba(23, 24, 26, 0.2);
+}
+
+.tab-dilemma-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.78rem;
+  color: #C5282F;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.08em;
+}
+
+.dilemma-select-tab.is-active .tab-dilemma-num {
+  color: #E5353D;
+}
+
+.tab-dilemma-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+
+.tab-dilemma-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+.honor-conflict-parchment-stage {
+  background: #FCF8F0;
+  border: 1px solid #D6C8AF;
+  border-radius: 4px;
+  padding: clamp(1.75rem, 3.5vw, 3rem);
+  box-shadow: inset 0 0 40px rgba(214, 200, 175, 0.25);
+}
+
+.conflict-hero-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  border-bottom: 1px solid #E8DCBE;
+  padding-bottom: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.conflict-hero-protagonist,
+.conflict-hero-theme {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.meta-kicker {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: #7A7062;
+  font-weight: 700;
+}
+
+.meta-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  color: #17181A;
+  margin: 0;
+}
+
+.meta-theme-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: #655E52;
+}
+
+/* Balance Visualizer */
+.conflict-balance-visualizer {
+  display: grid;
+  grid-template-columns: 1fr 140px 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  background: #F4ECDC;
+  border: 1px solid #D8CABA;
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.balance-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.balance-side.right-side {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.balance-label-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.badge-kanji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  border-radius: 2px;
+}
+
+.giri-badge .badge-kanji {
+  background: #17181A;
+}
+
+.badge-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #17181A;
+}
+
+.balance-desc-micro {
+  font-size: 0.75rem;
+  color: #756D60;
+  margin: 0;
+}
+
+.balance-center-scale {
+  position: relative;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scale-fulcrum-post {
+  width: 3px;
+  height: 50px;
+  background: #B38A22;
+  position: absolute;
+  bottom: 0;
+}
+
+.scale-crossbar {
+  width: 100px;
+  height: 3px;
+  background: #B38A22;
+  position: absolute;
+  top: 20px;
+  transition: transform 0.3s ease;
+}
+
+.scale-pan {
+  width: 28px;
+  height: 4px;
+  background: #735308;
+  position: absolute;
+  top: 15px;
+  border-radius: 2px;
+}
+
+.scale-pan.pan-left {
+  left: -8px;
+}
+
+.scale-pan.pan-right {
+  right: -8px;
+}
+
+.scale-center-seal {
+  width: 24px;
+  height: 24px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+}
+
+/* Dual Column Narrative Comparison */
+.conflict-dual-panels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.conflict-card {
+  background: #FAF5EB;
+  border: 1px solid #D8CABA;
+  border-radius: 4px;
+  padding: 1.75rem;
+}
+
+.conflict-card.ninjo-card {
+  border-left: 3px solid #C5282F;
+}
+
+.conflict-card.giri-card {
+  border-left: 3px solid #17181A;
+}
+
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.card-cinnabar-kanji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  border-radius: 2px;
+}
+
+.giri-card .card-cinnabar-kanji {
+  background: #17181A;
+}
+
+.card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #17181A;
+  margin: 0;
+}
+
+.card-inner-quote {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #8C2228;
+  margin-bottom: 1rem;
+  line-height: 1.45;
+}
+
+.giri-card .card-inner-quote {
+  color: #35383C;
+}
+
+.card-body-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: #35332F;
+  margin: 0;
+}
+
+/* Resolution Box */
+.conflict-resolution-box {
+  background: #F4ECDC;
+  border: 1px solid #D8CABA;
+  border-radius: 4px;
+  padding: 1.75rem 2rem;
+}
+
+.resolution-top-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #7A7062;
+  margin-bottom: 1rem;
+}
+
+.resolution-narrative {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.18rem;
+  line-height: 1.65;
+  color: #2D2C28;
+  margin-bottom: 1.25rem;
+}
+
+.resolution-verdict-line {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #17181A;
+  border-top: 1px solid #D8CABA;
+  padding-top: 1rem;
+}
+
+.verdict-accent {
+  color: #C5282F;
+  margin-right: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. CHAPTER 04 — THE WARRIOR'S PROMISE (CEREMONIAL COVENANT SCROLL)
+   -------------------------------------------------------------------------- */
+.honor-scroll-document {
+  position: relative;
+  background: #FCF8F0;
+  border: 1px solid #D6C8AF;
+  border-radius: 4px;
+  padding: clamp(1.75rem, 3.5vw, 3rem);
+  box-shadow: inset 0 0 40px rgba(214, 200, 175, 0.25);
+}
+
+.scroll-top-seal-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  border-bottom: 1px solid #E8DCBE;
+  padding-bottom: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.scroll-seal-hanko {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 52px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  border-radius: 3px;
+  box-shadow: 0 3px 10px rgba(197, 40, 47, 0.35);
+}
+
+.scroll-seal-meta {
+  flex: 1;
+}
+
+.scroll-archival-num {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: #7A7062;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.scroll-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #17181A;
+  margin-bottom: 0.3rem;
+}
+
+.scroll-subtitle {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.78rem;
+  color: #C5282F;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.scroll-counter-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.counter-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  color: #C5282F;
+}
+
+.counter-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #7A7062;
+  font-weight: 700;
+}
+
+/* Six Grid Vows */
+.scroll-vows-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.scroll-vow-card {
+  background: #FAF5EB;
+  border: 1px solid #D8CABA;
+  border-radius: 4px;
+  padding: 1.75rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-vow-card:hover {
+  background: #FFFDF8;
+  border-color: #C5282F;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(35, 30, 24, 0.08);
+}
+
+.scroll-vow-card.is-sealed {
+  border-color: #C5282F;
+  background: #FFFDF9;
+}
+
+.vow-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.15rem;
+}
+
+.vow-article-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.article-kanji-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.78rem;
+  color: #C5282F;
+  font-weight: 700;
+}
+
+.article-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #17181A;
+}
+
+.vow-hanko-seal {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid #D8CABA;
+  background: #FAF4E8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.scroll-vow-card.is-sealed .vow-hanko-seal,
+.vow-hanko-seal.active-stamp {
+  border-color: #C5282F;
+  background: #C5282F;
+  box-shadow: 0 0 12px rgba(197, 40, 47, 0.4);
+}
+
+.hanko-glyph {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #C5282F;
+}
+
+.scroll-vow-card.is-sealed .hanko-glyph,
+.vow-hanko-seal.active-stamp .hanko-glyph {
+  color: #FFFFFF;
+}
+
+.vow-sub-headline {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.8rem;
+  color: #8C2228;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.vow-verse-quote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: #2D2C28;
+  margin-bottom: 1rem;
+}
+
+.vow-reflection-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #60584C;
+  margin-bottom: 1.25rem;
+}
+
+.vow-card-bottom-bar {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid #EDE2CE;
+}
+
+.vow-status-text {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: #C5282F;
+  font-weight: 700;
+}
+
+/* Master Scroll Affirmation Footer */
+.scroll-affirmation-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: #F4ECDC;
+  border: 1px solid #D8CABA;
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
+}
+
+.affirmation-quote-block {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 820px;
+}
+
+.affirmation-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: #35332F;
+  margin: 0;
+}
+
+.btn-seal-covenant {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.65rem;
+  background: #C5282F;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 3px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-seal-covenant:hover {
+  background: #E5353D;
+  box-shadow: 0 4px 15px rgba(197, 40, 47, 0.4);
+}
+
+.btn-seal-covenant.is-complete {
+  background: #17181A;
+}
+
+/* --------------------------------------------------------------------------
+   7. CHAPTER 05 — THE LEGACY OF HONOR (ENDURING RESIDUE & MEDITATION)
+   -------------------------------------------------------------------------- */
+.honor-legacy-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 3rem;
+}
+
+.legacy-pillar-card {
+  background: #FCF8F0;
+  border: 1px solid #D6C8AF;
+  border-radius: 4px;
+  padding: 2rem 1.75rem;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.legacy-pillar-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(35, 30, 24, 0.08);
+  border-color: #C5282F;
+}
+
+.pillar-top-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.pillar-index-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.25rem;
+  color: #C5282F;
+}
+
+.pillar-kanji-glyph {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #17181A;
+}
+
+.pillar-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #17181A;
+  margin-bottom: 0.35rem;
+}
+
+.pillar-subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #655E52;
+  margin-bottom: 1.15rem;
+}
+
+.pillar-desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: #35332F;
+  margin-bottom: 1.5rem;
+}
+
+.pillar-bottom-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: #7A7062;
+  font-weight: 700;
+  padding-top: 1rem;
+  border-top: 1px solid #E8DCBE;
+}
+
+.pillar-dot {
+  width: 5px;
+  height: 5px;
+  background: #C5282F;
+  border-radius: 50%;
+}
+
+/* Zen Meditation Final Reflection Card */
+.honor-legacy-zen-meditation {
+  position: relative;
+}
+
+.meditation-washi-box {
+  background: #17181A;
+  color: #FAF4E8;
+  border-radius: 6px;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(18, 19, 21, 0.4);
+}
+
+.meditation-washi-box::before {
+  content: '';
+  position: absolute;
+  top: -150px;
+  right: -100px;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(197, 40, 47, 0.28) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.meditation-crest-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid #C5282F;
+  background: rgba(197, 40, 47, 0.15);
+  border-radius: 3px;
+  margin-bottom: 1.75rem;
+}
+
+.crest-seal-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #C5282F;
+}
+
+.meditation-quote-body {
+  max-width: 960px;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 2rem;
+}
+
+.meditation-quote-mark {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 4rem;
+  line-height: 1;
+  color: #C5282F;
+  display: block;
+  margin-bottom: -1rem;
+}
+
+.meditation-statement {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.3rem, 1.8vw, 1.65rem);
+  line-height: 1.65;
+  color: #FAF4E8;
+  font-style: italic;
+  margin: 0 0 1.5rem;
+}
+
+.meditation-author {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  color: #B2A796;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.meditation-actions {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-honor-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.95rem 2rem;
+  background: #C5282F;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 3px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-honor-continue:hover {
+  background: #E5353D;
+  transform: translateX(6px);
+  box-shadow: 0 6px 20px rgba(197, 40, 47, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   8. RESPONSIVE DESIGN ADJUSTMENTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .honor-principles-manuscript-grid {
+    grid-template-columns: 1fr;
+  }
+  .honor-principles-tablist {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .tab-active-indicator {
+    display: none !important;
+  }
+  .honor-dilemma-selector-bar,
+  .scroll-vows-grid,
+  .honor-legacy-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .conflict-dual-panels-grid {
+    grid-template-columns: 1fr;
+  }
+  .conflict-balance-visualizer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: left;
+  }
+  .balance-side.right-side {
+    text-align: left;
+    align-items: flex-start;
+  }
+  .balance-center-scale {
+    display: none;
+  }
+  .scroll-top-seal-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .scroll-affirmation-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 1080px) {
+  .honor-botanical-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .honor-visual-column {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .manuscript-body-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .conflict-hero-meta {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .honor-principles-tablist {
+    grid-template-columns: 1fr;
+  }
+  .honor-section-top-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .honor-sun-pulse-aura,
+  .honor-mist-ribbons,
+  .honor-samurai-warrior-layer,
+  .hint-pulse {
+    animation: none !important;
+  }
+  .honor-samurai-stage-3d {
+    transform: none !important;
+    transition: none !important;
+  }
+}

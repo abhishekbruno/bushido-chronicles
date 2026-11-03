@@ -439,12 +439,16 @@ svg {
   flex-direction: column;
   padding: 2rem;
   transform: translateY(-100%);
-  transition: transform 0.6s var(--ease-cinematic);
+  visibility: hidden;
+  opacity: 0;
+  transition: transform 0.6s var(--ease-cinematic), opacity 0.4s ease, visibility 0.4s ease;
   pointer-events: none;
 }
 
 .mobile-menu-overlay.is-open {
   transform: translateY(0);
+  visibility: visible;
+  opacity: 1;
   pointer-events: auto;
 }
 
@@ -6371,14 +6375,52 @@ html { scroll-padding-top: 88px; }
 .bc-monument-source { font-size:10px; color:#695e53; display:inline-flex; gap:5px; align-items:center; font-weight:800; letter-spacing:.07em; }
 .bc-monument-source:hover { color:#a83b41; }
 .bc-monument-art-container { min-width:0; max-width:100%; position:relative; pointer-events:none; }
-.bc-monument-svg { display:block; width:100%; height:auto; overflow:hidden; filter:drop-shadow(0 22px 25px rgba(63,55,38,.055)); }
-.bc-monument-art-caption { color:#877e72; font-size:10px; text-align:right; line-height:1.6; font-style:italic; max-width:550px; margin:5px 1% 0 auto; }
-.bc-garden-tree { transform-origin:100px 540px; animation: bc-tree-trunk 10s ease-in-out infinite alternate; }
-.bc-garden-flower-sway { transform-origin:190px 300px; animation:bc-tree-blossom 7.6s ease-in-out infinite alternate; }
-.bc-monument-petal { transform-box:fill-box; transform-origin:center; animation:bc-petal-fall var(--petal-duration) linear var(--petal-delay) infinite; }
-@keyframes bc-tree-trunk {from { transform:rotate(-.25deg);}to{transform:rotate(.35deg);} }
-@keyframes bc-tree-blossom {from { transform:rotate(-1.4deg); }to {transform:rotate(1.8deg);} }
-@keyframes bc-petal-fall {0%{opacity:0; translate:0 -5px; rotate:0deg;}8%{opacity:.8;}65%{opacity:.65;}100%{opacity:0;translate:70px 295px; rotate:170deg;} }
+.bc-monument-scene-wrapper { width: 100%; position: relative; }
+.bc-monument-svg { display:block; width:100%; height:auto; overflow:hidden; filter:drop-shadow(0 22px 25px rgba(63,55,38,.075)); }
+.bc-monument-art-caption { color:#877e72; font-size:10px; text-align:right; line-height:1.6; font-style:italic; max-width:550px; margin:8px 1% 0 auto; }
+
+/* Cinematic Environmental Motions for Monument Scene */
+.bc-monument-sun-halo {
+  transform-origin: 750px 240px;
+  animation: bc-sun-breathe 11s ease-in-out infinite alternate;
+}
+.bc-monument-mist-layer {
+  animation: bc-mist-drift 22s ease-in-out infinite alternate;
+}
+.bc-monument-drifting-petal {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bc-monument-petal-glide var(--p-dur) cubic-bezier(0.25, 0.46, 0.45, 0.94) var(--p-delay) infinite;
+}
+
+@keyframes bc-sun-breathe {
+  0% { transform: scale(0.96); opacity: 0.65; }
+  50% { transform: scale(1.04); opacity: 0.95; }
+  100% { transform: scale(0.98); opacity: 0.72; }
+}
+
+@keyframes bc-mist-drift {
+  0% { transform: translateX(-35px); opacity: 0.45; }
+  50% { transform: translateX(20px); opacity: 0.75; }
+  100% { transform: translateX(-15px); opacity: 0.55; }
+}
+
+@keyframes bc-monument-petal-glide {
+  0% {
+    transform: translate(var(--p-start-x), var(--p-start-y)) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.92;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(var(--p-end-x), var(--p-end-y)) rotate(var(--p-rot)) scale(1.05);
+    opacity: 0;
+  }
+}
 .bc-monument-archive-mount { max-width:1460px; padding:0 clamp(20px,4.8vw,90px); margin:clamp(35px,6vw,85px) auto 0; position:relative; }
 .bc-monument-archive-title { border-top:1px solid #bcae96; padding:24px 0; display:flex; justify-content:space-between; gap:25px; align-items:baseline; }
 .bc-monument-archive-title>span {color:#9a4646; font-size:11px; font-weight:800; letter-spacing:.18em; }
@@ -6408,6 +6450,1257 @@ html { scroll-padding-top: 88px; }
   .bc-monument-art-caption { text-align:left; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bc-garden-tree,.bc-garden-flower-sway,.bc-monument-petal {animation:none !important;}
-  .bc-monument-petal {display:none;}
+  .bc-garden-tree,
+  .bc-garden-flower-sway,
+  .bc-monument-petal,
+  .bc-monument-sun-halo,
+  .bc-monument-mist-layer,
+  .bc-monument-drifting-petal {
+    animation: none !important;
+  }
+  .bc-monument-petal,
+  .bc-monument-drifting-petal {
+    display: none;
+  }
+}
+
+/* === REDESIGN: monument section aligned to concept artwork === */
+.bc-monument-section--realigned {
+  background: linear-gradient(180deg, #efe7d8 0%, #f5efe3 42%, #ece3d2 100%);
+  padding: clamp(92px, 8vw, 132px) 0 clamp(56px, 6vw, 92px);
+}
+.bc-monument-shell {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 76px);
+  display: grid;
+  grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(22px, 3vw, 44px);
+  align-items: center;
+}
+.bc-monument-copy--panel {
+  background: rgba(250, 246, 238, 0.72);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(150, 122, 86, 0.18);
+  box-shadow: 0 18px 40px rgba(60, 41, 22, 0.08);
+  border-radius: 26px;
+  padding: clamp(26px, 3vw, 38px);
+}
+.bc-monument-hero-card {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 30px;
+  border: 1px solid rgba(124, 98, 68, 0.24);
+  box-shadow: 0 28px 70px rgba(52, 37, 21, 0.14);
+  background: #eadfcb;
+}
+.bc-monument-hero-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+}
+.bc-monument-hero-overlay {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  right: 22px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+.bc-monument-overlay-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(30, 19, 10, 0.55);
+  border: 1px solid rgba(255,255,255,0.16);
+  color: #fff3e2;
+  font-size: 10px;
+  letter-spacing: .16em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.bc-monument-overlay-chip--gold {
+  background: rgba(136, 97, 38, 0.74);
+}
+.bc-monument-art-caption {
+  margin: 0;
+  padding: 14px 20px 18px;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #75695d;
+  background: linear-gradient(180deg, rgba(248,245,238,0.94), #f2eadc);
+}
+
+/* === REDESIGN: final legacy section aligned to concept artwork === */
+.bc-legacy--editorial {
+  padding: clamp(36px, 4vw, 48px) clamp(16px, 3vw, 34px) 0;
+}
+.bc-legacy-poster-shell {
+  max-width: 1520px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #f5eddf 0%, #f3e9d8 100%);
+  border: 1px solid rgba(110, 88, 59, 0.18);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(53, 38, 22, 0.12);
+  display: grid;
+  grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.2fr);
+  gap: 0;
+}
+.bc-legacy-copy--poster {
+  padding: clamp(44px, 5vw, 72px) clamp(28px, 4vw, 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.bc-kicker-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-left: 14px;
+  border-radius: 6px;
+  background: #ab2f32;
+  color: #fff6ed;
+  font-family: var(--font-jp);
+  font-size: 15px;
+  letter-spacing: .08em;
+}
+.bc-legacy--editorial .bc-legacy-ideogram {
+  font-size: clamp(40px, 4.5vw, 78px);
+  line-height: 1.04;
+  margin: 0 0 16px;
+  color: #1d1a16;
+}
+.bc-legacy--editorial .bc-legacy-title {
+  font-size: clamp(40px, 4.6vw, 86px);
+  line-height: .94;
+  letter-spacing: -.02em;
+  margin-bottom: 28px;
+}
+.bc-legacy--editorial .bc-legacy-description {
+  max-width: 560px;
+  font-size: clamp(17px, 1.2vw, 22px);
+  line-height: 1.6;
+  color: #4d453c;
+  margin-bottom: 34px;
+}
+.bc-legacy-artboard {
+  position: relative;
+  margin: 0;
+  background: #f2e8d5;
+  min-height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+.bc-legacy-art-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.bc-art-caption--poster {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 28px 22px;
+  background: linear-gradient(180deg, transparent 0%, rgba(244, 235, 219, 0.78) 40%, rgba(244, 235, 219, 0.96) 100%);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #5f5448;
+}
+.bc-closing-section .bc-footer {
+  margin-top: 26px;
+}
+
+@media (max-width: 1100px) {
+  .bc-monument-shell,
+  .bc-legacy-poster-shell {
+    grid-template-columns: 1fr;
+  }
+  .bc-legacy-artboard {
+    min-height: 420px;
+  }
+}
+
+@media (max-width: 720px) {
+  .bc-monument-section--realigned { padding-top: 78px; }
+  .bc-monument-copy--panel { padding: 24px 20px; border-radius: 22px; }
+  .bc-monument-hero-card { border-radius: 22px; }
+  .bc-monument-overlay-chip { font-size: 9px; padding: 0 10px; min-height: 30px; }
+  .bc-monument-hero-overlay { inset: 14px 14px auto 14px; flex-wrap: wrap; }
+  .bc-legacy--editorial { padding-left: 14px; padding-right: 14px; }
+  .bc-legacy-poster-shell { border-radius: 22px; }
+  .bc-legacy-copy--poster { padding: 30px 20px; }
+  .bc-legacy--editorial .bc-legacy-description { font-size: 15px; }
+  .bc-legacy-actions { grid-template-columns: 1fr; }
+  .bc-legacy-artboard { min-height: 360px; }
+  .bc-art-caption--poster { flex-direction: column; gap: 8px; padding: 16px 18px 20px; font-size: 10px; }
+}
+
+
+/* ==========================================================================
+   BUSHIDO CHRONICLES — MUSEUM EXHIBITION REDESIGN: MONUMENT & FINAL LEGACY
+   High-Fidelity Living Samurai Scenes with real independent animations
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. SECTION MONUMENT (#monument — THE GUARDIANS OF HISTORY)
+   -------------------------------------------------------------------------- */
+.bc-monument-exhibition-section {
+  position: relative;
+  background: linear-gradient(175deg, #f0e8d8 0%, #f7f1e4 45%, #ece3d1 100%);
+  padding: clamp(60px, 6vw, 100px) 0 clamp(70px, 7vw, 110px);
+  overflow: clip;
+  isolation: isolate;
+  border-top: 1px solid rgba(130, 105, 75, 0.22);
+  border-bottom: 1px solid rgba(130, 105, 75, 0.22);
+}
+
+.bc-monument-exhibition-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: repeating-linear-gradient(0deg, transparent 0 48px, rgba(100, 75, 45, 0.15) 49px, transparent 50px);
+}
+
+.monument-exhibition-container {
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4.5vw, 80px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3.5vw, 48px);
+}
+
+/* Editorial Presentation Header Banner */
+.monument-editorial-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(140, 115, 85, 0.28);
+  padding-bottom: clamp(24px, 3vw, 36px);
+}
+
+.monument-editorial-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.monument-archival-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-body, sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #9d3a3f;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.kicker-cinnabar-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c42730;
+}
+
+.kicker-kanji {
+  font-family: var(--font-jp, serif);
+  color: #7d6b56;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  margin-left: 6px;
+}
+
+.monument-jp-calligraphy {
+  font-family: var(--font-jp, 'Noto Serif JP', serif);
+  font-size: clamp(48px, 5.2vw, 88px);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+  color: #1f1e1a;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.monument-main-headline {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: clamp(32px, 3.2vw, 56px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+  color: #2b2924;
+  margin: 0 0 16px;
+}
+
+.monument-main-headline em {
+  font-style: normal;
+  color: #a82e35;
+}
+
+.headline-crimson-dot {
+  color: #b92832;
+}
+
+.monument-editorial-rule {
+  width: 58px;
+  height: 2px;
+  background: #b92832;
+  margin-bottom: 20px;
+}
+
+.monument-editorial-paragraph {
+  font-family: var(--font-body, sans-serif);
+  font-size: clamp(14px, 1.05vw, 17px);
+  line-height: 1.85;
+  color: #5d5346;
+  max-width: 680px;
+  margin: 0 0 24px;
+}
+
+.monument-metadata-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.monument-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #6a5c4b;
+  background: rgba(220, 205, 185, 0.45);
+  border: 1px solid rgba(140, 115, 85, 0.28);
+  border-radius: 2px;
+}
+
+/* Interactive Archival Action Group */
+.monument-interactive-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(250, 245, 235, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 22px 24px;
+  border-radius: 4px;
+  border: 1px solid rgba(135, 110, 80, 0.25);
+  box-shadow: 0 12px 30px rgba(60, 45, 30, 0.06);
+}
+
+.actions-header-label {
+  font-family: var(--font-body, sans-serif);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #8c7965;
+  text-transform: uppercase;
+}
+
+.monument-tab-buttons-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.monument-action-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  font-family: var(--font-body, sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #2c2822;
+  background: #fdfbf7;
+  border: 1px solid rgba(120, 95, 65, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+}
+
+.monument-action-tab-btn:hover {
+  background: #252420;
+  color: #f7efe2;
+  border-color: #252420;
+  transform: translateX(4px);
+}
+
+.monument-action-tab-btn.is-active {
+  background: #8b282e;
+  color: #ffffff;
+  border-color: #8b282e;
+}
+
+.monument-action-tab-btn .tab-btn-kanji {
+  margin-left: auto;
+  font-family: var(--font-jp, serif);
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.monument-official-source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body, sans-serif);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #7a6a57;
+  text-decoration: none;
+  padding-top: 8px;
+  border-top: 1px solid rgba(140, 115, 85, 0.2);
+  transition: color 0.2s ease;
+}
+
+.monument-official-source-link:hover {
+  color: #a82e35;
+}
+
+/* Panoramic Master Visual Scene Wrapper */
+.monument-panoramic-stage-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(110, 88, 60, 0.35);
+  box-shadow: 0 25px 65px rgba(45, 32, 20, 0.14), 0 4px 15px rgba(45, 32, 20, 0.06);
+  background: #e8decd;
+}
+
+.bc-monument-scene-panoramic {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 520px;
+  max-height: 850px;
+  overflow: hidden;
+  background: #f0e3d1;
+}
+
+.monument-scenery-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* Bronze Equestrian Monument Hero Anchor */
+.monument-statue-hero-anchor {
+  position: absolute;
+  bottom: 0%;
+  left: 56%;
+  transform: translateX(-50%);
+  width: 48%;
+  max-width: 780px;
+  z-index: 5;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.monument-statue-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: none;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.monument-statue-hero-anchor:hover .monument-statue-image {
+  transform: scale(1.018);
+}
+
+.monument-pedestal-shadow {
+  position: absolute;
+  bottom: -4px;
+  left: 5%;
+  right: 5%;
+  height: 24px;
+  background: radial-gradient(ellipse at center, rgba(15, 12, 9, 0.6) 0%, rgba(15, 12, 9, 0) 70%);
+  pointer-events: none;
+}
+
+/* Framing Ancient Sakura Tree Layer (Left Foreground) */
+.monument-sakura-tree-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6;
+  transform-origin: bottom left;
+  animation: monumentSakuraBreezeSway 9.5s ease-in-out infinite alternate;
+}
+
+.monument-sakura-tree-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left bottom;
+  display: block;
+  filter: none;
+}
+
+@keyframes monumentSakuraBreezeSway {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(0.45deg) scale(1.004); }
+  100% { transform: rotate(-0.35deg) scale(1); }
+}
+
+/* Edo Castle Fujimi Yagura & Pine Ramparts Layer (Right Midground) */
+.monument-castle-rampart-layer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 38%;
+  height: 58%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.monument-castle-rampart-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right bottom;
+  display: block;
+  filter: none;
+}
+
+/* Cinematic Monument Stage in Archive Modal / Tabs */
+.monument-sculpture-card {
+  padding: 1.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.monument-sculpture-card .washi-panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cinematic-monument-stage {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, rgba(196, 32, 40, 0.38) 0%, rgba(38, 14, 18, 0.85) 45%, rgba(16, 15, 14, 0.98) 85%);
+  border-radius: 4px;
+  padding: 24px 16px;
+  border: 1px solid rgba(166, 139, 86, 0.22);
+}
+
+.archive-sun-backdrop {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e02832 0%, #a8151e 58%, #5c070c 85%, transparent 100%);
+  opacity: 0.94;
+  filter: blur(1.5px);
+  pointer-events: none;
+}
+
+.archive-statue-hero-image {
+  position: relative;
+  z-index: 2;
+  max-width: 96%;
+  max-height: 540px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.8));
+}
+
+.archive-pedestal-ground-shadow {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 22px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.85) 0%, transparent 75%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Real-Time Falling Sakura Petals Canvas */
+.monument-falling-petals-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+}
+
+/* Bottom Museum Exhibit Caption Plaque */
+.monument-museum-plaque-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px 24px;
+  background: linear-gradient(180deg, transparent 0%, rgba(20, 18, 15, 0.8) 50%, rgba(20, 18, 15, 0.94) 100%);
+  color: #f1e9dd;
+  font-family: var(--font-body, sans-serif);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  font-weight: 750;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.caption-gold-text {
+  font-family: var(--font-jp, serif);
+  color: #dfb87c;
+  letter-spacing: 0.12em;
+}
+
+.caption-divider {
+  color: #a82e35;
+}
+
+/* Slide-Down Archival Document Drawer Panel */
+.monument-archival-drawer-panel {
+  background: #fcf9f2;
+  border: 1px solid rgba(120, 95, 65, 0.32);
+  border-radius: 4px;
+  padding: clamp(28px, 4vw, 44px);
+  box-shadow: 0 16px 40px rgba(50, 35, 20, 0.08);
+  animation: monumentDrawerOpen 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes monumentDrawerOpen {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.drawer-top-banner {
+  border-bottom: 1px solid rgba(140, 115, 85, 0.25);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.drawer-index-tag {
+  font-family: var(--font-jp, serif);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #9d3a3f;
+  font-weight: 800;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.drawer-title {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: clamp(20px, 2.2vw, 30px);
+  letter-spacing: 0.04em;
+  color: #24221d;
+  margin: 0;
+}
+
+.drawer-grid-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.drawer-col h4 {
+  font-family: var(--font-body, sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #3b352b;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.drawer-col p {
+  font-family: var(--font-body, sans-serif);
+  font-size: 14px;
+  line-height: 1.8;
+  color: #635849;
+  margin: 0 0 14px;
+}
+
+.monument-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.monument-spec-table tr {
+  border-bottom: 1px solid rgba(140, 115, 85, 0.2);
+}
+
+.monument-spec-table th {
+  padding: 12px 16px 12px 0;
+  text-align: left;
+  font-family: var(--font-body, sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #4a4034;
+  text-transform: uppercase;
+  width: 32%;
+}
+
+.monument-spec-table td {
+  padding: 12px 0;
+  font-family: var(--font-body, sans-serif);
+  font-size: 13px;
+  color: #685d4e;
+}
+
+/* Monument Environmental Motion Keyframes */
+.monument-sun-halo-breathe {
+  transform-origin: 1050px 350px;
+  animation: monumentSunBreathe 10s ease-in-out infinite alternate;
+}
+
+@keyframes monumentSunBreathe {
+  0% { transform: scale(0.96); opacity: 0.72; }
+  50% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(0.98); opacity: 0.8; }
+}
+
+.monument-mist-drift-1 {
+  animation: monumentMist1 20s ease-in-out infinite alternate;
+}
+.monument-mist-drift-2 {
+  animation: monumentMist2 16s ease-in-out infinite alternate;
+}
+
+@keyframes monumentMist1 {
+  0% { transform: translateX(-25px); opacity: 0.45; }
+  100% { transform: translateX(25px); opacity: 0.75; }
+}
+@keyframes monumentMist2 {
+  0% { transform: translateX(20px); opacity: 0.55; }
+  100% { transform: translateX(-20px); opacity: 0.75; }
+}
+
+.monument-sakura-tree-group {
+  transform-origin: 0 900px;
+}
+
+.monument-sakura-branch-upper {
+  transform-origin: 220px 360px;
+  animation: sakuraUpperBranchSway 8s ease-in-out infinite alternate;
+}
+.monument-sakura-branch-lower {
+  transform-origin: 320px 580px;
+  animation: sakuraLowerBranchSway 6.5s ease-in-out infinite alternate;
+}
+.monument-sakura-blossoms {
+  transform-origin: 260px 420px;
+  animation: sakuraBlossomsTremble 7.2s ease-in-out infinite alternate;
+}
+
+@keyframes sakuraUpperBranchSway {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(0.85deg); }
+  100% { transform: rotate(-0.45deg); }
+}
+@keyframes sakuraLowerBranchSway {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-0.75deg); }
+  100% { transform: rotate(0.6deg); }
+}
+@keyframes sakuraBlossomsTremble {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  50% { transform: rotate(0.6deg) translate(2px, 1px); }
+  100% { transform: rotate(-0.5deg) translate(-1px, 2px); }
+}
+
+
+/* --------------------------------------------------------------------------
+   2. FINAL LEGACY CHAPTER (#cta / #final-legacy — 消えぬ遺産)
+   -------------------------------------------------------------------------- */
+.bc-legacy--editorial {
+  position: relative;
+  background: #f4ede0;
+  padding: clamp(50px, 6vw, 90px) clamp(20px, 4.5vw, 80px) 0;
+  border-top: 1px solid rgba(130, 105, 75, 0.22);
+  overflow: clip;
+}
+
+.bc-legacy-inner {
+  max-width: 1680px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(340px, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(24px, 4vw, 68px);
+  align-items: center;
+  min-height: min(840px, 88vh);
+}
+
+.bc-legacy-copy {
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  padding: 20px 0;
+}
+
+.bc-legacy-ideogram {
+  font-family: var(--font-jp, 'Noto Serif JP', serif);
+  font-size: clamp(48px, 5.5vw, 84px);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  color: #1a1916;
+  margin: 0 0 16px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bc-legacy-title {
+  font-family: var(--font-heading, 'Cinzel', 'Playfair Display', serif);
+  font-size: clamp(34px, 3.8vw, 64px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #24221e;
+  margin: 0 0 20px;
+}
+
+.bc-legacy-title span {
+  color: #b92832;
+}
+
+.bc-legacy-accent-bar {
+  width: 54px;
+  height: 2.5px;
+  background: #b92832;
+  margin-bottom: 24px;
+}
+
+.bc-legacy-description {
+  font-family: var(--font-body, sans-serif);
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.85;
+  color: #554c41;
+  max-width: 580px;
+  margin: 0 0 36px;
+}
+
+.bc-legacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+/* Master Visual Scene Container */
+.bc-legacy-visual {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bc-ronin-scene-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 820px;
+  overflow: visible;
+  background: transparent;
+}
+
+.bc-ronin-art-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* Authentic Sumi-e Mountains and Five-Story Pagoda in Valley Mist */
+.ronin-sumie-mountains-layer {
+  position: absolute;
+  bottom: 0;
+  left: -8%;
+  width: 68%;
+  height: 48%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ronin-sumie-mountains-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left bottom;
+  display: block;
+  filter: none;
+}
+
+/* Living Rōnin Warrior Hero Anchor & Multi-Layer Wind Rig */
+.ronin-warrior-hero-anchor {
+  position: absolute;
+  bottom: 0;
+  right: 0%;
+  width: 60%;
+  max-width: 710px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.ronin-living-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 770 / 900;
+  overflow: visible;
+}
+
+.ronin-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  display: block;
+}
+
+/* Layer A: Hierarchical Cape Wind Simulation */
+.ronin-cape-anchor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  transform-origin: 47% 29%; /* Near right shoulder attachment */
+  will-change: transform;
+}
+
+.ronin-cape-mid-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 53% 36%; /* Mid-cloth wave hinge */
+  will-change: transform;
+}
+
+.ronin-cape-outer-rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 64% 43%; /* Outer tatters fluttering hinge */
+  will-change: transform;
+}
+
+.ronin-layer-cape-base {
+  z-index: 1;
+}
+
+.ronin-layer-cape-flutter {
+  z-index: 2;
+}
+
+/* Layer B: Master Grounded Warrior Body */
+.ronin-body-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  transform-origin: 38% 85%;
+  will-change: transform;
+}
+
+/* Layer C: Flowing Hair Strands & Ribbon Ties */
+.ronin-hair-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 8;
+  transform-origin: 43% 16%;
+  will-change: transform;
+}
+
+/* Layer D: Shimenawa Waist Rope Tassels */
+.ronin-tassels-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  transform-origin: 26% 41%;
+  will-change: transform;
+}
+
+/* Layer E: Foreground Japanese Silver Pampas Grass (Susuki) */
+.ronin-grass-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 12;
+  transform-origin: 75% 85%;
+  will-change: transform;
+}
+
+/* Layer F: Ground Occlusion Contact Shadow */
+.ronin-ground-contact-shadow {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 22px;
+  background: radial-gradient(ellipse at center, rgba(15, 12, 9, 0.58) 0%, rgba(15, 12, 9, 0) 70%);
+  z-index: 5;
+}
+
+/* Layer G: Canvas for Drifting Ink Particles & Dust */
+.ronin-ink-particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Crimson Sun Breathing Animations */
+.bc-ronin-sun-assembly {
+  transform-origin: 750px 360px;
+}
+
+.bc-ronin-sun-halo {
+  animation: roninSunHaloBreathe 9s ease-in-out infinite alternate;
+  transform-origin: 750px 360px;
+}
+
+@keyframes roninSunHaloBreathe {
+  0% { transform: scale(0.97); opacity: 0.75; }
+  50% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(0.985); opacity: 0.82; }
+}
+
+/* Silver Grass (Susuki) Living Wind Sway */
+.bc-susuki-stem {
+  transform-origin: bottom center;
+  animation: susukiWindSway 6.5s ease-in-out infinite alternate;
+}
+
+@keyframes susukiWindSway {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(4deg) skewX(-2deg); }
+  100% { transform: rotate(-1.5deg); }
+}
+
+/* Wild Geese Flight Soar */
+.bc-ronin-bird-soar {
+  animation: roninBirdGlide 18s ease-in-out infinite alternate;
+}
+
+@keyframes roninBirdGlide {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-18px, -10px) scale(0.98); }
+  100% { transform: translate(-35px, -18px) scale(0.96); }
+}
+
+/* Bottom Monograph Rule (Matching Concept Design) */
+.bc-legacy-bottom-monograph {
+  max-width: 1680px;
+  margin: clamp(40px, 5vw, 65px) auto 0;
+  padding: 22px 0 36px;
+  border-top: 1px solid rgba(135, 110, 80, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-family: var(--font-body, sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #6d5e4d;
+  text-transform: uppercase;
+}
+
+.monograph-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.monograph-left span[lang="ja"] {
+  font-family: var(--font-jp, serif);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  color: #2b2823;
+}
+
+.monograph-sep {
+  color: #a82e35;
+  opacity: 0.7;
+}
+
+.monograph-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.monograph-chrysanthemum-seal {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.monograph-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #7d6e5d;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. RESPONSIVE ADAPTATIONS (Desktop, Tablet, Mobile)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .monument-editorial-banner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .monument-statue-hero-anchor {
+    width: 54%;
+    left: 54%;
+  }
+  .bc-legacy-inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .bc-legacy-visual {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .bc-monument-scene-panoramic {
+    aspect-ratio: 16 / 10;
+    min-height: 440px;
+  }
+  .monument-statue-hero-anchor {
+    width: 60%;
+    left: 52%;
+  }
+  .monument-jp-calligraphy {
+    font-size: clamp(40px, 9vw, 68px);
+  }
+  .monument-main-headline {
+    font-size: clamp(28px, 6vw, 42px);
+  }
+  .bc-legacy-ideogram {
+    font-size: clamp(40px, 9vw, 68px);
+  }
+  .bc-legacy-title {
+    font-size: clamp(30px, 6vw, 48px);
+  }
+  .bc-legacy-bottom-monograph {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .bc-monument-scene-panoramic {
+    aspect-ratio: 4 / 3;
+    min-height: 380px;
+  }
+  .monument-statue-hero-anchor {
+    width: 72%;
+    left: 50%;
+  }
+  .monument-tab-buttons-row {
+    flex-direction: column;
+  }
+  .bc-legacy-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .bc-legacy-actions .bc-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .ronin-warrior-hero-anchor {
+    width: 75%;
+  }
+  .monument-museum-plaque-caption {
+    font-size: 8px;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .monument-sun-halo-breathe,
+  .monument-mist-drift-1,
+  .monument-mist-drift-2,
+  .monument-sakura-branch-upper,
+  .monument-sakura-branch-lower,
+  .monument-sakura-blossoms,
+  .ronin-warrior-breathing-rig,
+  .bc-ronin-sun-halo,
+  .bc-susuki-stem,
+  .bc-ronin-bird-soar {
+    animation: none !important;
+    transform: none !important;
+  }
+  .monument-falling-petals-canvas {
+    display: none !important;
+  }
 }

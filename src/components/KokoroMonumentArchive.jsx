@@ -147,51 +147,16 @@ export default function KokoroMonumentArchive({ className = '', onReturn }) {
                   <span className="sculpture-badge">8 METRES TOTAL HEIGHT</span>
                 </div>
 
-                <div className="sculpture-visual-stage">
-                  <svg viewBox="0 0 420 320" className="equestrian-svg" preserveAspectRatio="xMidYMid meet">
-                    <defs>
-                      <linearGradient id="bronzeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#8C8268" />
-                        <stop offset="40%" stopColor="#5A5240" />
-                        <stop offset="80%" stopColor="#2E2A20" />
-                        <stop offset="100%" stopColor="#14130E" />
-                      </linearGradient>
-                      <linearGradient id="graniteGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#4A4E54" />
-                        <stop offset="50%" stopColor="#2C2E33" />
-                        <stop offset="100%" stopColor="#181A1E" />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Faint Radial Sun Behind Monument */}
-                    <circle cx="210" cy="140" r="95" fill="rgba(199, 44, 53, 0.15)" />
-
-                    {/* Granite Pedestal Base (8 Metres Total) */}
-                    <path d="M 60 280 L 360 280 L 340 310 L 80 310 Z" fill="url(#graniteGrad)" stroke="#686C74" strokeWidth="1" />
-                    <rect x="95" y="240" width="230" height="40" fill="url(#graniteGrad)" stroke="#52565E" strokeWidth="1" />
-                    <text x="210" y="265" textAnchor="middle" fill="#A8B0BC" fontSize="11" letterSpacing="3" fontFamily="serif">
-                      皇居外苑 · 楠木正成像
-                    </text>
-
-                    {/* Bronze Steed & Commander Silhouette */}
-                    <g fill="url(#bronzeGrad)" stroke="#1A1812" strokeWidth="1.2">
-                      {/* Powerful Horse Rearing/Restraining */}
-                      <path d="M 140 240 C 145 200, 150 170, 170 150 C 185 135, 210 130, 240 145 C 270 160, 285 180, 280 240 L 255 240 C 255 200, 240 185, 220 185 C 200 185, 185 205, 175 240 Z" />
-                      {/* Horse Head & Arching Neck */}
-                      <path d="M 155 165 C 145 140, 130 115, 115 105 C 105 100, 95 105, 100 120 C 105 135, 125 155, 140 168 Z" />
-                      {/* Horse Ears & Mane */}
-                      <path d="M 115 105 L 120 90 L 128 102 Z" />
-                      {/* Mounted Commander (Masashige in O-Yoroi) */}
-                      <path d="M 195 150 C 190 120, 195 95, 205 85 C 215 75, 225 80, 230 95 C 235 110, 230 135, 225 150 Z" />
-                      {/* Horned Kabuto (Star Helmet) */}
-                      <path d="M 205 85 C 200 70, 225 65, 230 85 Z" />
-                      {/* Kuwagata Antler Crest */}
-                      <path d="M 215 75 Q 195 45, 180 50 Q 200 65, 215 72" stroke="#D4AF37" strokeWidth="2.5" fill="none" />
-                      <path d="M 220 75 Q 240 45, 255 50 Q 235 65, 220 72" stroke="#D4AF37" strokeWidth="2.5" fill="none" />
-                      {/* Flowing Reins & Tassels */}
-                      <path d="M 105 115 Q 155 145, 205 125" stroke="#D4AF37" strokeWidth="1.5" fill="none" />
-                    </g>
-                  </svg>
+                <div className="sculpture-visual-stage cinematic-monument-stage">
+                  {/* Atmospheric Sun Halo and Authentic Bronze Statue */}
+                  <div className="archive-sun-backdrop" aria-hidden="true" />
+                  <img
+                    src="/images/kusunoki-monument-statue.png?v=3"
+                    alt="Authentic bronze equestrian monument of Kusunoki Masashige atop granite pedestal"
+                    className="archive-statue-hero-image"
+                    loading="eager"
+                  />
+                  <div className="archive-pedestal-ground-shadow" aria-hidden="true" />
                 </div>
               </WashiPaperPanel>
 
