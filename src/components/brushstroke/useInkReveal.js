@@ -48,3 +48,4 @@ export default function useInkReveal(threshold = 0.15) {
 
   return [domRef, isRevealed];
 }
+
