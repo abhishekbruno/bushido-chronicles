@@ -1,0 +1,1020 @@
+/* ==========================================================================
+   BUSHIDO CHRONICLES — AUTHENTIC JAPANESE MANUSCRIPT SYSTEM
+   Chapter 03 (The Burden of Honor) & Chapter 04 (The Warrior's Promise)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. COLOR & DESIGN SYSTEM TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+  --washi-parchment-light: #FAF5E8;
+  --washi-parchment-base: #F4ECE0;
+  --washi-parchment-aged: #ECE2CE;
+  --washi-parchment-deep: #E4D5BC;
+  --washi-ink-black: #121316;
+  --washi-ink-charcoal: #1E2025;
+  --washi-ink-muted: #565046;
+  --washi-crimson-seal: #C5282F;
+  --washi-crimson-deep: #8E171D;
+  --washi-antique-gold: #B8933A;
+  --washi-gold-soft: rgba(184, 147, 58, 0.25);
+  --washi-crease-shadow: linear-gradient(180deg, rgba(20, 18, 14, 0.16) 0%, rgba(20, 18, 14, 0.03) 45%, transparent 100%);
+  --washi-crease-shadow-bottom: linear-gradient(0deg, rgba(20, 18, 14, 0.14) 0%, transparent 100%);
+}
+
+/* --------------------------------------------------------------------------
+   2. REUSABLE WASHI SURFACE & FIBER TEXTURE
+   -------------------------------------------------------------------------- */
+.washi-paper-bg {
+  background-color: var(--washi-parchment-base);
+  background-image: 
+    radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 75%),
+    radial-gradient(ellipse at 80% 80%, rgba(214, 196, 166, 0.3) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, rgba(140, 110, 60, 0.02) 0px, rgba(140, 110, 60, 0.02) 1px, transparent 1px, transparent 8px);
+  position: relative;
+}
+
+/* Deckle Edge and Fiber Overlay */
+.washi-deckle-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: inset 0 0 25px rgba(180, 155, 120, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   3. STYLE A: FOLDED WASHI MANUSCRIPT (.washi-manuscript-container)
+   For Giri and Ninjō, and long historical folios
+   -------------------------------------------------------------------------- */
+.washi-manuscript-perspective-stage {
+  perspective: 1200px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.washi-manuscript-card {
+  position: relative;
+  background-color: #FAF5E8;
+  border: 1px solid #D8CABA;
+  border-radius: 2px;
+  box-sizing: border-box;
+  box-shadow: 
+    0 4px 18px rgba(25, 22, 16, 0.06),
+    0 14px 34px rgba(25, 22, 16, 0.08);
+  transform-origin: top center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  overflow: visible;
+}
+
+.washi-manuscript-card.accent-crimson {
+  border-top: 3px solid #C5282F;
+}
+
+.washi-manuscript-card.accent-charcoal {
+  border-top: 3px solid #1E2025;
+}
+
+.washi-manuscript-card.accent-gold {
+  border-top: 3px solid #B8933A;
+}
+
+/* Soft paper crease shadow during unfold */
+.washi-crease-shadow-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55px;
+  background: var(--washi-crease-shadow);
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Fine Sumi-e Outline Borders */
+.washi-sumie-borders {
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  z-index: 3;
+  overflow: visible;
+}
+
+.washi-sumie-borders svg {
+  position: absolute;
+  overflow: visible;
+}
+
+.washi-sumie-borders .sumie-edge-top {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+}
+
+.washi-sumie-borders .sumie-edge-bottom {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+}
+
+.washi-sumie-borders .sumie-edge-left {
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+}
+
+.washi-sumie-borders .sumie-edge-right {
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+}
+
+/* Antique Chiseled Corner Brackets */
+.washi-corner-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #8C6E26;
+  opacity: 0.65;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.washi-corner-bracket.top-left {
+  top: 8px;
+  left: 8px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.washi-corner-bracket.top-right {
+  top: 8px;
+  right: 8px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.washi-corner-bracket.bottom-left {
+  bottom: 8px;
+  left: 8px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.washi-corner-bracket.bottom-right {
+  bottom: 8px;
+  right: 8px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* Interior Safe Padding & Typography */
+.washi-card-body {
+  position: relative;
+  z-index: 4;
+  padding: clamp(28px, 3.2vw, 42px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 680px) {
+  .washi-card-body {
+    padding: clamp(20px, 4.5vw, 26px);
+  }
+}
+
+/* Header region */
+.washi-header-zone {
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid #E6D8BF;
+  padding-bottom: 1.15rem;
+}
+
+.washi-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.55rem;
+}
+
+.washi-hanko-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.82rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(197, 40, 47, 0.3);
+  flex-shrink: 0;
+}
+
+.washi-section-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: #6D6252;
+}
+
+.washi-header-gold-seam {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #D4AF37 0%, transparent 100%);
+  margin-left: 0.5rem;
+}
+
+.washi-card-heading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #17181A;
+  margin: 0 0 0.3rem;
+  line-height: 1.2;
+}
+
+.washi-card-subheading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #7A6F5E;
+  letter-spacing: 0.08em;
+}
+
+/* Expressive Ink-Brush Quotation Callout */
+.washi-quote-callout {
+  position: relative;
+  background: #F3EBDD;
+  border: 1px solid #DFD2BC;
+  border-left: 4px solid #C5282F;
+  border-radius: 0 3px 3px 0;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 1.4rem;
+  box-shadow: inset 0 0 15px rgba(220, 205, 180, 0.25);
+}
+
+.washi-quote-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.08rem, 1.3vw, 1.25rem);
+  font-style: italic;
+  line-height: 1.58;
+  color: #24221D;
+  margin: 0;
+}
+
+.washi-quote-glyph {
+  color: #C5282F;
+  font-size: 1.4rem;
+  line-height: 0;
+  font-style: normal;
+  margin: 0 0.2rem;
+}
+
+/* Body Text Flow */
+.washi-body-paragraphs {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(17px, 1.2vw, 19px);
+  line-height: 1.76;
+  color: #2E2B26;
+  letter-spacing: 0.01em;
+  margin: 0;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .washi-body-paragraphs {
+    font-size: clamp(15px, 3.8vw, 17px);
+    line-height: 1.7;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. STYLE B: BLACK INK BRUSHSTROKE CONTAINER (.sumie-brushstroke-panel)
+   For short philosophical statements and Chapter 04 final quotation
+   -------------------------------------------------------------------------- */
+.sumie-brushstroke-container {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1.5rem 0;
+  isolation: isolate;
+}
+
+.sumie-brush-card {
+  position: relative;
+  background: #111215;
+  color: #FAF5EB;
+  border-radius: 3px;
+  overflow: visible;
+  box-shadow: 0 10px 30px rgba(10, 11, 14, 0.35);
+  box-sizing: border-box;
+}
+
+/* SVG Organic Ink Mask Layer */
+.sumie-brush-svg-layer {
+  position: absolute;
+  inset: -6px -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 12px);
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 6px 18px rgba(10, 11, 13, 0.4));
+}
+
+.sumie-brush-inner-content {
+  position: relative;
+  z-index: 3;
+  padding: clamp(28px, 3.5vw, 44px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (max-width: 680px) {
+  .sumie-brush-inner-content {
+    padding: clamp(20px, 4.5vw, 28px);
+  }
+}
+
+.sumie-brush-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sumie-brush-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  color: #D4AF37;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.sumie-brush-kicker-dot {
+  width: 6px;
+  height: 6px;
+  background: #C5282F;
+  border-radius: 50%;
+}
+
+.sumie-brush-seal-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.82rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(197, 40, 47, 0.5);
+  transform: rotate(-3deg);
+}
+
+.sumie-brush-quote-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  line-height: 1.62;
+  color: #FAF5EB;
+  margin: 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.sumie-brush-quote-text em {
+  color: #F0B359;
+  font-style: normal;
+}
+
+/* --------------------------------------------------------------------------
+   5. STYLE C: TRADITIONAL SCROLL DOCUMENT (.traditional-scroll-document)
+   For Chapter 03 Resolution of the Trial
+   -------------------------------------------------------------------------- */
+.traditional-scroll-container {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.scroll-parchment-sheet {
+  position: relative;
+  background: #FBF6EB;
+  border: 1px solid #D6C7AE;
+  box-shadow: 
+    0 12px 36px rgba(25, 22, 16, 0.08),
+    inset 0 0 45px rgba(214, 196, 166, 0.28);
+  padding: clamp(32px, 4vw, 54px);
+  border-radius: 2px;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+@media (max-width: 680px) {
+  .scroll-parchment-sheet {
+    padding: clamp(22px, 4.5vw, 30px);
+  }
+}
+
+/* Wooden Scroll Dowel Endcaps on Left and Right */
+.scroll-dowel-endcap {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 94%;
+  background: linear-gradient(90deg, #3A2B1C 0%, #685038 50%, #2E2216 100%);
+  border: 1px solid #20180F;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.scroll-dowel-endcap.left {
+  left: -9px;
+}
+
+.scroll-dowel-endcap.right {
+  right: -9px;
+}
+
+.scroll-dowel-knob {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 16px;
+  background: #D4AF37;
+  border: 1px solid #94781E;
+  border-radius: 2px;
+}
+
+.scroll-dowel-knob.top {
+  top: -12px;
+}
+
+.scroll-dowel-knob.bottom {
+  bottom: -12px;
+}
+
+/* Upper Ink Border and Chapter Stamp */
+.scroll-top-ornament-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #DECDB2;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+  gap: 1rem;
+}
+
+.scroll-heading-lockup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.scroll-master-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(28px, 2.6vw, 38px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #17181A;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.scroll-master-sub {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #8C6E26;
+  letter-spacing: 0.08em;
+}
+
+/* Resolution Narrative */
+.scroll-resolution-narrative {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(18px, 1.25vw, 20px);
+  line-height: 1.78;
+  color: #272521;
+  margin-bottom: 1.85rem;
+  letter-spacing: 0.01em;
+}
+
+/* Moral Lesson Verdict Banner inside Scroll */
+.scroll-verdict-callout {
+  position: relative;
+  background: #18191D;
+  color: #FAF5EB;
+  border-radius: 2px;
+  padding: 1.45rem 2rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 8px 24px rgba(18, 19, 22, 0.22);
+}
+
+.scroll-verdict-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.65rem;
+}
+
+.scroll-verdict-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.74rem;
+  border-radius: 2px;
+}
+
+.scroll-verdict-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: #D4AF37;
+}
+
+.scroll-verdict-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.2rem, 1.45vw, 1.45rem);
+  line-height: 1.6;
+  color: #FAF4E8;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   6. STYLE D: ARCHIVAL SEAL DOCUMENT (.archival-oath-card)
+   For Chapter 04 The Six Scrolls of Honor (Seishi Jomoku 誓紙条目)
+   -------------------------------------------------------------------------- */
+.archival-oaths-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.65rem;
+  margin-bottom: 2.75rem;
+}
+
+@media (max-width: 1024px) {
+  .archival-oaths-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.4rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .archival-oaths-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* Individual Oath Manuscript */
+.archival-oath-card {
+  position: relative;
+  background: #FAF5EB;
+  border: 1px solid #D8CABA;
+  border-radius: 2px;
+  padding: clamp(26px, 2.5vw, 36px);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 20px rgba(28, 24, 18, 0.05);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.28s ease, 
+              border-color 0.28s ease, 
+              background-color 0.28s ease;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.archival-oath-card:hover {
+  transform: translateY(-4px);
+  background: #FFFDF9;
+  border-color: #BBA588;
+  box-shadow: 0 12px 30px rgba(28, 24, 18, 0.1);
+}
+
+.archival-oath-card.is-sealed {
+  border-color: #C5282F;
+  background: #FFFDFC;
+  box-shadow: 
+    0 10px 28px rgba(197, 40, 47, 0.08),
+    inset 0 0 18px rgba(197, 40, 47, 0.03);
+}
+
+/* Oath Top Article Tag Row */
+.oath-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.15rem;
+  border-bottom: 1px solid #ECE0CA;
+  padding-bottom: 0.95rem;
+}
+
+.oath-article-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.oath-article-num-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.oath-kanji-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #C5282F;
+}
+
+.oath-kanji-virtue {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #17181A;
+}
+
+.oath-english-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #18191C;
+  line-height: 1.25;
+}
+
+/* Interactive Hanko Seal Button with Tactile Pressed Physics */
+.oath-hanko-seal-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.8px solid #C8B8A2;
+  background: #F7EFE1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.oath-hanko-seal-btn:hover {
+  border-color: #C5282F;
+  transform: scale(1.08);
+}
+
+.oath-hanko-seal-btn:active {
+  transform: scale(0.92) translateY(2px);
+}
+
+.oath-hanko-glyph {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #C5282F;
+  transition: color 0.2s ease;
+}
+
+/* Sealed State for Hanko Seal */
+.archival-oath-card.is-sealed .oath-hanko-seal-btn,
+.oath-hanko-seal-btn.is-active-stamp {
+  background: #C5282F;
+  border-color: #A01820;
+  box-shadow: 
+    0 0 16px rgba(197, 40, 47, 0.45),
+    inset 0 0 6px rgba(0, 0, 0, 0.2);
+  transform: rotate(-4deg);
+}
+
+.archival-oath-card.is-sealed .oath-hanko-glyph,
+.oath-hanko-seal-btn.is-active-stamp .oath-hanko-glyph {
+  color: #FFFFFF;
+}
+
+/* Cinnabar Verified Ring Dot */
+.oath-seal-ring-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 7px;
+  height: 7px;
+  background: #D4AF37;
+  border: 1px solid #FAF5E8;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Sub-headline */
+.oath-subtitle {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.82rem;
+  color: #8C2228;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.1rem;
+}
+
+/* Philosophical Verse Quote */
+.oath-verse-quote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.12rem, 1.25vw, 1.25rem);
+  font-style: italic;
+  line-height: 1.58;
+  color: #262420;
+  margin-bottom: 1.15rem;
+  border-left: 2px solid #D8CABA;
+  padding-left: 0.85rem;
+}
+
+/* Reflection Paragraph (Literary Serif) */
+.oath-reflection-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(16px, 1.1vw, 18px);
+  line-height: 1.72;
+  color: #423C34;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+/* Bottom Card Status Bar */
+.oath-bottom-status-bar {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid #ECE0CA;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.oath-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: #C5282F;
+  font-weight: 700;
+}
+
+.oath-status-indicator.unsealed {
+  color: #807362;
+}
+
+/* --------------------------------------------------------------------------
+   7. ARCHIVAL CASE SELECTORS (Chapter 03 Tanzaku Slips)
+   -------------------------------------------------------------------------- */
+.tanzaku-selectors-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.35rem;
+  margin-bottom: 2.5rem;
+  perspective: 1200px;
+}
+
+@media (max-width: 768px) {
+  .tanzaku-selectors-row {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+  }
+}
+
+.tanzaku-case-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.45rem 1.35rem;
+  background: #FAF5EB;
+  border: 1px solid #D8CABA;
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.28s ease,
+              border-color 0.28s ease,
+              box-shadow 0.28s ease;
+  overflow: visible;
+  box-shadow: 0 4px 14px rgba(35, 30, 24, 0.05);
+  box-sizing: border-box;
+}
+
+.tanzaku-case-tab:hover {
+  background: #FFFDF8;
+  border-color: #BBA78A;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(35, 30, 24, 0.09);
+}
+
+.tanzaku-case-tab.is-active {
+  background: linear-gradient(135deg, #1C1D21 0%, #101114 100%);
+  border-color: #17181C;
+  color: #FAF4E8;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(16, 17, 20, 0.28);
+}
+
+.tanzaku-active-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: #C5282F;
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition: all 0.25s ease;
+}
+
+.tanzaku-case-tab.is-active .tanzaku-active-bar {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.tanzaku-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.6rem;
+}
+
+.tanzaku-kanji-index {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #8A7F70;
+}
+
+.tanzaku-case-tab.is-active .tanzaku-kanji-index {
+  color: #C5282F;
+}
+
+.tanzaku-case-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #C5282F;
+}
+
+.tanzaku-active-seal-badge {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.7rem;
+  font-weight: 900;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(197, 40, 47, 0.4);
+}
+
+.tanzaku-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.05rem, 1.25vw, 1.22rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #1A1B1E;
+  margin: 0 0 0.35rem;
+  line-height: 1.3;
+}
+
+.tanzaku-case-tab.is-active .tanzaku-title {
+  color: #FAF4E8;
+}
+
+.tanzaku-sub-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.78rem;
+  color: #6D6456;
+}
+
+.tanzaku-case-tab.is-active .tanzaku-sub-jp {
+  color: #B2ACA2;
+}
+
+/* --------------------------------------------------------------------------
+   8. CHAPTER 03 FLOATING ARCHIVAL INTRODUCTION EXCERPT
+   -------------------------------------------------------------------------- */
+.floating-intro-excerpt {
+  position: relative;
+  background: #FDF9F2;
+  border-left: 3px solid #C5282F;
+  border-top: 1px solid #ECE0CA;
+  border-right: 1px solid #ECE0CA;
+  border-bottom: 1px solid #ECE0CA;
+  padding: clamp(24px, 3vw, 36px);
+  margin-top: 1.5rem;
+  margin-bottom: 2.25rem;
+  box-shadow: 
+    0 8px 24px rgba(28, 24, 18, 0.04),
+    inset 0 0 30px rgba(214, 196, 166, 0.2);
+  border-radius: 2px;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.floating-intro-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.floating-intro-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.74rem;
+  border-radius: 2px;
+}
+
+.floating-intro-kicker {
+  font-family: 'Cinzel', serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: #726554;
+}
+
+.floating-intro-body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(17px, 1.25vw, 19px);
+  line-height: 1.76;
+  color: #2D2A24;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.floating-intro-body em {
+  color: #8C2228;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   9. PREFERS-REDUCED-MOTION OVERRIDES
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .washi-manuscript-card,
+  .scroll-parchment-sheet,
+  .archival-oath-card,
+  .tanzaku-case-tab,
+  .sumie-brush-card {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .washi-crease-shadow-layer {
+    display: none !important;
+  }
+}
+
