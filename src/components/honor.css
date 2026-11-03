@@ -470,7 +470,27 @@
   transition: transform 0.3s ease;
 }
 
-.honor-samurai-figure-mount:hover .honor-samurai-sketch-img {
+.honor-samurai-cloth-canvas {
+  height: 94%;
+  width: auto;
+  aspect-ratio: 819 / 1024;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 32px rgba(25, 22, 18, 0.28));
+  transform: translateZ(25px);
+  transition: transform 0.3s ease, opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.honor-samurai-cloth-canvas.is-loading {
+  opacity: 0;
+}
+
+.honor-samurai-cloth-canvas.is-ready {
+  opacity: 1;
+}
+
+.honor-samurai-figure-mount:hover .honor-samurai-sketch-img,
+.honor-samurai-figure-mount:hover .honor-samurai-cloth-canvas {
   transform: translateZ(40px) scale(1.015);
 }
 
@@ -529,18 +549,19 @@
 
 .honor-vertical-calligraphy {
   position: absolute;
-  top: 2.5rem;
-  left: 2rem;
+  top: 3.8rem;
+  left: 1.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
   font-family: 'Noto Serif JP', serif;
-  font-size: 1.85rem;
+  font-size: 1.4rem;
   font-weight: 900;
-  color: rgba(22, 23, 25, 0.5);
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  letter-spacing: 0.2em;
+  color: rgba(22, 23, 25, 0.42);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 9;
+  letter-spacing: 0.15em;
   transform: translateZ(35px);
 }
 
