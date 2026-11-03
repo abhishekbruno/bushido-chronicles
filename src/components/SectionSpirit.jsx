@@ -122,15 +122,6 @@ export default function SectionSpirit() {
                       interactive={true}
                       onToggleSeason={handleToggleSeason}
                     />
-                    <button
-                      type="button"
-                      className="spirit-season-toggle-pill"
-                      onClick={handleToggleSeason}
-                      aria-label="Toggle Tree Season"
-                      title="Click to toggle Spring Sakura / Autumn Momiji"
-                    >
-                      {seasonMode === 'sakura' ? '🌸 SPRING SAKURA' : '🍁 AUTUMN MOMIJI'}
-                    </button>
                   </div>
                 ) : (
                   <SpiritLandscapeScene storyKey={current.id} storyIndex={activeStory + 1} />

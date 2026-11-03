@@ -39,6 +39,17 @@
   z-index: 10;
 }
 
+.blade-manuscript-seam-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
 .blade-museum-container {
   max-width: 1560px;
   margin: 0 auto;
@@ -1146,3 +1157,4 @@
     transition: none !important;
   }
 }
+
