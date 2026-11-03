@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Maximize2, Minimize2 } from 'lucide-react';
+import ToriiWindChime from './ToriiWindChime';
 
 /**
  * LegacyInkPoster (Where Silence Holds Strength — Living Japanese Zen Scene)
@@ -381,6 +382,9 @@ export default function LegacyInkPoster() {
                 {/* Delicate Pillar Highlights */}
                 <line x1="97" y1="72" x2="99" y2="270" stroke="#2B2F2C" strokeWidth="1.5" opacity="0.6" />
                 <line x1="225" y1="72" x2="223" y2="270" stroke="#2B2F2C" strokeWidth="1.5" opacity="0.6" />
+
+                {/* 7E. Traditional Japanese Wind Chime (風鈴 — Fūrin) */}
+                <ToriiWindChime anchorX={276} anchorY={140} />
               </g>
             </g>
 

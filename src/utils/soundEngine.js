@@ -355,6 +355,44 @@ class SoundEngine {
     });
   }
 
+  // Authentic Japanese Bronze Wind Chime (風鈴 — Fūrin)
+  // High crystalline resonance with delicate acoustic partials and exponential ring-down
+  playFurinChime(intensity = 1.0) {
+    if (this.isMuted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const t = this.ctx.currentTime;
+    const clampedInt = Math.max(0.15, Math.min(1.0, intensity));
+    // High-pitched crystal/bronze chime harmonics (approx 1920 Hz base with non-harmonic overtones)
+    const baseFreq = 1920 + (Math.random() - 0.5) * 80;
+    const partials = [
+      { freq: baseFreq, gain: 0.16 * clampedInt, decay: 1.8 },
+      { freq: baseFreq * 1.58, gain: 0.09 * clampedInt, decay: 1.4 },
+      { freq: baseFreq * 2.24, gain: 0.045 * clampedInt, decay: 1.1 },
+      { freq: baseFreq * 3.15, gain: 0.02 * clampedInt, decay: 0.75 },
+    ];
+
+    partials.forEach(({ freq, gain: peakGain, decay }) => {
+      const osc = this.ctx.createOscillator();
+      const gainNode = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+      osc.detune.setValueAtTime((Math.random() - 0.5) * 10, t);
+
+      gainNode.gain.setValueAtTime(0.0001, t);
+      gainNode.gain.linearRampToValueAtTime(peakGain, t + 0.006);
+      gainNode.gain.exponentialRampToValueAtTime(0.00005, t + decay);
+
+      osc.connect(gainNode);
+      gainNode.connect(this.ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + decay + 0.02);
+    });
+  }
+
   stopAmbience() {
     if (this.ambientGain && this.ctx) {
       const t = this.ctx.currentTime;

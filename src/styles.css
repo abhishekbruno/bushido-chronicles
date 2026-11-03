@@ -5930,6 +5930,22 @@ svg {
   will-change: transform;
 }
 
+/* --- TRADITIONAL JAPANESE TORII WIND CHIME (風鈴 — FŪRIN) --- */
+.torii-wind-chime {
+  pointer-events: auto;
+  cursor: pointer;
+  outline: none;
+  transition: filter 0.25s ease;
+}
+
+.torii-wind-chime:hover {
+  filter: drop-shadow(0 2px 6px rgba(196, 166, 104, 0.45));
+}
+
+.torii-wind-chime:focus-visible {
+  filter: drop-shadow(0 0 6px rgba(196, 166, 104, 0.8));
+}
+
 /* --- 1. Sun Animations (65s celestial rotation, 7.5s breathing scale, radiant glow diffusion) --- */
 .zen-sun-breathe-container {
   transform-origin: 405px 355px;
