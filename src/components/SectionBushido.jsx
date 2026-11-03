@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { sound } from '../utils/soundEngine';
 import AnimatedChapterHeading from './AnimatedChapterHeading';
+import { InkQuotePanel, CrimsonBrushAccent } from './brushstroke';
 
 export default function SectionBushido() {
   const [activeVirtue, setActiveVirtue] = useState(0);
@@ -205,7 +206,9 @@ export default function SectionBushido() {
                   <div className="origami-leaf-wing">
                     <div className="panel-expanded-content origami-interior-content">
                       <div className="expanded-top-meta">
-                        <span className="expanded-virtue-tag">VIRTUE {v.number} OF 07 · 徳目</span>
+                        <CrimsonBrushAccent variant="badge" className="expanded-virtue-tag">
+                          VIRTUE {v.number} OF 07 · 徳目
+                        </CrimsonBrushAccent>
                         <span className="expanded-reading">{v.reading} · {v.kanji}</span>
                       </div>
 
@@ -219,13 +222,13 @@ export default function SectionBushido() {
                           <p className="expanded-deepdive">{v.deepDive}</p>
                         </div>
 
-                        <div className="expanded-quote-box">
-                          <div className="quote-badge">MEDITATION · 瞑想</div>
-                          <p className="expanded-quote-text">“{v.quote}”</p>
-                          <div className="quote-hanko">
-                            <span>{v.kanji.charAt(0)}</span>
-                          </div>
-                        </div>
+                        {/* TYPE A: Black Ink Brushstroke Quote Panel */}
+                        <InkQuotePanel
+                          quote={v.quote}
+                          source={`MEDITATION · ${v.name}`}
+                          sealText={v.kanji.charAt(0)}
+                          className="expanded-quote-brush"
+                        />
                       </div>
 
                       {/* Virtue Navigation Dots */}

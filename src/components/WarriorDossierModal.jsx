@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, BookOpen, Shield, Sword, Award, Calendar, Compass } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
+import { WashiBrushPanel, CrimsonBrushAccent } from './brushstroke';
 
 /**
  * WarriorDossierModal
@@ -49,17 +50,21 @@ export default function WarriorDossierModal({ warrior, onClose }) {
             <div className="modal-title-group">
               <span className="modal-subtitle">{warrior.title}</span>
               <h2 className="modal-warrior-name">{warrior.name}</h2>
-              <div className="modal-dates">{warrior.era}</div>
+              <div className="modal-dates">
+                <CrimsonBrushAccent variant="badge">
+                  {warrior.era}
+                </CrimsonBrushAccent>
+              </div>
             </div>
             <div className="modal-hanko" title="Authentic Imperial Seal">
               <span>義</span>
             </div>
           </div>
 
-          {/* Biographical Overview Card */}
-          <div className="modal-bio-card">
+          {/* Biographical Overview Card (TYPE B: Washi Brush-Frame Panel) */}
+          <WashiBrushPanel className="modal-bio-card">
             <p>{warrior.bio}</p>
-          </div>
+          </WashiBrushPanel>
 
           {/* Archival Tabs Navigation */}
           <div className="modal-tabs">

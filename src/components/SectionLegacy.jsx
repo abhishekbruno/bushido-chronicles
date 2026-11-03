@@ -5,6 +5,7 @@ import LegacyInkPoster from './LegacyInkPoster';
 import AnimatedChapterHeading from './AnimatedChapterHeading';
 import WashiPaperPanel from './WashiPaperPanel';
 import KokoroMonumentArchive from './KokoroMonumentArchive';
+import { InkQuotePanel, WashiBrushPanel, CrimsonBrushAccent } from './brushstroke';
 
 export default function SectionLegacy() {
   const [activeEra, setActiveEra] = useState('sengoku');
@@ -73,19 +74,14 @@ export default function SectionLegacy() {
               className="legacy-title"
             />
 
-            {/* VARIANT A: Soft Parchment Quote Panel */}
-            <WashiPaperPanel variant="soft" crimsonAccent interactive className="legacy-quote-card">
-              <span className="quote-mark">“</span>
-              <p className="quote-body">
-                There is nothing outside of yourself that can ever enable you to become better,
-                stronger, richer, quicker, or smarter. Everything is within. Everything exists.
-                Seek nothing outside of yourself.
-              </p>
-              <footer className="quote-footer">
-                <span className="quote-author">MIYAMOTO MUSASHI</span>
-                <span className="quote-book">THE BOOK OF FIVE RINGS (五輪書), 1645</span>
-              </footer>
-            </WashiPaperPanel>
+            {/* TYPE A: Black Ink Brushstroke Quote Panel */}
+            <InkQuotePanel
+              quote="There is nothing outside of yourself that can ever enable you to become better, stronger, richer, quicker, or smarter. Everything is within. Everything exists. Seek nothing outside of yourself."
+              author="MIYAMOTO MUSASHI"
+              source="THE BOOK OF FIVE RINGS (五輪書), 1645"
+              sealText="道"
+              className="legacy-quote-card"
+            />
 
             {/* Archival Mode Selector: Chronicles of Ascent vs Nippon Kokoro Archives */}
             <div className="archive-mode-toggle-bar">
@@ -129,11 +125,8 @@ export default function SectionLegacy() {
                   ))}
                 </div>
 
-                {/* Active Era Details Panel (VARIANT B: Ancient Manuscript) */}
-                <WashiPaperPanel
-                  variant="manuscript"
-                  cornerMarks
-                  hasFold
+                {/* TYPE B: Washi Brush-Frame Panel for Feudal Epoch History */}
+                <WashiBrushPanel
                   interactive
                   className="active-era-panel"
                 >
@@ -142,14 +135,16 @@ export default function SectionLegacy() {
                     return (
                       <div className="era-detail-content">
                         <div className="era-detail-header">
-                          <span className="era-badge">{curr.dates}</span>
+                          <CrimsonBrushAccent variant="badge" className="era-badge">
+                            {curr.dates}
+                          </CrimsonBrushAccent>
                           <h3 className="era-detail-title">{curr.title}</h3>
                         </div>
                         <p className="era-detail-desc">{curr.desc}</p>
                       </div>
                     );
                   })()}
-                </WashiPaperPanel>
+                </WashiBrushPanel>
               </div>
             ) : (
               /* VIEW 2: Featured Mini Summary leading to Monument Archive */

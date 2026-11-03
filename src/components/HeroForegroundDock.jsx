@@ -1,11 +1,12 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
+import { WashiBrushPanel } from './brushstroke';
 
 export default function HeroForegroundDock({ onEnterLegend, onExploreWarriors }) {
   return (
     <div className="hero-foreground-dock-container" aria-label="Hero navigation and calls to action">
-      <div className="hero-dock-card">
+      <WashiBrushPanel className="hero-dock-card">
         <p className="hero-philosophical-sub">
           In the stillness of the blade lies the courage of an immortal soul.
           Preserving the sacred code of Bushido, forged in silence and honor.
@@ -38,7 +39,7 @@ export default function HeroForegroundDock({ onEnterLegend, onExploreWarriors })
             <span className="btn-kanji">武将</span>
           </button>
         </div>
-      </div>
+      </WashiBrushPanel>
 
       {/* Minimalist Continuous Scroll Indicator */}
       <div className="hero-scroll-prompt" aria-hidden="true">

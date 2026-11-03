@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { ExternalLink, Sparkles, Shield, Sword } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
+import { CrimsonBrushAccent } from './brushstroke';
 
 /**
  * WarriorCard
@@ -571,7 +572,9 @@ export default function WarriorCard({ warrior, index, onSelect }) {
         <div className="warrior-info-box">
           <div className="warrior-era-row">
             <span className="warrior-index">NO. 0{index + 1}</span>
-            <span className="warrior-era-tag">{warrior.era}</span>
+            <CrimsonBrushAccent variant="badge" className="warrior-era-tag">
+              {warrior.era}
+            </CrimsonBrushAccent>
           </div>
 
           <h3 className="warrior-name">{warrior.name}</h3>

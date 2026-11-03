@@ -1,0 +1,529 @@
+/* ==========================================================================
+   BUSHIDO CHRONICLES — JAPANESE SUMI-E BRUSHSTROKE UI SYSTEM
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. GLOBAL SYSTEM VARIABLES & DEFAULTS
+   -------------------------------------------------------------------------- */
+:root {
+  --ink-charcoal: #121316;
+  --ink-charcoal-deep: #0A0B0D;
+  --ink-charcoal-soft: #23252A;
+  --washi-parchment-base: #FAF5E8;
+  --washi-parchment-warm: #F4ECDA;
+  --washi-parchment-aged: #ECE0C8;
+  --washi-text-dark: #191816;
+  --washi-text-muted: #565046;
+  --brush-crimson: #C72C35;
+  --brush-crimson-deep: #96161D;
+  --brush-crimson-glow: rgba(199, 44, 53, 0.18);
+  --brush-gold: #C5A059;
+}
+
+/* --------------------------------------------------------------------------
+   2. TYPE A: BLACK INK BRUSHSTROKE BANNER (.ink-brush-banner)
+   -------------------------------------------------------------------------- */
+.ink-brush-banner {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 1.5rem 0;
+  box-sizing: border-box;
+  color: #F8F4E8;
+  overflow: visible;
+  isolation: isolate;
+}
+
+/* Safe Reading Padding (Strictly Protected from Irregular Edges) */
+.ink-brush-banner-content {
+  position: relative;
+  z-index: 3;
+  padding: 2.25rem 3.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 992px) {
+  .ink-brush-banner-content {
+    padding: 1.75rem 2.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .ink-brush-banner-content {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+/* SVG Ink Brush Artwork Layers */
+.ink-brush-svg-layer {
+  position: absolute;
+  inset: -6px -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 12px);
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+  filter: drop-shadow(0 6px 18px rgba(10, 11, 13, 0.28));
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* When in view / revealed */
+.ink-revealed .ink-brush-svg-layer {
+  clip-path: inset(0 0 0 0);
+}
+
+.ink-revealed .ink-brush-banner-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+/* Subtle Ink Bleed and Washi Absorption */
+.ink-absorption-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 4px;
+  background-image: 
+    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.04) 0%, transparent 70%),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.04) 0px, rgba(0, 0, 0, 0.04) 1px, transparent 1px, transparent 10px);
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+/* Banner Title & Typography */
+.ink-brush-banner .banner-jp-kicker {
+  display: block;
+  font-family: var(--font-cinzel, 'Cinzel', serif);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--brush-crimson);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.ink-brush-banner .banner-primary-heading {
+  font-family: var(--font-cinzel, 'Cinzel', serif);
+  font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  color: #FAF5EA;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.ink-brush-banner .banner-subtext {
+  font-family: var(--font-cormorant, 'Cormorant Garamond', serif);
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: #D8D2C2;
+  margin-top: 0.65rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Crimson Hanko Seal in Banner */
+.ink-brush-seal {
+  position: absolute;
+  top: 18px;
+  right: 28px;
+  width: 32px;
+  height: 32px;
+  background: var(--brush-crimson);
+  border: 1.5px solid #E63946;
+  border-radius: 3px;
+  color: #FFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px var(--brush-crimson-glow);
+  transform: rotate(-3deg);
+  z-index: 4;
+}
+
+/* --------------------------------------------------------------------------
+   3. TYPE B: WASHI BRUSH-FRAME PANEL (.washi-brush-panel)
+   -------------------------------------------------------------------------- */
+.washi-brush-panel {
+  position: relative;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(168deg, #FDF9EE 0%, #F7F0DF 48%, #EFE4CD 100%);
+  border-radius: 4px;
+  box-shadow: 
+    0 1px 3px rgba(30, 25, 18, 0.05),
+    0 12px 32px -6px rgba(35, 28, 20, 0.09),
+    inset 0 0 45px rgba(166, 139, 86, 0.07);
+  color: var(--washi-text-dark);
+  isolation: isolate;
+  overflow: visible;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.washi-brush-panel.washi-interactive:hover {
+  transform: translateY(-3.5px);
+  box-shadow: 
+    0 4px 14px rgba(30, 25, 18, 0.08),
+    0 22px 46px -6px rgba(35, 28, 20, 0.14),
+    inset 0 0 50px rgba(166, 139, 86, 0.1);
+}
+
+/* Dark Ink Variant (for Nocturnal & Blade Museum Exhibits) */
+.washi-brush-panel.washi-dark {
+  background: linear-gradient(170deg, #17181D 0%, #111215 55%, #0B0C0E 100%);
+  color: #F8F3E6;
+  box-shadow: 
+    0 4px 18px rgba(0, 0, 0, 0.45),
+    0 24px 60px -8px rgba(0, 0, 0, 0.65),
+    inset 0 0 40px rgba(199, 44, 53, 0.06);
+}
+
+/* Washi Fiber & Tea-stained Paper Texture */
+.washi-fiber-texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0.35;
+  background-image: 
+    repeating-linear-gradient(28deg, rgba(166, 139, 86, 0.04) 0px, rgba(166, 139, 86, 0.04) 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(118deg, rgba(20, 20, 20, 0.02) 0px, rgba(20, 20, 20, 0.02) 1px, transparent 1px, transparent 18px);
+}
+
+/* Sumi-e Hand-Painted Perimeter Frame Layers */
+.brush-frame-top,
+.brush-frame-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 24px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.brush-frame-top {
+  top: -8px;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brush-frame-bottom {
+  bottom: -8px;
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+.brush-frame-left,
+.brush-frame-right {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 14px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+  opacity: 0.85;
+}
+
+.brush-frame-left {
+  left: -5px;
+}
+
+.brush-frame-right {
+  right: -5px;
+}
+
+/* Sumi-e Corner Ink Marks */
+.brush-frame-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.corner-sumi {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  fill: var(--ink-charcoal);
+  opacity: 0.75;
+  transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.washi-dark .corner-sumi {
+  fill: var(--brush-crimson);
+  opacity: 0.8;
+}
+
+.washi-interactive:hover .corner-sumi {
+  fill: var(--brush-crimson);
+  transform: scale(1.08);
+}
+
+.corner-sumi.tl { top: 4px; left: 4px; }
+.corner-sumi.tr { top: 4px; right: 4px; }
+.corner-sumi.bl { bottom: 4px; left: 4px; }
+.corner-sumi.br { bottom: 4px; right: 4px; }
+
+/* Scroll Paint Trigger State */
+.ink-revealed .brush-frame-top {
+  clip-path: inset(0 0 0 0);
+}
+
+.ink-revealed .brush-frame-bottom {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Protected Text Content Area */
+.washi-brush-panel-content {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 2.25rem 2.6rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.45s ease 0.35s, transform 0.45s ease 0.35s;
+}
+
+.ink-revealed .washi-brush-panel-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 992px) {
+  .washi-brush-panel-content {
+    padding: 1.75rem 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .washi-brush-panel-content {
+    padding: 1.25rem 1.4rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. TYPE C: CRIMSON BRUSH ACCENT (.crimson-brush-accent)
+   -------------------------------------------------------------------------- */
+.crimson-brush-accent {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: #FFF;
+  font-family: var(--font-cinzel, 'Cinzel', serif);
+  font-weight: 600;
+  isolation: isolate;
+  vertical-align: middle;
+}
+
+.crimson-brush-bg {
+  position: absolute;
+  inset: -4px -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 8px);
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+  filter: drop-shadow(0 2px 6px var(--brush-crimson-glow));
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ink-revealed .crimson-brush-bg,
+.crimson-brush-accent.always-painted .crimson-brush-bg {
+  clip-path: inset(0 0 0 0);
+}
+
+.crimson-brush-content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.85rem;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+/* Accent Badge Variant (for Dates & Chapter Tags) */
+.crimson-brush-accent.accent-badge .crimson-brush-content {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 0.22rem 0.7rem;
+}
+
+/* Accent Pill Variant (for Tabs and Active Indicators) */
+.crimson-brush-accent.accent-pill .crimson-brush-content {
+  font-size: 0.82rem;
+  padding: 0.4rem 1.1rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. TYPE A / SPECIALIZED: INK QUOTE PANEL (.ink-quote-panel)
+   -------------------------------------------------------------------------- */
+.ink-quote-panel {
+  position: relative;
+  margin: 2rem 0;
+  box-sizing: border-box;
+}
+
+.ink-quote-content {
+  position: relative;
+  z-index: 3;
+  padding: 2.25rem 3rem 2.25rem 3.5rem;
+  box-sizing: border-box;
+}
+
+.ink-quote-mark {
+  font-family: var(--font-cinzel, 'Cinzel', serif);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  line-height: 1;
+  color: var(--brush-crimson);
+  opacity: 0.9;
+  display: block;
+  margin-bottom: -0.8rem;
+  user-select: none;
+}
+
+.ink-quote-body {
+  font-family: var(--font-cormorant, 'Cormorant Garamond', serif);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-style: italic;
+  line-height: 1.7;
+  color: #FAF4E6;
+  margin: 0 0 1.25rem 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.ink-quote-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-top: 0.85rem;
+}
+
+.ink-quote-author {
+  font-family: var(--font-cinzel, 'Cinzel', serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #FFF;
+}
+
+.ink-quote-book {
+  font-family: var(--font-cormorant, 'Cormorant Garamond', serif);
+  font-size: 0.85rem;
+  color: #D2C9B6;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   6. INK BRUSH HEADING (.ink-brush-heading)
+   -------------------------------------------------------------------------- */
+.ink-brush-heading-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.ink-brush-heading-bg {
+  position: absolute;
+  left: -15px;
+  right: -25px;
+  top: 15%;
+  bottom: 5%;
+  pointer-events: none;
+  z-index: 1;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ink-revealed .ink-brush-heading-bg {
+  clip-path: inset(0 0 0 0);
+}
+
+.ink-brush-heading-text {
+  position: relative;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   8. SPECIFIC SECTION INTEGRATION ENHANCEMENTS
+   -------------------------------------------------------------------------- */
+.museum-gallery-narrative.washi-brush-panel {
+  background: linear-gradient(170deg, #1C1D22 0%, #131418 60%, #0C0D0F 100%) !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-top: 1.5rem;
+}
+
+.museum-gallery-narrative.washi-brush-panel .washi-brush-panel-content {
+  padding: 28px 32px;
+}
+
+@media (max-width: 992px) {
+  .museum-gallery-narrative.washi-brush-panel .washi-brush-panel-content {
+    padding: 20px 22px;
+  }
+}
+
+.modal-bio-card.washi-brush-panel {
+  margin: 1.25rem 0;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.hero-dock-card.washi-brush-panel {
+  background: linear-gradient(172deg, #FDF9EE 0%, #F8F2E2 52%, #F4EBDA 100%) !important;
+}
+
+.active-era-panel.washi-brush-panel {
+  margin-top: 1.5rem;
+}
+
+.bc-signature-brush-banner {
+  margin-top: 2rem;
+  max-width: 580px;
+}
+
+/* --------------------------------------------------------------------------
+   7. ACCESSIBILITY & PREFERS-REDUCED-MOTION OVERRIDES
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ink-brush-svg-layer,
+  .brush-frame-top,
+  .brush-frame-bottom,
+  .crimson-brush-bg,
+  .ink-brush-heading-bg {
+    clip-path: inset(0 0 0 0) !important;
+    transition: none !important;
+  }
+
+  .ink-brush-banner-content,
+  .washi-brush-panel-content {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

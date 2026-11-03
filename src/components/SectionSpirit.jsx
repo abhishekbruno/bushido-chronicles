@@ -4,6 +4,7 @@ import { sound } from '../utils/soundEngine';
 import SakuraTree from './SakuraTree';
 import SpiritLandscapeScene from './SpiritLandscapeScene';
 import WashiPaperPanel from './WashiPaperPanel';
+import { WashiBrushPanel, CrimsonBrushAccent } from './brushstroke';
 
 export default function SectionSpirit() {
   const [activeStory, setActiveStory] = useState(0);
@@ -180,10 +181,12 @@ export default function SectionSpirit() {
                 ))}
               </div>
 
-              {/* 7. Active Story Zen Haiku & Concept Meditation */}
-              <WashiPaperPanel variant="soft" crimsonAccent className="spirit-haiku-meditation-card">
+              {/* 7. Active Story Zen Haiku & Concept Meditation (TYPE B: Washi Brush-Frame Panel) */}
+              <WashiBrushPanel crimsonAccent className="spirit-haiku-meditation-card">
                 <div className="meditation-top-meta">
-                  <span className="meditation-concept-badge">{current.concept}</span>
+                  <CrimsonBrushAccent variant="badge" className="meditation-concept-badge">
+                    {current.concept}
+                  </CrimsonBrushAccent>
                   <span className="meditation-location-badge">{current.badge}</span>
                 </div>
 
@@ -194,7 +197,7 @@ export default function SectionSpirit() {
                 </div>
 
                 <p className="meditation-deep-desc">{current.desc}</p>
-              </WashiPaperPanel>
+              </WashiBrushPanel>
             </div>
           </div>
 

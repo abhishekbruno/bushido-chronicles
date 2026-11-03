@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, Shield, Compass, MapPin, Award, ExternalLink, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
 import WashiPaperPanel from './WashiPaperPanel';
+import { InkQuotePanel, CrimsonBrushAccent, WashiBrushPanel } from './brushstroke';
 
 /**
  * KokoroMonumentArchive (日本心アーカイブ · 記念碑 01/08)
@@ -210,14 +211,13 @@ export default function KokoroMonumentArchive({ className = '', onReturn }) {
                     silently guarding Tokyo's imperial perimeter.
                   </p>
 
-                  {/* Poetic Editorial Quote (Variant A Washi Inset) */}
-                  <WashiPaperPanel variant="soft" className="editorial-quote-inset">
-                    <span className="quote-badge-text">THE SILENCE OF BRONZE · 銅像の沈黙</span>
-                    <blockquote className="quote-text-body">
-                      “The warrior no longer rides into battle, yet his memory continues its journey through centuries.”
-                    </blockquote>
-                    <span className="quote-attribution">ORIGINAL POETIC CHRONICLE · NIPPON KOKORO ARCHIVES</span>
-                  </WashiPaperPanel>
+                  {/* Poetic Editorial Quote (TYPE A: Black Ink Brushstroke Panel) */}
+                  <InkQuotePanel
+                    quote="The warrior no longer rides into battle, yet his memory continues its journey through centuries."
+                    source="ORIGINAL POETIC CHRONICLE · NIPPON KOKORO ARCHIVES"
+                    sealText="忠"
+                    className="editorial-quote-brush"
+                  />
                 </WashiPaperPanel>
               </div>
             </div>

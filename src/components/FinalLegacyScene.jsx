@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { InkBrushBanner, CrimsonBrushAccent } from './brushstroke';
 
 /* Original hand-built vector artwork. Each scenic element stays inside its
    own aspect-ratio stage, so none of it can cover the editorial copy. */
@@ -113,7 +114,12 @@ export default function FinalLegacyScene({ onExploreLegacy }) {
     <div className={`bc-legacy ${visible ? 'bc-visible' : ''}`} ref={sectionRef}>
       <div className="bc-legacy-inner">
         <div className="bc-legacy-copy">
-          <div className="bc-kicker"><span className="bc-kicker-line" /> 終章 / THE FINAL CHAPTER <span className="bc-kicker-index">08 — 08</span></div>
+          <div className="bc-kicker">
+            <span className="bc-kicker-line" /> 終章 / THE FINAL CHAPTER{' '}
+            <CrimsonBrushAccent variant="badge" className="bc-kicker-index">
+              08 — 08
+            </CrimsonBrushAccent>
+          </div>
           <p className="bc-legacy-ideogram" lang="ja">色褪せぬ<br/>武士の魂</p>
           <h2 className="bc-legacy-title">A LEGACY THAT<br/>NEVER FADES<span>.</span></h2>
           <p className="bc-legacy-description">Through centuries of change, the Samurai spirit endures — a legacy of courage, discipline, and honor, carried across generations.</p>
@@ -121,7 +127,15 @@ export default function FinalLegacyScene({ onExploreLegacy }) {
             <button className="bc-btn bc-btn-primary" type="button" onClick={onExploreLegacy}>EXPLORE THE ARCHIVES <ArrowUpRight size={16} aria-hidden="true"/></button>
             <a href="#hero" className="bc-btn bc-btn-outline">RETURN TO THE BEGINNING <ArrowRight size={16} aria-hidden="true"/></a>
           </div>
-          <div className="bc-legacy-signature"><span className="bc-seal" aria-hidden="true">武<br/>士</span><div><strong>THE WAY OF THE WARRIOR</strong><small>勇気 · 誠実 · 名誉 — Courage · Integrity · Honor</small></div></div>
+          
+          {/* TYPE A: Black Ink Brushstroke Archival Signature Banner */}
+          <InkBrushBanner
+            kicker="BUSHIDO CODE · 武士道"
+            title="THE WAY OF THE WARRIOR"
+            subtext="勇気 · 誠実 · 名誉 — Courage · Integrity · Honor"
+            sealText="武"
+            className="bc-signature-brush-banner"
+          />
         </div>
         <div className="bc-legacy-visual"><RoninArtwork/><div className="bc-art-caption"><span>孤高の浪人 — THE LAST RŌNIN</span><span>ILLUSTRATED IN INK & SILENCE</span></div></div>
       </div>

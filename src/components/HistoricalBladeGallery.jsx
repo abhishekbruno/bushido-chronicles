@@ -16,6 +16,7 @@ import {
 import HistoricalBladeGeometry from './HistoricalBladeGeometry';
 import { historicalBlades } from '../data/historicalBlades';
 import { sound } from '../utils/soundEngine';
+import { WashiBrushPanel, CrimsonBrushAccent } from './brushstroke';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -371,19 +372,12 @@ export default function HistoricalBladeGallery() {
             </div>
           </div>
 
-          {/* Scroll-Triggered Manuscript Narrative Panel (Aged Washi Card) */}
-          <div
-            ref={narrativeCardRef}
-            className="museum-gallery-narrative manuscript-text-card washi-paper-panel washi-panel-manuscript washi-dark"
+          {/* Scroll-Triggered Manuscript Narrative Panel (TYPE B: Washi Brush-Frame Panel) */}
+          <WashiBrushPanel
+            dark
+            interactive
+            className="museum-gallery-narrative manuscript-text-card"
           >
-            {/* Corner Bracket Marks */}
-            <div className="washi-corner-brackets" aria-hidden="true">
-              <span className="washi-corner corner-tl" />
-              <span className="washi-corner corner-tr" />
-              <span className="washi-corner corner-bl" />
-              <span className="washi-corner corner-br" />
-            </div>
-
             {/* Specimen Ledger: Documented Dimensions & Attribution */}
             <div className="museum-specimen-ledger">
               <div>
@@ -419,7 +413,7 @@ export default function HistoricalBladeGallery() {
               <p>{active.detail}</p>
               <p className="museum-specimen-disclaimer">{active.historicalNote}</p>
             </div>
-          </div>
+          </WashiBrushPanel>
 
           {/* Curator Archival Notes Drawer */}
           {showSources && (
