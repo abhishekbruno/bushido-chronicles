@@ -112,7 +112,7 @@ export default function HonorConflict() {
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      // ── Heading reveal timeline ──────────────────────────────────────────
+      // ── Heading reveal timeline (bidirectional) ──────────────────────────
       const headingTl = gsap.timeline({ paused: true });
 
       if (eyebrowRef.current) {
@@ -163,63 +163,68 @@ export default function HonorConflict() {
       ScrollTrigger.create({
         trigger: el,
         start: 'top 84%',
-        once: true,
-        onEnter: () => headingTl.play(),
+        end: 'top 20%',
+        toggleActions: 'play reverse play reverse',
+        animation: headingTl,
       });
 
-      // ── Case selector stagger entrance ──────────────────────────────────
+      // ── Case selector stagger entrance (bidirectional) ───────────────────
       const selectors = caseSelectorRefs.current.filter(Boolean);
       if (selectors.length > 0) {
-        gsap.set(selectors, { opacity: 0, y: 22 });
+        const selectorTl = gsap.timeline({ paused: true });
+        selectorTl.fromTo(
+          selectors,
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.09, ease: 'power3.out' }
+        );
         ScrollTrigger.create({
           trigger: selectors[0],
           start: 'top 88%',
-          once: true,
-          onEnter: () => {
-            gsap.to(selectors[0], { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0 });
-            if (selectors[1]) gsap.to(selectors[1], { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.1 });
-            if (selectors[2]) gsap.to(selectors[2], { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.18 });
-          },
+          end: 'top 15%',
+          toggleActions: 'play reverse play reverse',
+          animation: selectorTl,
         });
       }
 
-      // ── Manuscript sheets paper fold entrance ───────────────────────────
+      // ── Manuscript sheets paper fold entrance (bidirectional) ────────────
       const sheets = [ninjoSheetRef.current, giriSheetRef.current].filter(Boolean);
       if (sheets.length > 0) {
-        gsap.set(sheets[0], { opacity: 0, x: -32, rotateY: 12, transformPerspective: 1100 });
-        gsap.set(sheets[1], { opacity: 0, x: 32, rotateY: -12, transformPerspective: 1100 });
-
+        const sheetTl = gsap.timeline({ paused: true });
+        sheetTl.fromTo(
+          sheets[0],
+          { opacity: 0, x: -32, rotateY: 12, transformPerspective: 1100 },
+          { opacity: 1, x: 0, rotateY: 0, duration: 0.95, ease: 'power3.out' },
+          0
+        );
+        sheetTl.fromTo(
+          sheets[1],
+          { opacity: 0, x: 32, rotateY: -12, transformPerspective: 1100 },
+          { opacity: 1, x: 0, rotateY: 0, duration: 0.95, ease: 'power3.out' },
+          0.15
+        );
         ScrollTrigger.create({
           trigger: sheets[0],
           start: 'top 88%',
-          once: true,
-          onEnter: () => {
-            gsap.to(sheets[0], {
-              opacity: 1, x: 0, rotateY: 0,
-              duration: 0.95, ease: 'power3.out',
-            });
-            gsap.to(sheets[1], {
-              opacity: 1, x: 0, rotateY: 0,
-              duration: 0.95, ease: 'power3.out',
-              delay: 0.15,
-            });
-          },
+          end: 'top 10%',
+          toggleActions: 'play reverse play reverse',
+          animation: sheetTl,
         });
       }
 
-      // ── Resolution scroll unroll ─────────────────────────────────────────
+      // ── Resolution scroll unroll (bidirectional) ─────────────────────────
       if (resolutionRef.current) {
-        gsap.set(resolutionRef.current, { opacity: 0, y: 24 });
+        const resTl = gsap.timeline({ paused: true });
+        resTl.fromTo(
+          resolutionRef.current,
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.85, ease: 'power2.out' }
+        );
         ScrollTrigger.create({
           trigger: resolutionRef.current,
           start: 'top 90%',
-          once: true,
-          onEnter: () => {
-            gsap.to(resolutionRef.current, {
-              opacity: 1, y: 0,
-              duration: 0.85, ease: 'power2.out',
-            });
-          },
+          end: 'top 10%',
+          toggleActions: 'play reverse play reverse',
+          animation: resTl,
         });
       }
     }, el);

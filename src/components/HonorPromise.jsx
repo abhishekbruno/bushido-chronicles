@@ -121,40 +121,35 @@ export default function HonorPromise() {
       const cards = cardRefs.current.filter(Boolean);
       if (cards.length === 0) return;
 
-      // Set initial hidden state
-      gsap.set(cards, { opacity: 0, y: 28 });
-
-      // Row 1: cards 0–2
+      // Row 1: cards 0–2 (bidirectional — scroll up re-hides, scroll down re-reveals)
+      const row1Tl = gsap.timeline({ paused: true });
+      row1Tl.fromTo(
+        cards.slice(0, 3),
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, duration: 0.75, stagger: 0.12, ease: 'power3.out' }
+      );
       ScrollTrigger.create({
         trigger: cards[0],
         start: 'top 88%',
-        once: true,
-        onEnter: () => {
-          gsap.to(cards.slice(0, 3), {
-            opacity: 1,
-            y: 0,
-            duration: 0.75,
-            stagger: 0.12,
-            ease: 'power3.out',
-          });
-        },
+        end: 'top 10%',
+        toggleActions: 'play reverse play reverse',
+        animation: row1Tl,
       });
 
-      // Row 2: cards 3–5
+      // Row 2: cards 3–5 (bidirectional)
       if (cards[3]) {
+        const row2Tl = gsap.timeline({ paused: true });
+        row2Tl.fromTo(
+          cards.slice(3, 6),
+          { opacity: 0, y: 28 },
+          { opacity: 1, y: 0, duration: 0.75, stagger: 0.12, ease: 'power3.out' }
+        );
         ScrollTrigger.create({
           trigger: cards[3],
           start: 'top 90%',
-          once: true,
-          onEnter: () => {
-            gsap.to(cards.slice(3, 6), {
-              opacity: 1,
-              y: 0,
-              duration: 0.75,
-              stagger: 0.12,
-              ease: 'power3.out',
-            });
-          },
+          end: 'top 10%',
+          toggleActions: 'play reverse play reverse',
+          animation: row2Tl,
         });
       }
     }, el);
