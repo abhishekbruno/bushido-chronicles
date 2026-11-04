@@ -1,0 +1,33 @@
+/* A fixed decorative margin plane, outside every section/card/content column.
+   Its transparent centre cannot cover text or controls. Existing content widths,
+   chapter backgrounds, header/modal stacking and scroll geometry are untouched. */
+.global-maple-background {
+  --maple-gutter: 0px;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+  background: var(--color-parchment, #FFF9E6);
+  mask-image: linear-gradient(to right,
+    #000 0, #000 max(0px, calc(var(--maple-gutter) - 14px)),
+    transparent var(--maple-gutter),
+    transparent calc(100% - var(--maple-gutter)),
+    #000 calc(100% - var(--maple-gutter) + 14px), #000 100%);
+}
+.global-maple-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.global-maple-canvas[hidden] { display: none; }
+.global-maple-fallback {
+  position: absolute;
+  max-width: none;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+@media (max-width: 1279px) {
+  .global-maple-background { display: none; }
+}

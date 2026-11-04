@@ -1,3 +1,4 @@
+import { assetUrl } from '../utils/assetUrl';
 import React, { useState } from 'react';
 import { BookOpen, Shield, Compass, MapPin, Award, ExternalLink, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
@@ -151,7 +152,7 @@ export default function KokoroMonumentArchive({ className = '', onReturn }) {
                   {/* Atmospheric Sun Halo and Authentic Bronze Statue */}
                   <div className="archive-sun-backdrop" aria-hidden="true" />
                   <img
-                    src="/images/kusunoki-monument-statue.png?v=3"
+                    src={assetUrl('/images/kusunoki-monument-statue.png?v=3')}
                     alt="Authentic bronze equestrian monument of Kusunoki Masashige atop granite pedestal"
                     className="archive-statue-hero-image"
                     loading="eager"

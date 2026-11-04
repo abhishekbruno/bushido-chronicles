@@ -56,17 +56,17 @@ An immersive, high-end editorial website inspired by traditional Japanese ink ar
 ### 3. Installation & Run Instructions
 
 #### Prerequisites
-- Node.js 18+ (Node 20+ or Node 24+ recommended)
-- npm 9+
+- Node.js 24 LTS (the version used by the deployment workflow)
+- npm, included with Node.js
 
 #### Steps
 
 ```bash
 # Navigate to the project directory
-cd kage-samurai-ui
+cd bushido-chronicles
 
 # Install dependencies
-npm install
+npm ci
 
 # Start development server
 npm run dev
@@ -83,6 +83,65 @@ npm run build
 # Preview production build locally
 npm run preview
 ```
+
+Open `http://localhost:4173/bushido-chronicles/` for the production preview.
+Development stays at `http://localhost:5173/`. No API keys or runtime environment
+variables are required. Google Fonts requires an internet connection; the existing
+fallback font stacks remain available when it cannot be reached.
+
+#### GitHub Pages deployment
+
+Expected public URL: https://abhishekbruno.github.io/bushido-chronicles/
+
+1. In [repository Settings → Pages](https://github.com/abhishekbruno/bushido-chronicles/settings/pages),
+   set **Build and deployment → Source → GitHub Actions**.
+2. Review and commit the local changes, including `.github/workflows/deploy.yml`,
+   the asset helper, component fixes, and tests. Push to `main` when ready to publish.
+3. Open **Actions → Deploy Bushido Chronicles to Pages** and check that both
+   `build` and `deploy` finish successfully. The deployment links to the published site.
+
+Every future push to `main` automatically installs the lockfile dependencies with
+`npm ci`, builds with Vite, verifies the production assets and motion utilities,
+and deploys **only `dist/`** with the official GitHub Pages actions. You can also
+use **Actions → Deploy Bushido Chronicles to Pages → Run workflow → main**.
+The `github-pages` deployment environment receives Pages/OIDC permissions; build
+jobs only have repository read access. No personal token is needed in the workflow.
+
+Vite uses `/bushido-chronicles/` for build and preview, and `/` for development.
+For JavaScript/JSX paths into `public/`, use `assetUrl('/images/example.png')`
+from `src/utils/assetUrl.js`. It adds `import.meta.env.BASE_URL`. Do not pass
+already-prefixed URLs, external URLs, or imported module assets to this helper.
+Vite handles imported assets, CSS URLs, and the HTML favicon automatically.
+Keep filenames case-exact: the deployment runner uses Linux.
+
+#### Deployment checks and troubleshooting
+
+```bash
+npm ci
+npm run build
+node --test tests/pages-build.test.mjs tests/motion.test.mjs
+node tests/pages.browser.mjs
+```
+
+The browser check uses installed Microsoft Edge by default and starts its own Vite
+preview on port 4174. To use Chromium instead, install it with
+`npx playwright install chromium`, then set `BROWSER_CHANNEL=chromium` in your shell.
+Screenshots go to the ignored `.tmp-warriors/pages/` directory.
+
+- **Blank page / JavaScript MIME error:** rebuild and use the preview URL above;
+  do not open `dist/index.html` directly or serve the build under the wrong base.
+- **Missing image:** check filename capitalization and the `assetUrl` call, then
+  check the browser Network panel for the `/bushido-chronicles/` prefix.
+- **Pages setup or deployment fails:** confirm the source is GitHub Actions,
+  Actions are enabled, and the `github-pages` environment allows deployment from
+  `main`. Read the failed step in Actions for any account-specific restriction.
+- **404 at the public URL:** verify the first successful deployment and allow it
+  to finish publishing. A local build alone does not publish the website.
+- **Old content:** verify the latest `main` workflow succeeded, then hard-refresh.
+
+Do not commit `dist`, `node_modules`, `.env` files, or credentials. Existing npm
+audit findings in the offline `potrace` dependency chain and Vite's large-bundle
+warning are documented in [the readiness report](docs/pages-readiness.md).
 
 ---
 

@@ -1,3 +1,4 @@
+import { assetUrl } from '../utils/assetUrl';
 import { createArtworkLoop, damp } from '../utils/motion';
 import { windSystem } from '../utils/windSystem';
 import WindClothLayer from './WindClothLayer';
@@ -271,7 +272,7 @@ export default function RoninLegacyArtwork({ className = '' }) {
       {/* ============================================================== */}
       <div className="ronin-sumie-mountains-layer" aria-hidden="true">
         <img
-          src="/images/ronin-sumie-mountains.png?v=3"
+          src={assetUrl('/images/ronin-sumie-mountains.png?v=3')}
           alt="Sumi-e ink wash misty mountains and pagoda emerging from valley fog"
           className="ronin-sumie-mountains-img"
           loading="eager"
@@ -285,14 +286,14 @@ export default function RoninLegacyArtwork({ className = '' }) {
         <div className="ronin-living-stage">
           {/* A. Cape Layer Hierarchy (Behind Warrior Body) */}
           <div className="ronin-cape-anchor" aria-hidden="true">
-            <WindClothLayer src="/images/ronin-layer-cape-full.png" width={770} height={900}
+            <WindClothLayer src={assetUrl('/images/ronin-layer-cape-full.png')} width={770} height={900}
               root={350} span={330} direction={1} className="ronin-layer" />
           </div>
 
           {/* B. Grounded Body Layer (Hat, Face, Armor, Sword, Legs, Rock Base) */}
           <div ref={bodyRef} className="ronin-body-container">
             <img
-              src="/images/ronin-layer-body.png"
+              src={assetUrl('/images/ronin-layer-body.png')}
               alt="Detailed historical Japanese Rōnin in black armor and straw hat standing before crimson sun"
               className="ronin-layer ronin-layer-body"
               loading="eager"
@@ -302,7 +303,7 @@ export default function RoninLegacyArtwork({ className = '' }) {
           {/* C. Trailing Hair Strands & Ribbon Ties (Wind Flutter) */}
           <div ref={hairRef} className="ronin-hair-container" aria-hidden="true">
             <img
-              src="/images/ronin-layer-hair.png"
+              src={assetUrl('/images/ronin-layer-hair.png')}
               alt=""
               className="ronin-layer ronin-layer-hair"
               loading="eager"
@@ -312,7 +313,7 @@ export default function RoninLegacyArtwork({ className = '' }) {
           {/* D. Waist Shimenawa Rope Tassels (Pendulum Sway) */}
           <div ref={tasselsRef} className="ronin-tassels-container" aria-hidden="true">
             <img
-              src="/images/ronin-layer-tassels.png"
+              src={assetUrl('/images/ronin-layer-tassels.png')}
               alt=""
               className="ronin-layer ronin-layer-tassels"
               loading="eager"
@@ -322,7 +323,7 @@ export default function RoninLegacyArtwork({ className = '' }) {
           {/* E. Foreground Grass Layer (Wind Response) */}
           <div ref={grassRef} className="ronin-grass-container" aria-hidden="true">
             <img
-              src="/images/ronin-layer-grass.png"
+              src={assetUrl('/images/ronin-layer-grass.png')}
               alt=""
               className="ronin-layer ronin-layer-grass"
               loading="eager"

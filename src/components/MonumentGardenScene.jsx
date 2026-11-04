@@ -1,3 +1,4 @@
+import { assetUrl } from '../utils/assetUrl';
 import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useRef, useEffect } from 'react';
 import { windSystem } from '../utils/windSystem';
@@ -279,7 +280,7 @@ export default function MonumentGardenScene({ className = '', onMonumentClick })
       {/* 2. EDO CASTLE WATCHTOWER & PINE RAMPARTS (High-Fidelity Right Midground) */}
       <div className="monument-castle-rampart-layer" aria-hidden="true">
         <img
-          src="/images/kusunoki-castle-rampart.png?v=3"
+          src={assetUrl('/images/kusunoki-castle-rampart.png?v=3')}
           alt="Edo Castle Fujimi Yagura watchtower and pine ramparts across the moat"
           className="monument-castle-rampart-img"
           loading="eager"
@@ -290,7 +291,7 @@ export default function MonumentGardenScene({ className = '', onMonumentClick })
       {/* Strictly rigid, stationary sculpture with authentic metallic reflections */}
       <div className="monument-statue-hero-anchor">
         <img
-          src="/images/kusunoki-monument-statue.png?v=3"
+          src={assetUrl('/images/kusunoki-monument-statue.png?v=3')}
           alt="Bronze equestrian monument of Kusunoki Masashige on carved granite pedestal at Tokyo Imperial Palace"
           className="monument-statue-image"
           loading="eager"
@@ -302,7 +303,7 @@ export default function MonumentGardenScene({ className = '', onMonumentClick })
       {/* 4. ANCIENT SAKURA TREE FRAMING THE LEFT FOREGROUND */}
       <div className="monument-sakura-tree-layer" aria-hidden="true">
         <img
-          src="/images/kusunoki-sakura-tree.png?v=3"
+          src={assetUrl('/images/kusunoki-sakura-tree.png?v=3')}
           alt="Ancient Sakura tree with blooming pink cherry blossoms framing the scene"
           className="monument-sakura-tree-img"
           loading="eager"

@@ -1,3 +1,4 @@
+import { assetUrl } from '../utils/assetUrl';
 import { createArtworkLoop, damp } from '../utils/motion';
 import { drawWindCloth } from '../utils/cloth';
 import { windSystem } from '../utils/windSystem';
@@ -129,9 +130,9 @@ export default function WarriorCharacter({ warrior, index, isHovered = false }) 
     stateRef.current.particles = initParticles(count);
 
     const urls = {
-      char: `/images/warriors_concept/warrior_char_${id}.png`,
-      cloth: `/images/warriors_concept/warrior_cloth_${id}.png`,
-      body: `/images/warriors_concept/warrior_body_${id}.png`,
+      char: assetUrl(`/images/warriors_concept/warrior_char_${id}.png`),
+      cloth: assetUrl(`/images/warriors_concept/warrior_cloth_${id}.png`),
+      body: assetUrl(`/images/warriors_concept/warrior_body_${id}.png`),
     };
 
     let cancelled = false;
@@ -352,7 +353,7 @@ export default function WarriorCharacter({ warrior, index, isHovered = false }) 
       {/* Immediate Placeholder before canvas assets load */}
       {!isLoaded && (
         <img
-          src={`/images/warriors_concept/warrior_char_${id}.png`}
+          src={assetUrl(`/images/warriors_concept/warrior_char_${id}.png`)}
           alt={warrior.name}
           className="warrior-portrait-fallback"
           loading="eager"

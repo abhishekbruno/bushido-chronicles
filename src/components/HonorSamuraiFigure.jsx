@@ -1,3 +1,4 @@
+import { assetUrl } from '../utils/assetUrl';
 import { createArtworkLoop, damp } from '../utils/motion';
 import { drawWindCloth } from '../utils/cloth';
 import { windSystem } from '../utils/windSystem';
@@ -130,11 +131,11 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
     animStateRef.current.particles = initParticles(particleCount);
 
     const layerUrls = {
-      body: '/images/samurai_layers/samurai_body.png',
-      capeLower: '/images/samurai_layers/samurai_cape_lower.png',
-      capeUpper: '/images/samurai_layers/samurai_cape_upper.png',
-      capeRight: '/images/samurai_layers/samurai_cape_right.png',
-      tassels: '/images/samurai_layers/samurai_tassels.png',
+      body: assetUrl('/images/samurai_layers/samurai_body.png'),
+      capeLower: assetUrl('/images/samurai_layers/samurai_cape_lower.png'),
+      capeUpper: assetUrl('/images/samurai_layers/samurai_cape_upper.png'),
+      capeRight: assetUrl('/images/samurai_layers/samurai_cape_right.png'),
+      tassels: assetUrl('/images/samurai_layers/samurai_tassels.png'),
     };
 
     let cancelled = false;
@@ -554,7 +555,7 @@ export default function HonorSamuraiFigure({ className = '', onInteract }) {
           {/* Instant Placeholder Image during initial asset load */}
           {!layersLoaded && (
             <img
-              src="/images/honor-samurai-sketch.png"
+              src={assetUrl('/images/honor-samurai-sketch.png')}
               alt="Hand-drawn ink samurai warrior with drawn katana and kabuto helmet"
               className="honor-samurai-sketch-img"
               loading="eager"

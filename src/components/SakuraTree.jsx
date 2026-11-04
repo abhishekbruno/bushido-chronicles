@@ -1,3 +1,4 @@
+import { assetUrl } from '../utils/assetUrl';
 import { createArtworkLoop, damp } from '../utils/motion';
 import React, { useRef, useEffect, useState } from 'react';
 import { windSystem } from '../utils/windSystem';
@@ -409,7 +410,7 @@ export default function SakuraTree({
         <div
           ref={mistRef}
           className="sakura-layer sakura-layer-mountains"
-          style={{ backgroundImage: `url('/images/sakura/sakura_bg_mountains.png')` }}
+          style={{ backgroundImage: `url('${assetUrl('/images/sakura/sakura_bg_mountains.png')}')` }}
           aria-hidden="true"
         />
 
@@ -424,7 +425,7 @@ export default function SakuraTree({
             }}
           />
           <img
-            src="/images/sakura/sakura_sun_disc.png"
+            src={assetUrl('/images/sakura/sakura_sun_disc.png')}
             alt=""
             className="sakura-layer sakura-sun-img"
             loading="eager"
@@ -439,7 +440,7 @@ export default function SakuraTree({
         {/* 2. STATIONARY WEATHERED GRANITE CRAG & NEBARI ROOTS            */}
         {/* ============================================================== */}
         <img
-          src="/images/sakura/sakura_rock_base.png"
+          src={assetUrl('/images/sakura/sakura_rock_base.png')}
           alt=""
           className="sakura-layer sakura-layer-rock"
           loading="eager"
@@ -459,7 +460,7 @@ export default function SakuraTree({
         >
           {/* Gnarled S-Curve Trunk Bark */}
           <img
-            src="/images/sakura/sakura_trunk.png"
+            src={assetUrl('/images/sakura/sakura_trunk.png')}
             alt=""
             className="sakura-layer sakura-trunk-img"
             loading="eager"
@@ -475,7 +476,7 @@ export default function SakuraTree({
             }}
           >
             <img
-              src="/images/sakura/sakura_branch_left.png"
+              src={assetUrl('/images/sakura/sakura_branch_left.png')}
               alt=""
               className="sakura-layer sakura-branch-left-img"
               loading="eager"
@@ -492,7 +493,7 @@ export default function SakuraTree({
             }}
           >
             <img
-              src="/images/sakura/sakura_branch_upper.png"
+              src={assetUrl('/images/sakura/sakura_branch_upper.png')}
               alt=""
               className="sakura-layer sakura-branch-upper-img"
               loading="eager"
@@ -509,7 +510,7 @@ export default function SakuraTree({
             }}
           >
             <img
-              src="/images/sakura/sakura_branch_right.png"
+              src={assetUrl('/images/sakura/sakura_branch_right.png')}
               alt=""
               className="sakura-layer sakura-branch-right-img"
               loading="eager"

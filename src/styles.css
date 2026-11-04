@@ -1744,6 +1744,8 @@ svg {
 .section-bushido {
   padding: var(--section-py) 0;
   background-color: var(--color-parchment);
+  /* Keep the offscreen heading entrance from widening the mobile document. */
+  overflow-x: clip;
 }
 
 .bushido-header-row {

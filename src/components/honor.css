@@ -3745,6 +3745,17 @@
     align-items: flex-start;
     width: 100%;
   }
+  .ms4-sumi-quote-block {
+    min-width: 0;
+    width: 100%;
+  }
+  .ms4-seal-btn {
+    max-width: 100%;
+    white-space: normal;
+  }
+  .ms4-seal-btn svg {
+    flex-shrink: 0;
+  }
 }
 
 @media (max-width: 600px) {
