@@ -2916,3 +2916,1697 @@
     transition: none !important;
   }
 }
+
+
+/* ==========================================================================
+   CHAPTER 03 MANUSCRIPT REDESIGN SYSTEM (ms3-*)
+   THE BURDEN OF HONOR — Archival Washi Document Style
+   ========================================================================== */
+
+/* Intro Parchment Panel */
+.ms3-intro-parchment {
+  position: relative;
+  margin: 1.5rem 0 2rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2.75rem) clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3.25rem);
+  background: linear-gradient(168deg, #FEF9EE 0%, #F5EDD8 55%, #EDE0C5 100%);
+  box-shadow:
+    4px 0 0 0 #C5282F inset,
+    0 8px 28px rgba(35, 28, 20, 0.07),
+    0 2px 6px rgba(35, 28, 20, 0.04);
+  border: 1px solid #D8CABA;
+  border-left: none;
+}
+
+.ms3-intro-parchment::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(28deg, rgba(166,139,86,0.035) 0px, rgba(166,139,86,0.035) 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(118deg, rgba(20,20,20,0.018) 0px, rgba(20,20,20,0.018) 1px, transparent 1px, transparent 18px);
+}
+
+.ms3-intro-parchment::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1px;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #C5282F 0%, #8C1E24 100%);
+}
+
+.ms3-archive-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: #857360;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+  position: relative;
+  z-index: 1;
+}
+
+.ms3-archive-label-dot {
+  width: 4px;
+  height: 4px;
+  background: #C5282F;
+  border-radius: 50%;
+}
+
+/* Case Selectors — Archival Paper Tabs */
+.ms3-case-selector {
+  position: relative;
+  background: linear-gradient(165deg, #FDF9EE 0%, #F5EDDB 100%);
+  border: 1px solid #D2C4AC;
+  border-top: 3px solid transparent;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ms3-case-selector::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(32deg, rgba(140,110,66,0.03) 0px, rgba(140,110,66,0.03) 1px, transparent 1px, transparent 12px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ms3-case-selector:hover {
+  background: linear-gradient(165deg, #FFFDF5 0%, #F8F0DF 100%);
+  border-color: #BBA78A;
+  border-top-color: #C5282F;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(35, 28, 20, 0.09);
+}
+
+.ms3-case-selector.ms3-active {
+  background: linear-gradient(145deg, #1D1E22 0%, #111215 100%);
+  border-color: #1D1E22;
+  border-top: 3px solid #C5282F;
+  color: #FAF4E8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(15, 15, 18, 0.28);
+}
+
+.ms3-case-selector > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Manuscript Sheets — Ninjō vs Giri */
+.ms3-manuscript-sheet {
+  position: relative;
+  background: linear-gradient(168deg, #FDF9EE 0%, #F5EDD8 55%, #EDE0C5 100%);
+  border: 1px solid #D2C4AC;
+  padding: clamp(1.75rem, 3vw, 2.75rem);
+  box-shadow:
+    0 8px 28px rgba(30, 24, 18, 0.07),
+    inset 0 0 40px rgba(210, 196, 172, 0.2);
+  box-sizing: border-box;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.ms3-manuscript-sheet::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(28deg, rgba(166,139,86,0.04) 0px, rgba(166,139,86,0.04) 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(118deg, rgba(20,20,20,0.02) 0px, rgba(20,20,20,0.02) 1px, transparent 1px, transparent 18px);
+  pointer-events: none;
+}
+
+.ms3-manuscript-sheet.ms3-ninjo-sheet {
+  border-top: 3px solid #C5282F;
+}
+
+.ms3-manuscript-sheet.ms3-giri-sheet {
+  border-top: 3px solid #1D1E22;
+}
+
+.ms3-sheet-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E0D2BA;
+  position: relative;
+  z-index: 1;
+}
+
+.ms3-sheet-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.ms3-ninjo-sheet .ms3-sheet-seal {
+  background: #C5282F;
+}
+
+.ms3-giri-sheet .ms3-sheet-seal {
+  background: #1D1E22;
+}
+
+.ms3-sheet-label-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ms3-sheet-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #6B5F4E;
+  text-transform: uppercase;
+}
+
+.ms3-ninjo-sheet .ms3-sheet-label {
+  color: #8C1E24;
+}
+
+.ms3-sheet-heading {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #17181A;
+  margin: 0;
+  line-height: 1.25;
+  position: relative;
+  z-index: 1;
+}
+
+.ms3-giri-sheet .ms3-sheet-heading {
+  color: #17181A;
+}
+
+.ms3-sheet-subheading {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: #857260;
+  margin: 0.35rem 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+.ms3-sheet-quote {
+  position: relative;
+  z-index: 1;
+  margin: 1.15rem 0;
+  padding: 0.85rem 1.15rem;
+  border-left: 3px solid;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.ms3-ninjo-sheet .ms3-sheet-quote {
+  border-color: #C5282F;
+}
+
+.ms3-giri-sheet .ms3-sheet-quote {
+  border-color: #1D1E22;
+}
+
+.ms3-sheet-quote-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  font-style: italic;
+  line-height: 1.65;
+  color: #2E2B26;
+  margin: 0;
+}
+
+.ms3-sheet-body {
+  position: relative;
+  z-index: 1;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.05rem, 1.25vw, 1.18rem);
+  line-height: 1.78;
+  color: #2E2B26;
+  letter-spacing: 0.01em;
+}
+
+/* Resolution Horizontal Scroll Document */
+.ms3-resolution-wrap {
+  margin-top: 2rem;
+}
+
+.ms3-resolution-scroll {
+  position: relative;
+  background: linear-gradient(170deg, #FEF9EE 0%, #F5EDD8 50%, #EDE0C5 100%);
+  border: 1px solid #D2C4AC;
+  border-top: 4px solid;
+  border-image: linear-gradient(90deg, #C5282F, #D4AF37, rgba(212,175,55,0.3)) 1;
+  padding: clamp(2rem, 4vw, 3.25rem) clamp(2rem, 4vw, 3.5rem);
+  box-shadow:
+    0 12px 36px rgba(30, 24, 18, 0.08),
+    inset 0 0 50px rgba(210, 196, 172, 0.22);
+  overflow: hidden;
+}
+
+.ms3-resolution-scroll::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(28deg, rgba(166,139,86,0.04) 0px, rgba(166,139,86,0.04) 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(118deg, rgba(20,20,20,0.02) 0px, rgba(20,20,20,0.02) 1px, transparent 1px, transparent 18px);
+  pointer-events: none;
+}
+
+.ms3-resolution-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 1px solid #E0D2BA;
+  position: relative;
+  z-index: 1;
+}
+
+.ms3-resolution-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #D4AF37;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  flex-shrink: 0;
+}
+
+.ms3-resolution-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: #857360;
+  text-transform: uppercase;
+}
+
+.ms3-resolution-heading {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.3rem, 2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #17181A;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.ms3-resolution-body {
+  position: relative;
+  z-index: 1;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.08rem, 1.3vw, 1.24rem);
+  line-height: 1.78;
+  color: #2B2823;
+  margin-bottom: 1.75rem;
+  letter-spacing: 0.01em;
+}
+
+/* ==========================================================================
+   CHAPTER 04 MANUSCRIPT REDESIGN SYSTEM (ms4-*)
+   THE WARRIOR'S PROMISE — Six Sacred Oath Documents
+   ========================================================================== */
+
+/* Scroll Document Container */
+.ms4-scroll-document {
+  position: relative;
+  background: linear-gradient(168deg, #FDF8EB 0%, #F4EAD3 55%, #EBD9B8 100%);
+  border: 1px solid #CDBF9F;
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3rem);
+  box-shadow:
+    0 12px 40px rgba(30, 24, 18, 0.07),
+    inset 0 0 60px rgba(205, 190, 165, 0.22);
+  overflow: hidden;
+}
+
+.ms4-scroll-document::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(28deg, rgba(166,139,86,0.04) 0px, rgba(166,139,86,0.04) 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(118deg, rgba(20,20,20,0.02) 0px, rgba(20,20,20,0.02) 1px, transparent 1px, transparent 18px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ms4-scroll-document > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Scroll Header */
+.ms4-scroll-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-bottom: 1px solid #D8C9A8;
+  padding-bottom: 1.75rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.ms4-header-hanko {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 56px;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  border-radius: 3px;
+  box-shadow: 0 3px 12px rgba(197, 40, 47, 0.38);
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.ms4-header-meta {
+  flex: 1;
+}
+
+.ms4-header-archival {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: #7A7062;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.ms4-header-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #17181A;
+  margin: 0 0 0.3rem;
+}
+
+.ms4-header-subtitle {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.78rem;
+  color: #C5282F;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ms4-counter-pod {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.ms4-counter-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  color: #C5282F;
+  line-height: 1;
+}
+
+.ms4-counter-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: #7A7062;
+  font-weight: 700;
+}
+
+/* Oath Cards Grid */
+.ms4-oaths-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 2.75rem;
+}
+
+/* Individual Oath Card (Archival Manuscript) */
+.ms4-oath-card {
+  position: relative;
+  background: linear-gradient(165deg, #FEF9EE 0%, #F6EDD9 55%, #EDE0C5 100%);
+  border: 1px solid #D2C4AC;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 4px 16px rgba(30, 24, 18, 0.05),
+    inset 0 0 30px rgba(210, 196, 172, 0.15);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.25s ease;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.ms4-oath-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(32deg, rgba(140,110,66,0.03) 0px, rgba(140,110,66,0.03) 1px, transparent 1px, transparent 12px),
+    repeating-linear-gradient(122deg, rgba(20,20,20,0.015) 0px, rgba(20,20,20,0.015) 1px, transparent 1px, transparent 16px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top ink border line */
+.ms4-oath-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #D2C4AC 15%, #D2C4AC 85%, transparent 100%);
+  transition: background 0.3s ease;
+}
+
+.ms4-oath-card:hover {
+  transform: translateY(-5px) rotate(0.3deg);
+  box-shadow:
+    0 14px 36px rgba(30, 24, 18, 0.1),
+    inset 0 0 35px rgba(210, 196, 172, 0.2);
+  border-color: #BBA78A;
+}
+
+.ms4-oath-card:hover::after {
+  background: linear-gradient(90deg, transparent 0%, #C5282F 10%, #C5282F 90%, transparent 100%);
+}
+
+.ms4-oath-card.ms4-sealed {
+  border-color: rgba(197, 40, 47, 0.45);
+  box-shadow:
+    0 4px 16px rgba(197, 40, 47, 0.08),
+    inset 0 0 30px rgba(210, 196, 172, 0.15);
+}
+
+.ms4-oath-card.ms4-sealed::after {
+  background: linear-gradient(90deg, transparent 0%, #C5282F 10%, #C5282F 90%, transparent 100%);
+}
+
+.ms4-oath-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Card Header Row */
+.ms4-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #E0D2BA;
+}
+
+.ms4-card-article {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ms4-card-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: #C5282F;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ms4-card-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.82rem, 1.1vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #17181A;
+  line-height: 1.3;
+}
+
+/* Hanko Seal */
+.ms4-hanko-seal {
+  position: relative;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid #D2C4AC;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
+}
+
+.ms4-hanko-seal:hover {
+  border-color: #C5282F;
+  transform: scale(1.08);
+}
+
+.ms4-hanko-seal.ms4-seal-active {
+  background: #C5282F;
+  border-color: #8C1E24;
+  box-shadow: 0 0 14px rgba(197, 40, 47, 0.42), 0 2px 6px rgba(197, 40, 47, 0.3);
+  transform: scale(1.0);
+}
+
+.ms4-hanko-glyph {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #C5282F;
+  line-height: 1;
+}
+
+.ms4-hanko-seal.ms4-seal-active .ms4-hanko-glyph {
+  color: #FFFFFF;
+}
+
+/* Card Content */
+.ms4-card-subtitle {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.78rem;
+  color: #8C2228;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+  line-height: 1.4;
+}
+
+.ms4-card-verse {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.05rem, 1.2vw, 1.18rem);
+  font-style: italic;
+  line-height: 1.65;
+  color: #2D2C28;
+  margin-bottom: 0.85rem;
+}
+
+.ms4-card-reflection {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  line-height: 1.72;
+  color: #48413A;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.ms4-card-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid #E8DCC8;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ms4-card-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: #C5282F;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Sumi-e Closing Quotation Panel */
+.ms4-sumi-closing {
+  position: relative;
+  background: linear-gradient(145deg, #191A1E 0%, #101215 100%);
+  border: 1px solid #2A2B30;
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4.5vw, 4.5rem);
+  box-shadow:
+    0 20px 55px rgba(10, 11, 14, 0.42),
+    inset 0 0 70px rgba(0, 0, 0, 0.5);
+  color: #FAF4E8;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+/* Brush stroke texture overlay */
+.ms4-sumi-closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse at 15% 50%, rgba(197, 40, 47, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 50%, rgba(212, 175, 55, 0.07) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Organic brushstroke stripe */
+.ms4-sumi-closing::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, #C5282F 0%, #8C1E24 100%);
+  z-index: 1;
+}
+
+.ms4-sumi-closing > * {
+  position: relative;
+  z-index: 2;
+}
+
+.ms4-sumi-quote-block {
+  flex: 1;
+  min-width: 260px;
+}
+
+.ms4-sumi-seal-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.15rem;
+}
+
+.ms4-sumi-hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.6rem;
+  background: #C5282F;
+  color: #FFFFFF;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(197, 40, 47, 0.5);
+  letter-spacing: 0.08em;
+}
+
+.ms4-sumi-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: #D4AF37;
+  font-weight: 700;
+}
+
+.ms4-sumi-jp-label {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.75rem;
+  color: rgba(212, 175, 55, 0.7);
+}
+
+.ms4-sumi-quote-mark {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  line-height: 1;
+  color: #C5282F;
+  opacity: 0.75;
+  display: block;
+  margin-bottom: -0.6rem;
+}
+
+.ms4-sumi-quote-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-style: italic;
+  line-height: 1.72;
+  color: #EDE8DC;
+  margin: 0 0 1rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.ms4-sumi-action-pod {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.ms4-seal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem 1.85rem;
+  background: #C5282F;
+  color: #FFFFFF;
+  border: none;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: all 0.28s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(197, 40, 47, 0.35);
+}
+
+.ms4-seal-btn:hover {
+  background: #E5353D;
+  box-shadow: 0 6px 22px rgba(197, 40, 47, 0.5);
+  transform: translateY(-2px);
+}
+
+.ms4-seal-btn.ms4-covenant-complete {
+  background: #2A2B30;
+  box-shadow: 0 4px 16px rgba(10, 10, 14, 0.4);
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS — ms3 & ms4
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .ms4-oaths-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ms3-resolution-scroll {
+    padding: 1.75rem;
+  }
+  .ms4-oaths-grid {
+    grid-template-columns: 1fr;
+  }
+  .ms4-sumi-closing {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ms4-sumi-action-pod {
+    align-items: flex-start;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .ms3-intro-parchment {
+    padding-left: 1.75rem;
+  }
+  .ms4-oath-card:hover {
+    transform: translateY(-3px) rotate(0deg);
+  }
+}
+
+/* ==========================================================================
+   SCROLL ANIMATION HELPERS — Chapter 03 & 04
+   ========================================================================== */
+
+.ms3-anim-ready {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.ms4-anim-ready {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms3-anim-ready,
+  .ms4-anim-ready {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .ms4-oath-card {
+    will-change: auto;
+  }
+  .ms4-oath-card:hover {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================================
+   BUSHIDO CHRONICLES — PREMIUM TYPOGRAPHY UPGRADE SYSTEM (typo-*)
+   Chapters 02–05 • Historical Manuscript Reading Experience
+   All rules are scoped to .section-honor-master — zero global bleed
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   TYPOGRAPHY DESIGN TOKENS
+   -------------------------------------------------------------------------- */
+.section-honor-master {
+  --typo-display:        'Anton', 'Cinzel', sans-serif;
+  --typo-serif-heading:  'Cormorant Garamond', Georgia, serif;
+  --typo-serif-body:     'Cormorant Garamond', Georgia, serif;
+  --typo-japanese:       'Noto Serif JP', serif;
+  --typo-label:          'Cinzel', serif;
+
+  --typo-ink:            #1E1A16;
+  --typo-secondary:      #4A4039;
+  --typo-muted:          #72655A;
+  --typo-label-color:    #7A6553;
+  --typo-crimson:        #A72832;
+  --typo-gold:           #A8872A;
+  --typo-parchment:      #F7F0E4;
+}
+
+/* --------------------------------------------------------------------------
+   SHARED — CHAPTER HEADING SIZE UPGRADE (all chapter h3 titles, Ch02–05)
+   -------------------------------------------------------------------------- */
+.section-honor-master .honor-chapter-title {
+  font-family: var(--typo-display);
+  font-size: clamp(2.75rem, 5.5vw, 4.6rem);
+  line-height: 1.0;
+  letter-spacing: -0.018em;
+  color: var(--typo-ink);
+  margin-bottom: 1.25rem;
+}
+
+/* Conflict (Ch03) uses slightly larger condensed display */
+.section-honor-master .conflict-display-heading {
+  font-size: clamp(2.75rem, 5.5vw, 4.8rem);
+}
+
+/* Legacy (Ch05) display heading */
+.section-honor-master .legacy-display-heading {
+  font-size: clamp(2.75rem, 5.5vw, 4.6rem);
+}
+
+/* Chapter intro description — shared across all chapters */
+.section-honor-master .honor-chapter-desc {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.12rem, 1.4vw, 1.3rem);
+  line-height: 1.72;
+  color: var(--typo-secondary);
+  font-weight: 500;
+}
+
+/* Eyebrow elements */
+.section-honor-master .chapter-num-badge {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  color: var(--typo-crimson);
+}
+.section-honor-master .chapter-eyebrow-kanji {
+  font-family: var(--typo-japanese);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--typo-secondary);
+}
+
+/* ==========================================================================
+   CHAPTER 02 — FIVE PILLARS OF SAMURAI HONOR
+   ========================================================================== */
+
+/* Principle tab sidebar — larger labels */
+.section-honor-master .tab-item-num {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.section-honor-master .tab-item-kanji {
+  font-family: var(--typo-japanese);
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+
+.section-honor-master .tab-item-english {
+  font-family: var(--typo-label);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+
+.section-honor-master .tab-item-title {
+  font-family: var(--typo-serif-heading);
+  font-size: 0.8rem;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  color: #6E6454;
+  opacity: 1;
+}
+
+.section-honor-master .honor-principle-tab.is-active .tab-item-title {
+  color: #A8A49B;
+}
+
+/* Active manuscript main heading */
+.section-honor-master .manuscript-main-heading {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.18;
+  color: var(--typo-ink);
+  margin-bottom: 0.6rem;
+}
+
+/* Manuscript subtitle */
+.section-honor-master .manuscript-subtitle-line {
+  font-family: var(--typo-serif-heading);
+  font-style: italic;
+  font-size: clamp(1.0rem, 1.3vw, 1.2rem);
+  line-height: 1.4;
+  color: var(--typo-secondary);
+}
+
+/* Quote banner */
+.section-honor-master .manuscript-quote-text {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--typo-ink);
+}
+
+.section-honor-master .quote-glyph-mark {
+  font-size: 2rem;
+  color: var(--typo-crimson);
+}
+
+/* Two-column body paragraphs */
+.section-honor-master .column-paragraph {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  line-height: 1.78;
+  color: var(--typo-secondary);
+  font-weight: 450;
+  letter-spacing: 0.01em;
+}
+
+/* Column labels */
+.section-honor-master .column-label {
+  font-family: var(--typo-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: var(--typo-label-color);
+  font-weight: 700;
+}
+
+.section-honor-master .column-label-kanji {
+  font-family: var(--typo-japanese);
+  font-size: 0.95rem;
+  color: var(--typo-crimson);
+}
+
+/* Archival footer */
+.section-honor-master .footer-doc-code {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--typo-muted);
+}
+
+/* Symbol caption */
+.section-honor-master .symbol-jp-caption {
+  font-family: var(--typo-japanese);
+  font-size: 0.78rem;
+  color: #8C2228;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Tag elements */
+.section-honor-master .tag-archival-text {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  color: var(--typo-label-color);
+}
+
+/* ==========================================================================
+   CHAPTER 03 — THE BURDEN OF HONOR
+   ========================================================================== */
+
+/* Intro parchment body */
+.section-honor-master .ms3-intro-parchment .honor-chapter-desc {
+  font-size: clamp(1.1rem, 1.35vw, 1.26rem);
+  line-height: 1.74;
+  color: var(--typo-secondary);
+}
+
+/* Case selector tabs — bigger, easier to read */
+.section-honor-master .tab-dilemma-num {
+  font-family: var(--typo-label);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+
+.section-honor-master .tab-dilemma-kanji-num {
+  font-family: var(--typo-japanese);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.section-honor-master .tab-dilemma-title {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(0.88rem, 1.1vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  color: var(--typo-ink);
+  margin-bottom: 0.4rem;
+}
+
+.section-honor-master .dilemma-select-tab.is-active .tab-dilemma-title {
+  color: #F8F2E6;
+}
+
+.section-honor-master .tab-dilemma-jp {
+  font-family: var(--typo-japanese);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+/* Historical protagonist name */
+.section-honor-master .meta-name {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  color: var(--typo-ink);
+}
+
+.section-honor-master .protagonist-kanji-name {
+  font-family: var(--typo-japanese);
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  font-weight: 700;
+  color: #8C2228;
+}
+
+/* Conflict labels */
+.section-honor-master .meta-kicker {
+  font-family: var(--typo-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--typo-label-color);
+  font-weight: 700;
+}
+
+.section-honor-master .meta-theme-text {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  font-weight: 700;
+  color: var(--typo-ink);
+  line-height: 1.4;
+}
+
+.section-honor-master .meta-theme-jp {
+  font-family: var(--typo-japanese);
+  font-size: 0.9rem;
+  color: var(--typo-muted);
+}
+
+/* Balance section labels */
+.section-honor-master .badge-name {
+  font-family: var(--typo-label);
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--typo-ink);
+}
+
+.section-honor-master .badge-sub {
+  font-family: var(--typo-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--typo-label-color);
+}
+
+.section-honor-master .balance-desc-micro {
+  font-family: var(--typo-serif-body);
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--typo-secondary);
+}
+
+/* Manuscript sheet headings (Ninjō / Giri) */
+.section-honor-master .ms3-sheet-heading {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.4rem, 2vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: var(--typo-ink);
+}
+
+.section-honor-master .ms3-sheet-subheading {
+  font-family: var(--typo-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--typo-label-color);
+  margin-top: 0.4rem;
+}
+
+/* Manuscript sheet label */
+.section-honor-master .ms3-sheet-label {
+  font-family: var(--typo-label);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+}
+
+/* Quote inside manuscript sheets */
+.section-honor-master .ms3-sheet-quote-text {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.08rem, 1.35vw, 1.25rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.65;
+  color: var(--typo-secondary);
+}
+
+/* Body inside manuscript sheets */
+.section-honor-master .ms3-sheet-body {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.08rem, 1.3vw, 1.2rem);
+  line-height: 1.78;
+  color: var(--typo-secondary);
+  font-weight: 450;
+}
+
+.section-honor-master .manuscript-paragraph-body {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.08rem, 1.3vw, 1.2rem);
+  line-height: 1.78;
+  color: var(--typo-secondary);
+  font-weight: 450;
+}
+
+/* Resolution section */
+.section-honor-master .ms3-resolution-heading {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--typo-ink);
+}
+
+.section-honor-master .ms3-resolution-label {
+  font-family: var(--typo-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--typo-label-color);
+}
+
+.section-honor-master .ms3-resolution-body,
+.section-honor-master .resolution-narrative-text {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.08rem, 1.3vw, 1.22rem);
+  line-height: 1.78;
+  color: var(--typo-secondary);
+  font-weight: 450;
+}
+
+/* Verdict / moral lesson quote */
+.section-honor-master .verdict-quote-text {
+  font-family: var(--typo-serif-heading);
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.45vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--typo-ink);
+}
+
+.section-honor-master .verdict-banner-label {
+  font-family: var(--typo-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--typo-label-color);
+}
+
+/* Footnote text */
+.section-honor-master .resolution-footer-footnote,
+.section-honor-master .footnote-left,
+.section-honor-master .footnote-right {
+  font-family: var(--typo-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--typo-label-color);
+}
+
+/* ==========================================================================
+   CHAPTER 04 — THE WARRIOR'S PROMISE
+   ========================================================================== */
+
+/* Header area */
+.section-honor-master .ms4-header-archival {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--typo-label-color);
+}
+
+.section-honor-master .ms4-header-title {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.4rem, 2.2vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--typo-ink);
+}
+
+.section-honor-master .ms4-header-subtitle {
+  font-family: var(--typo-japanese);
+  font-size: 0.85rem;
+  color: var(--typo-crimson);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* Oath card article number and title row */
+.section-honor-master .ms4-card-num {
+  font-family: var(--typo-japanese);
+  font-size: 0.82rem;
+  color: var(--typo-crimson);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.section-honor-master .ms4-card-title,
+.section-honor-master .article-title {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.0rem, 1.25vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+  color: var(--typo-ink);
+}
+
+/* Japanese subtitle on each vow */
+.section-honor-master .ms4-card-subtitle,
+.section-honor-master .vow-sub-headline {
+  font-family: var(--typo-japanese);
+  font-size: clamp(0.82rem, 1.0vw, 0.95rem);
+  color: #8C2228;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.9rem;
+}
+
+/* Vow verse / philosophical quotation */
+.section-honor-master .ms4-card-verse,
+.section-honor-master .vow-verse-quote {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.08rem, 1.3vw, 1.22rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.65;
+  color: var(--typo-secondary);
+  margin-bottom: 0.9rem;
+}
+
+/* Vow reflection paragraph */
+.section-honor-master .ms4-card-reflection,
+.section-honor-master .vow-reflection-text {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.0rem, 1.18vw, 1.1rem);
+  line-height: 1.72;
+  color: var(--typo-secondary);
+  font-weight: 450;
+  margin-bottom: 1rem;
+}
+
+/* Status bar text */
+.section-honor-master .ms4-card-status,
+.section-honor-master .vow-status-text {
+  font-family: var(--typo-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--typo-crimson);
+  font-weight: 700;
+}
+
+/* Closing sumi-e quotation */
+.section-honor-master .ms4-sumi-quote-text,
+.section-honor-master .affirmation-text {
+  font-family: var(--typo-serif-heading);
+  font-style: italic;
+  font-size: clamp(1.12rem, 1.45vw, 1.3rem);
+  line-height: 1.72;
+  color: #EDE8DC;
+  font-weight: 500;
+}
+
+.section-honor-master .ms4-sumi-label {
+  font-family: var(--typo-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: #D4AF37;
+  font-weight: 700;
+}
+
+.section-honor-master .ms4-seal-btn,
+.section-honor-master .btn-seal-covenant {
+  font-family: var(--typo-label);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+}
+
+/* Oath grid — slightly more spacious to fit bigger text */
+.section-honor-master .ms4-oaths-grid {
+  gap: 1.85rem;
+}
+
+.section-honor-master .ms4-oath-card {
+  padding: clamp(1.6rem, 2.5vw, 2.4rem);
+}
+
+/* ==========================================================================
+   CHAPTER 05 — THE LEGACY OF HONOR
+   ========================================================================== */
+
+/* Three manuscript panel headings */
+.section-honor-master .legacy-manuscript-title {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.3rem, 1.8vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--typo-ink);
+  margin-bottom: 0.4rem;
+}
+
+/* Legacy manuscript subtitle */
+.section-honor-master .legacy-manuscript-subtitle {
+  font-family: var(--typo-serif-heading);
+  font-style: italic;
+  font-size: clamp(0.98rem, 1.2vw, 1.1rem);
+  color: var(--typo-secondary);
+  line-height: 1.4;
+}
+
+/* Legacy body paragraph */
+.section-honor-master .legacy-manuscript-paragraph {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  line-height: 1.78;
+  color: var(--typo-secondary);
+  font-weight: 450;
+  letter-spacing: 0.01em;
+}
+
+/* Legacy footer labels */
+.section-honor-master .footer-theme-text {
+  font-family: var(--typo-label);
+  font-size: 0.74rem;
+  letter-spacing: 0.15em;
+  color: var(--typo-label-color);
+}
+
+.section-honor-master .footer-stamp-label {
+  font-family: var(--typo-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--typo-muted);
+}
+
+/* Legacy brush badge (chapter number pills) */
+.section-honor-master .brush-badge-num {
+  font-family: var(--typo-label);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #E63842;
+}
+
+.section-honor-master .brush-badge-kanji {
+  font-family: var(--typo-japanese);
+  font-size: 1.0rem;
+  font-weight: 900;
+  color: #FAF4E8;
+}
+
+/* Final philosophical quotation — LARGER & BOLDER */
+.section-honor-master .closing-quote-statement {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+  line-height: 1.6;
+  color: #F5F0E8;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.012em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.section-honor-master .closing-quote-glyph-mark {
+  font-size: 4rem;
+  color: var(--typo-crimson);
+  opacity: 0.75;
+}
+
+/* Closing kicker and attribution */
+.section-honor-master .closing-kicker-tag {
+  font-family: var(--typo-label);
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  color: #A39B8B;
+  font-weight: 700;
+}
+
+.section-honor-master .closing-author-citation {
+  font-family: var(--typo-label);
+  font-size: 0.76rem;
+  letter-spacing: 0.2em;
+  color: #B5AC9C;
+  font-weight: 700;
+}
+
+.section-honor-master .closing-jp-kanji-sub {
+  font-family: var(--typo-japanese);
+  font-size: 0.88rem;
+  color: #E2C26E;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.section-honor-master .closing-cinnabar-hanko {
+  font-family: var(--typo-japanese);
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  padding: 0.38rem 0.72rem;
+}
+
+/* Continue button */
+.section-honor-master .btn-honor-continue {
+  font-family: var(--typo-label);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.section-honor-master .btn-text-jp {
+  font-family: var(--typo-japanese);
+  font-size: 0.8rem;
+}
+
+/* Terminus badge */
+.section-honor-master .terminus-seal-badge {
+  font-family: var(--typo-label);
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  color: var(--typo-muted);
+}
+
+/* ==========================================================================
+   SHARED — INLINE MANUSCRIPT PANEL (InkManuscriptPanel / brushstroke)
+   ========================================================================== */
+
+/* Panel section label */
+.section-honor-master .manuscript-section-label {
+  font-family: var(--typo-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--typo-label-color);
+  font-weight: 700;
+}
+
+/* Panel main heading */
+.section-honor-master .manuscript-card-heading {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: var(--typo-ink);
+  margin-bottom: 0.4rem;
+}
+
+/* Panel sub-heading */
+.section-honor-master .manuscript-card-subheading {
+  font-family: var(--typo-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--typo-label-color);
+  margin-bottom: 1rem;
+}
+
+/* Panel quote callout */
+.section-honor-master .quote-callout-text {
+  font-family: var(--typo-serif-heading);
+  font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.65;
+  color: var(--typo-secondary);
+}
+
+/* Panel body text */
+.section-honor-master .manuscript-body-text-flow {
+  font-family: var(--typo-serif-body);
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  line-height: 1.78;
+  color: var(--typo-secondary);
+}
+
+/* ==========================================================================
+   RESPONSIVE TYPOGRAPHY ADJUSTMENTS
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .section-honor-master .ms4-oaths-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .section-honor-master .honor-chapter-title {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+  }
+  .section-honor-master .manuscript-main-heading {
+    font-size: clamp(1.4rem, 2.2vw, 2.0rem);
+  }
+  .section-honor-master .ms3-sheet-heading {
+    font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+  }
+  .section-honor-master .closing-quote-statement {
+    font-size: clamp(1.3rem, 1.9vw, 1.75rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .section-honor-master .honor-chapter-title {
+    font-size: clamp(2.1rem, 7vw, 3.2rem);
+    line-height: 1.05;
+  }
+  .section-honor-master .conflict-display-heading,
+  .section-honor-master .legacy-display-heading {
+    font-size: clamp(2.1rem, 7vw, 3.2rem);
+  }
+  .section-honor-master .honor-chapter-desc {
+    font-size: clamp(1.0rem, 1.3vw, 1.15rem);
+  }
+  .section-honor-master .manuscript-main-heading {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+  }
+  .section-honor-master .ms3-sheet-heading {
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+  }
+  .section-honor-master .meta-name {
+    font-size: clamp(1.5rem, 4.5vw, 2.0rem);
+  }
+  .section-honor-master .protagonist-kanji-name {
+    font-size: clamp(1.0rem, 3vw, 1.25rem);
+  }
+  .section-honor-master .ms4-card-title,
+  .section-honor-master .article-title {
+    font-size: clamp(0.95rem, 3vw, 1.1rem);
+  }
+  .section-honor-master .ms4-card-verse,
+  .section-honor-master .vow-verse-quote {
+    font-size: clamp(1.0rem, 3vw, 1.1rem);
+  }
+  .section-honor-master .ms4-card-reflection,
+  .section-honor-master .vow-reflection-text {
+    font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  }
+  .section-honor-master .legacy-manuscript-title {
+    font-size: clamp(1.2rem, 3.5vw, 1.45rem);
+  }
+  .section-honor-master .legacy-manuscript-paragraph {
+    font-size: clamp(1.0rem, 3vw, 1.1rem);
+  }
+  .section-honor-master .closing-quote-statement {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+  }
+  .section-honor-master .ms4-oaths-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-honor-master .honor-chapter-title {
+    font-size: clamp(1.9rem, 8.5vw, 2.8rem);
+  }
+  .section-honor-master .conflict-display-heading,
+  .section-honor-master .legacy-display-heading {
+    font-size: clamp(1.9rem, 8.5vw, 2.8rem);
+  }
+  .section-honor-master .tab-item-kanji {
+    font-size: 1.2rem;
+  }
+  .section-honor-master .tab-item-english {
+    font-size: 0.75rem;
+  }
+  .section-honor-master .ms4-oath-card {
+    padding: 1.4rem;
+  }
+}
+
+/* ==========================================================================
+   REDUCED-MOTION — Ensure full readability without animation
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .section-honor-master .ms3-manuscript-sheet,
+  .section-honor-master .ms4-oath-card {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}

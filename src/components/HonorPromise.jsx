@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import { Check, ShieldCheck, Feather, Sparkles } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Check, ShieldCheck, Sparkles } from 'lucide-react';
 import { sound } from '../utils/soundEngine';
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
  * HonorPromise — 武士の誓い (The Warrior's Promise: The Six Inviolable Vows)
- * -----------------------------------------------------------------------------
- * CHAPTER 04 — An interactive ceremonial Japanese covenant scroll (Seishi 誓紙)
- * presenting six timeless tenets of honorable conduct.
- *
- * Readers can click each vow to affix a traditional vermilion cinnabar seal (Hanko),
- * verifying each principle in their own contemplative journey.
+ * Chapter 04 — Cinematic manuscript redesign with archival washi oath cards,
+ * sumi-e closing panel, and GSAP ScrollTrigger reveal animations.
+ * All original state, handlers, aria attributes, and sound calls are preserved.
  */
 export default function HonorPromise() {
   const [sealedVows, setSealedVows] = useState([0, 1]); // initial 2 sealed for demonstration
   const [isFullySealed, setIsFullySealed] = useState(false);
+
+  const containerRef = useRef(null);
+  const cardRefs = useRef([]);
 
   const vows = [
     {
@@ -22,7 +26,7 @@ export default function HonorPromise() {
       kanji: '真実',
       title: 'THE UNSHEATHED TRUTH',
       subtitle: '無垢の真実 · Speak Without Deceit',
-      verse: '“I shall speak with candor that needs no embellishment, guarding against flattering lies and expedient half-truths.”',
+      verse: '\u201cI shall speak with candor that needs no embellishment, guarding against flattering lies and expedient half-truths.\u201d',
       reflection:
         'A warrior does not hide behind verbal ambiguity. When truth is uncomfortable, false silence is an act of cowardice. True honor demands clarity of speech, directness of intention, and refusal to deceive oneself or others.',
     },
@@ -32,7 +36,7 @@ export default function HonorPromise() {
       kanji: '仁愛',
       title: 'THE SHIELD OF THE VULNERABLE',
       subtitle: '弱者の盾 · Strength in Service of Mercy',
-      verse: '“Power unanchored to compassion is mere tyranny. My strength shall stand between peril and those without defense.”',
+      verse: '\u201cPower unanchored to compassion is mere tyranny. My strength shall stand between peril and those without defense.\u201d',
       reflection:
         'The blade was forged to preserve life, never to oppress it. The true measure of any martial training is not the foes struck down, but the weak protected from cruelty. Strength without compassion is a curse upon the world.',
     },
@@ -42,7 +46,7 @@ export default function HonorPromise() {
       kanji: '克己',
       title: 'MASTERY OVER THE EGO',
       subtitle: '己に克つ · The Sovereign Self',
-      verse: '“The fiercest adversary does not wait upon the battlefield; it resides in the pride of my own heart. I shall conquer myself daily.”',
+      verse: '\u201cThe fiercest adversary does not wait upon the battlefield; it resides in the pride of my own heart. I shall conquer myself daily.\u201d',
       reflection:
         'Victory over ten thousand enemies is hollow if a man is still the slave of his vanity, anger, or appetite. The samurai practiced self-denial and rigorous discipline so that when danger arose, the ego remained silent.',
     },
@@ -52,7 +56,7 @@ export default function HonorPromise() {
       kanji: '信義',
       title: 'WORD AS CARVED STONE',
       subtitle: '言霊の重み · The Inviolable Promise',
-      verse: '“A promise is not a wind that disperses; it is an obligation sealed with my spirit. Once given, it shall not be broken.”',
+      verse: '\u201cA promise is not a wind that disperses; it is an obligation sealed with my spirit. Once given, it shall not be broken.\u201d',
       reflection:
         'In ancient Japan, contracts between warriors were sealed with a simple glance or quiet nod. A man whose word cannot be trusted has already surrendered his honor; he is a ghost masquerading among the living.',
     },
@@ -62,7 +66,7 @@ export default function HonorPromise() {
       kanji: '散美',
       title: 'DIGNITY IN EVERY SEASON',
       subtitle: '散り際の美学 · Grace in Triumph and Loss',
-      verse: '“Like the cherry blossom falling in its season, I shall embrace victory with humility and bear defeat without bitterness.”',
+      verse: '\u201cLike the cherry blossom falling in its season, I shall embrace victory with humility and bear defeat without bitterness.\u201d',
       reflection:
         'Pride in triumph is vulgar; despair in defeat is unseemly. The aesthetic of the falling blossom (Mono no Aware) teaches that all seasons pass. What matters is the elegance, courage, and dignity with which one meets both joy and sorrow.',
     },
@@ -72,7 +76,7 @@ export default function HonorPromise() {
       kanji: '余韻',
       title: 'THE QUIET DEPARTURE',
       subtitle: '静寂の去り際 · Virtue Over Monuments',
-      verse: '“I shall seek to leave behind righteous deeds rather than gilded monuments. What endures is the quiet memory of honor.”',
+      verse: '\u201cI shall seek to leave behind righteous deeds rather than gilded monuments. What endures is the quiet memory of honor.\u201d',
       reflection:
         'Bronze statues weather and stone tablets crumble to dust, but the memory of a righteous deed ripples across generations. The honorable warrior lives without grasping for fame, departing quietly with a peaceful conscience.',
     },
@@ -100,8 +104,66 @@ export default function HonorPromise() {
     setIsFullySealed(true);
   };
 
+  // =========================================================================
+  // GSAP SCROLLTRIGGER ENTRANCE CHOREOGRAPHY
+  // =========================================================================
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      const cards = cardRefs.current.filter(Boolean);
+      if (cards.length === 0) return;
+
+      // Set initial hidden state
+      gsap.set(cards, { opacity: 0, y: 28 });
+
+      // Row 1: cards 0–2
+      ScrollTrigger.create({
+        trigger: cards[0],
+        start: 'top 88%',
+        once: true,
+        onEnter: () => {
+          gsap.to(cards.slice(0, 3), {
+            opacity: 1,
+            y: 0,
+            duration: 0.75,
+            stagger: 0.12,
+            ease: 'power3.out',
+          });
+        },
+      });
+
+      // Row 2: cards 3–5
+      if (cards[3]) {
+        ScrollTrigger.create({
+          trigger: cards[3],
+          start: 'top 90%',
+          once: true,
+          onEnter: () => {
+            gsap.to(cards.slice(3, 6), {
+              opacity: 1,
+              y: 0,
+              duration: 0.75,
+              stagger: 0.12,
+              ease: 'power3.out',
+            });
+          },
+        });
+      }
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="honor-promise-experience">
+    <div ref={containerRef} className="honor-promise-experience">
       {/* Chapter 04 Header */}
       <div className="honor-chapter-header">
         <div className="honor-chapter-eyebrow">
@@ -110,122 +172,137 @@ export default function HonorPromise() {
           <span className="chapter-eyebrow-kanji">武士の誓い</span>
         </div>
         <h3 className="honor-chapter-title">
-          THE WARRIOR’S PROMISE<span className="title-crimson-dot">.</span>
+          THE WARRIOR'S PROMISE<span className="title-crimson-dot">.</span>
         </h3>
         <p className="honor-chapter-desc">
-          An original reflection on honorable conduct, cast in the tradition of feudal Japan’s
+          An original reflection on honorable conduct, cast in the tradition of feudal Japan's
           sacred covenant scrolls (<em>Seishi</em> 誓紙). Click each seal to verify and meditate
           upon the six inviolable vows of the samurai spirit.
         </p>
       </div>
 
       {/* The Ceremonial Covenant Scroll Stage */}
-      <div className="honor-scroll-document">
-        <div className="scroll-paper-texture">
-          {/* Scroll Header Seal */}
-          <div className="scroll-top-seal-banner">
-            <div className="scroll-seal-hanko">
-              <span className="hanko-kanji">誓</span>
-              <span className="hanko-kanji">紙</span>
-            </div>
-            <div className="scroll-seal-meta">
-              <span className="scroll-archival-num">SACRED COVENANT · RECORD NO. 08</span>
-              <h4 className="scroll-title">THE SIX INVIOLABLE VOWS OF CONDUCT</h4>
-              <span className="scroll-subtitle">SEISHI JOMOKU · 誓紙条目 · PRESERVED FOR ETERNITY</span>
-            </div>
-            <div className="scroll-counter-badge">
-              <span className="counter-num">{sealedVows.length} / 6</span>
-              <span className="counter-label">SEALS AFFIXED</span>
-            </div>
+      <div className="ms4-scroll-document">
+        {/* Scroll Header */}
+        <div className="ms4-scroll-header">
+          <div className="ms4-header-hanko" aria-hidden="true">
+            <span>誓</span>
+            <span>紙</span>
           </div>
+          <div className="ms4-header-meta">
+            <span className="ms4-header-archival">SACRED COVENANT · RECORD NO. 08</span>
+            <h4 className="ms4-header-title">THE SIX INVIOLABLE VOWS OF CONDUCT</h4>
+            <span className="ms4-header-subtitle">SEISHI JOMOKU · 誓紙条目 · PRESERVED FOR ETERNITY</span>
+          </div>
+          <div className="ms4-counter-pod" aria-live="polite">
+            <span className="ms4-counter-num">{sealedVows.length} / 6</span>
+            <span className="ms4-counter-label">SEALS AFFIXED</span>
+          </div>
+        </div>
 
-          {/* Six Grid Vows */}
-          <div className="scroll-vows-grid">
-            {vows.map((vow) => {
-              const isSealed = sealedVows.includes(vow.id);
-              return (
-                <div
-                  key={vow.id}
-                  className={`scroll-vow-card ${isSealed ? 'is-sealed' : ''}`}
-                  onClick={() => handleToggleSeal(vow.id)}
-                  role="button"
-                  tabIndex={0}
-                  aria-pressed={isSealed}
-                  title="Click to affix or release your personal seal"
-                >
-                  <div className="vow-header-row">
-                    <div className="vow-article-tag">
-                      <span className="article-kanji-num">{vow.num}</span>
-                      <span className="article-title">{vow.title}</span>
-                    </div>
-
-                    {/* Interactive Vermilion Hanko Seal */}
-                    <button
-                      type="button"
-                      className={`vow-hanko-seal ${isSealed ? 'active-stamp' : ''}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToggleSeal(vow.id);
-                      }}
-                      aria-label={isSealed ? `Release seal for ${vow.title}` : `Affix seal for ${vow.title}`}
-                    >
-                      <span className="hanko-glyph">{vow.kanji}</span>
-                      <span className="hanko-border-ring" />
-                      {isSealed && <span className="hanko-verified-dot" />}
-                    </button>
+        {/* Six Oath Cards Grid */}
+        <div className="ms4-oaths-grid">
+          {vows.map((vow, idx) => {
+            const isSealed = sealedVows.includes(vow.id);
+            return (
+              <div
+                key={vow.id}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                className={`ms4-oath-card${isSealed ? ' ms4-sealed' : ''}`}
+                onClick={() => handleToggleSeal(vow.id)}
+                role="button"
+                tabIndex={0}
+                aria-pressed={isSealed}
+                title="Click to affix or release your personal seal"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleToggleSeal(vow.id);
+                  }
+                }}
+              >
+                {/* Card Header */}
+                <div className="ms4-card-header">
+                  <div className="ms4-card-article">
+                    <span className="ms4-card-num">{vow.num}</span>
+                    <span className="ms4-card-title">{vow.title}</span>
                   </div>
 
-                  <div className="vow-sub-headline">{vow.subtitle}</div>
-                  <p className="vow-verse-quote">{vow.verse}</p>
-                  <p className="vow-reflection-text">{vow.reflection}</p>
+                  {/* Interactive Vermilion Hanko Seal */}
+                  <button
+                    type="button"
+                    className={`ms4-hanko-seal${isSealed ? ' ms4-seal-active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleSeal(vow.id);
+                    }}
+                    aria-label={isSealed ? `Release seal for ${vow.title}` : `Affix seal for ${vow.title}`}
+                  >
+                    <span className="ms4-hanko-glyph">{vow.kanji}</span>
+                  </button>
+                </div>
 
-                  <div className="vow-card-bottom-bar">
-                    <span className="vow-status-text">
-                      {isSealed ? (
-                        <>
-                          <Check size={12} className="text-crimson" /> SEALED IN SPIRIT
-                        </>
-                      ) : (
-                        'CLICK TO AFFIX SEAL'
-                      )}
-                    </span>
+                {/* Card Content */}
+                <div className="ms4-card-subtitle">{vow.subtitle}</div>
+                <p className="ms4-card-verse">{vow.verse}</p>
+                <p className="ms4-card-reflection">{vow.reflection}</p>
+
+                {/* Card Footer Status */}
+                <div className="ms4-card-footer">
+                  <div className="ms4-card-status">
+                    {isSealed ? (
+                      <>
+                        <Check size={12} />
+                        SEALED IN SPIRIT
+                      </>
+                    ) : (
+                      'CLICK TO AFFIX SEAL'
+                    )}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Sumi-e Closing Quotation Panel */}
+        <div className="ms4-sumi-closing">
+          <div className="ms4-sumi-quote-block">
+            <div className="ms4-sumi-seal-row">
+              <span className="ms4-sumi-hanko" aria-hidden="true">武士道</span>
+              <div>
+                <span className="ms4-sumi-label">MASTER CLOSING PRINCIPLE</span>
+                <span className="ms4-sumi-jp-label"> · 武士道の要諦</span>
+              </div>
+            </div>
+            <span className="ms4-sumi-quote-mark" aria-hidden="true">"</span>
+            <p className="ms4-sumi-quote-text">
+              Honor is not an ornament worn for the admiration of others. It is the unyielding
+              discipline of a solitary conscience, walking upright through storm and silence.
+            </p>
           </div>
 
-          {/* Master Scroll Affirmation Bar */}
-          <div className="scroll-affirmation-footer">
-            <div className="affirmation-quote-block">
-              <Feather size={20} className="text-crimson" />
-              <p className="affirmation-text">
-                “Honor is not an ornament worn for the admiration of others. It is the unyielding
-                discipline of a solitary conscience, walking upright through storm and silence.”
-              </p>
-            </div>
-
-            <div className="affirmation-action-group">
-              <button
-                type="button"
-                className={`btn-seal-covenant ${isFullySealed ? 'is-complete' : ''}`}
-                onClick={handleSealAll}
-              >
-                {isFullySealed ? (
-                  <>
-                    <ShieldCheck size={16} /> ALL SIX VOWS SEALED · 名誉完遂
-                  </>
-                ) : (
-                  <>
-                    <Sparkles size={16} /> SEAL THE ENTIRE COVENANT · 全条目捺印
-                  </>
-                )}
-              </button>
-            </div>
+          <div className="ms4-sumi-action-pod">
+            <button
+              type="button"
+              className={`ms4-seal-btn${isFullySealed ? ' ms4-covenant-complete' : ''}`}
+              onClick={handleSealAll}
+            >
+              {isFullySealed ? (
+                <>
+                  <ShieldCheck size={16} />
+                  ALL SIX VOWS SEALED · 名誉完遂
+                </>
+              ) : (
+                <>
+                  <Sparkles size={16} />
+                  SEAL THE ENTIRE COVENANT · 全条目捺印
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
